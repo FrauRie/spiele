@@ -1,0 +1,810 @@
+[
+ {
+  "group": "Klassenspiele",
+  "game": "Was-fehlt",
+  "title": "Was fehlt? · Quartett",
+  "level": "",
+  "url": "spiele/was-fehlt/was-fehlt-quartett.html",
+  "src": "Was-fehlt/Was-fehlt_Quartett_Smartboard_Rie_v2.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Activity",
+  "title": "Activity",
+  "level": "",
+  "url": "spiele/activity/activity-spiel.html",
+  "src": "Activity/Activity_Spiel_Rie_v9.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Eis-schmilzt",
+  "title": "Eis schmilzt",
+  "level": "",
+  "url": "spiele/eis-schmilzt/eis-schmilzt.html",
+  "src": "Eis-schmilzt/Eis-schmilzt_Klassenspiel_Smartboard_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Einkaufen · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/einkaufen-d1-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Einkaufen_D1_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Essen und Trinken · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/essen-d1-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Essen_D1_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Essen und Trinken 2 · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/essen-d2-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Essen_D2_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Essen und Trinken 3 · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/essen-d3-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Essen_D3_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Essen und Trinken 3 · ●●",
+  "level": "●●",
+  "url": "blitzbild/alltag/essen-d3-n2.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Essen_D3_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Feste feiern · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/feste-d1-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Feste_D1_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Feste feiern · ●●",
+  "level": "●●",
+  "url": "blitzbild/alltag/feste-d1-n2.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Feste_D1_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Feste · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/feste-d2-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Feste_D2_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Meine Freizeit · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/freizeit-d1-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Freizeit_D1_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Am Wochenende · ●●",
+  "level": "●●",
+  "url": "blitzbild/alltag/freizeit-d2-n2.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Freizeit_D2_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Hast du Zeit? · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/freizeit-d3-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Freizeit_D3_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Gefühle · ●●",
+  "level": "●●",
+  "url": "blitzbild/alltag/gefuehle-d1-n2.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Gefuehle_D1_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Wie fühlst du dich? · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/gefuehle-d2-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Gefuehle_D2_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Wie fühlst du dich? · ●●",
+  "level": "●●",
+  "url": "blitzbild/alltag/gefuehle-d2-n2.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Gefuehle_D2_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Smalltalk im Betrieb · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/smalltalk-betrieb-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Smalltalk_Betrieb_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Wie waren die Ferien? · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/smalltalk-ferien-d3-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Smalltalk_Ferien_D3_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Wie waren die Ferien? · ●●",
+  "level": "●●",
+  "url": "blitzbild/alltag/smalltalk-ferien-n2.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Smalltalk_Ferien_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Sommerferien · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/smalltalk-sommerferien-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Smalltalk_Sommerferien_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Sommer & Natur · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/sommer-d1-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Sommer_D1_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Sommer & Natur 2 · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/sommer-d2-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Sommer_D2_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Sommer & Natur 2 · ●●",
+  "level": "●●",
+  "url": "blitzbild/alltag/sommer-d2-n2.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Sommer_D2_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Sommerkleidung · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/sommer-kleidung-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Sommer_Kleidung_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Das Wetter · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/wetter-d1-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Wetter_D1_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Wetter im Winter · ●",
+  "level": "●",
+  "url": "blitzbild/alltag/wetter-d2-n1.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Wetter_D2_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Wetter im Winter · ●●",
+  "level": "●●",
+  "url": "blitzbild/alltag/wetter-d2-n2.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Wetter_D2_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Alltag",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Alltag · Wetter 3 · ●●",
+  "level": "●●",
+  "url": "blitzbild/alltag/wetter-d3-n2.html",
+  "src": "Blitzbild/Alltag/Blitzbild_Alltag_Wetter_D3_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Alles gemischt · Wörter nach Woche, Päckchen oder LE · ●●",
+  "level": "●●",
+  "url": "blitzbild/extra/alles-gemischt-n2.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Alles-gemischt_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Berufe · ●",
+  "level": "●",
+  "url": "blitzbild/extra/berufe-n1.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Berufe_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Berufe · männlich und weiblich · ●●",
+  "level": "●●",
+  "url": "blitzbild/extra/berufe-n2.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Berufe_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Gesundheit · ●",
+  "level": "●",
+  "url": "blitzbild/extra/gesundheit-n1.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Gesundheit_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Gesundheit · ●●",
+  "level": "●●",
+  "url": "blitzbild/extra/gesundheit-n2.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Gesundheit_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Kleidung · ●",
+  "level": "●",
+  "url": "blitzbild/extra/kleidung-n1.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Kleidung_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Kleidung · Singular und Plural · ●●",
+  "level": "●●",
+  "url": "blitzbild/extra/kleidung-n2.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Kleidung_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Der Körper · ●",
+  "level": "●",
+  "url": "blitzbild/extra/koerper-n1.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Koerper_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Der Körper · Singular und Plural · ●●",
+  "level": "●●",
+  "url": "blitzbild/extra/koerper-n2.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Koerper_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Länder · Flaggen · ●",
+  "level": "●",
+  "url": "blitzbild/extra/laender-n1.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Laender_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Extra",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Extra · Länder · Ich komme aus … · ●●",
+  "level": "●●",
+  "url": "blitzbild/extra/laender-n2.html",
+  "src": "Blitzbild/Extra/Blitzbild_Extra_Laender_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE0 · Ankommen & Klassensprache · Das bin ich · ●",
+  "level": "●",
+  "url": "blitzbild/le/le0-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE0_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE0 · Ankommen & Klassensprache · Das bin ich · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le0-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE0_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE1 · Meine Stärken · Hobbys · ●",
+  "level": "●",
+  "url": "blitzbild/le/le1-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE1_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE1 · Meine Stärken · Hobbys · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le1-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE1_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE2.1-2.2 · Lebenslauf · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le2.1-2.2-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE2.1-2.2_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE2.3 · Bewerbung & Praktikumssuche · ●",
+  "level": "●",
+  "url": "blitzbild/le/le2.3-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE2.3_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE2.3 · Bewerbung & Praktikumssuche · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le2.3-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE2.3_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE2.4 · Bewerbung abschließen · Verabreden · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le2.4-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE2.4_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE3.1 · Startklar für das Praktikum · ●",
+  "level": "●",
+  "url": "blitzbild/le/le3.1-le4-wdh-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE3.1_LE4-Wdh_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE3.1 · Startklar für das Praktikum · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le3.1-le4-wdh-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE3.1_LE4-Wdh_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE3.1 · Weg zur Arbeit · ●",
+  "level": "●",
+  "url": "blitzbild/le/le3.1-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE3.1_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE3.1 · Weg zur Arbeit · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le3.1-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE3.1_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE3 · Praktikum · Smalltalk im Betrieb · ●",
+  "level": "●",
+  "url": "blitzbild/le/le3-le4-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE3_LE4_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE3 · Praktikum · Smalltalk im Betrieb · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le3-le4-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE3_LE4_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE4.1 · Zeit & Termine · Tagesablauf · ●",
+  "level": "●",
+  "url": "blitzbild/le/le4.1-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE4.1_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE4.1 · Zeit & Termine · Tagesablauf · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le4.1-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE4.1_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE4.2 · Am Arbeitsplatz · Arbeitsmittel, Kleidung · ●",
+  "level": "●",
+  "url": "blitzbild/le/le4.2-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE4.2_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE4.2 · Am Arbeitsplatz · Arbeitsmittel, Kleidung · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le4.2-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE4.2_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE4.3 · Kommunikation im Betrieb · krank melden · ●",
+  "level": "●",
+  "url": "blitzbild/le/le4.3-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE4.3_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE4.3 · Kommunikation im Betrieb · krank melden · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le4.3-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE4.3_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE5.1 · Orte · Einkaufen · ●",
+  "level": "●",
+  "url": "blitzbild/le/le5.1-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE5.1_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE5.1 · Orte · Einkaufen · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le5.1-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE5.1_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE6a · Berufe entdecken · ●",
+  "level": "●",
+  "url": "blitzbild/le/le6a-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE6a_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE6a · Berufe entdecken · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le6a-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE6a_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE6b · Wunschberufe · ●",
+  "level": "●",
+  "url": "blitzbild/le/le6b-n1.html",
+  "src": "Blitzbild/LE/Blitzbild_LE6b_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Lerneinheiten",
+  "game": "Blitzbild",
+  "title": "Blitzbild · LE6b · Wunschberufe · ●●",
+  "level": "●●",
+  "url": "blitzbild/le/le6b-n2.html",
+  "src": "Blitzbild/LE/Blitzbild_LE6b_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Grammatik",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Grammatik · Adjektive · Gegenteile · ●",
+  "level": "●",
+  "url": "blitzbild/grammatik/gegenteile-n1.html",
+  "src": "Blitzbild/Grammatik/Blitzbild_Gr_Gegenteile_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Grammatik",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Grammatik · Adjektive · Gegenteile · ●●",
+  "level": "●●",
+  "url": "blitzbild/grammatik/gegenteile-n2.html",
+  "src": "Blitzbild/Grammatik/Blitzbild_Gr_Gegenteile_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Grammatik",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Grammatik · Modalverben · ●",
+  "level": "●",
+  "url": "blitzbild/grammatik/modalverben-n1.html",
+  "src": "Blitzbild/Grammatik/Blitzbild_Gr_Modalverben_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Grammatik",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Grammatik · Modalverben · ich-Form · ●●",
+  "level": "●●",
+  "url": "blitzbild/grammatik/modalverben-n2.html",
+  "src": "Blitzbild/Grammatik/Blitzbild_Gr_Modalverben_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Grammatik",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Grammatik · Verben · Was hat sie/er gemacht? · ●",
+  "level": "●",
+  "url": "blitzbild/grammatik/perfekt-n1.html",
+  "src": "Blitzbild/Grammatik/Blitzbild_Gr_Perfekt_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Grammatik",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Grammatik · Verben · Perfekt · ●●",
+  "level": "●●",
+  "url": "blitzbild/grammatik/perfekt-n2.html",
+  "src": "Blitzbild/Grammatik/Blitzbild_Gr_Perfekt_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Grammatik",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Grammatik · Nomen · Plural · ●",
+  "level": "●",
+  "url": "blitzbild/grammatik/plural-n1.html",
+  "src": "Blitzbild/Grammatik/Blitzbild_Gr_Plural_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Grammatik",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Grammatik · Nomen · Singular und Plural · ●●",
+  "level": "●●",
+  "url": "blitzbild/grammatik/plural-n2.html",
+  "src": "Blitzbild/Grammatik/Blitzbild_Gr_Plural_●●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Grammatik",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Grammatik · Präpositionen · Wo? · ●",
+  "level": "●",
+  "url": "blitzbild/grammatik/praepositionen-n1.html",
+  "src": "Blitzbild/Grammatik/Blitzbild_Gr_Praepositionen_●_Rie_v5.html"
+ },
+ {
+  "group": "Blitzbild · Grammatik",
+  "game": "Blitzbild",
+  "title": "Blitzbild · Grammatik · Präpositionen · Wo? oder Wohin? · ●●",
+  "level": "●●",
+  "url": "blitzbild/grammatik/praepositionen-n2.html",
+  "src": "Blitzbild/Grammatik/Blitzbild_Gr_Praepositionen_●●_Rie_v5.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Vokabelcheck",
+  "title": "Vokabelcheck · AvM2-26",
+  "level": "",
+  "url": "spiele/vokabelcheck/vokabelcheck.html",
+  "src": "Vokabelcheck/Vokabelcheck_Smartboard_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · Alltag · Essen & Trinken",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-alltag-essen-trinken.html",
+  "src": "Zoom-Bild/Zoom-Bild_Alltag_Essen-Trinken_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · Alltag · Freizeit & Smalltalk",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-alltag-freizeit.html",
+  "src": "Zoom-Bild/Zoom-Bild_Alltag_Freizeit_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · Alltag · Sommer & Natur",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-alltag-sommer-natur.html",
+  "src": "Zoom-Bild/Zoom-Bild_Alltag_Sommer-Natur_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · Alltag · Wetter",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-alltag-wetter.html",
+  "src": "Zoom-Bild/Zoom-Bild_Alltag_Wetter_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · LE0 · Schulsachen",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-le0-schulsachen.html",
+  "src": "Zoom-Bild/Zoom-Bild_LE0_Schulsachen_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · LE2 · Bewerbung",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-le2-bewerbung.html",
+  "src": "Zoom-Bild/Zoom-Bild_LE2_Bewerbung_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · LE3/LE4 · Körper & Gesundheit",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-le3-le4-koerper-gesundheit.html",
+  "src": "Zoom-Bild/Zoom-Bild_LE3-LE4_Koerper-Gesundheit_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · LE3/LE4 · Wohnen & Stadt",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-le3-le4-wohnen-stadt.html",
+  "src": "Zoom-Bild/Zoom-Bild_LE3-LE4_Wohnen-Stadt_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · LE3 · Weg zur Arbeit",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-le3-weg-zur-arbeit.html",
+  "src": "Zoom-Bild/Zoom-Bild_LE3_Weg-zur-Arbeit_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · LE4 · Arbeitsplatz & Kleidung",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-le4-arbeitsplatz-kleidung.html",
+  "src": "Zoom-Bild/Zoom-Bild_LE4_Arbeitsplatz-Kleidung_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · LE5 · Einkaufen & Stadt",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-le5-einkaufen-stadt.html",
+  "src": "Zoom-Bild/Zoom-Bild_LE5_Einkaufen-Stadt_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Zoom-Bild",
+  "title": "Zoom-Bild · LE6 · Berufe",
+  "level": "",
+  "url": "spiele/zoom-bild/zoom-bild-le6-berufe.html",
+  "src": "Zoom-Bild/Zoom-Bild_LE6_Berufe_Rie_v5.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Buchstaben-Pizza",
+  "title": "Buchstaben-Pizza Klassenspiel",
+  "level": "",
+  "url": "spiele/buchstaben-pizza/buchstaben-pizza.html",
+  "src": "Buchstaben-Pizza/Buchstaben-Pizza_Klassenspiel_Smartboard_Rie_v3.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Fehler-Detektiv",
+  "title": "Fehler-Detektiv Klassenspiel",
+  "level": "",
+  "url": "spiele/fehler-detektiv/fehler-detektiv-grammatik-dienstag.html",
+  "src": "Fehler-Detektiv/Fehler-Detektiv_Grammatik-Dienstag_Rie_v4.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Boss-Runde",
+  "title": "Boss-Runde Klassenspiel",
+  "level": "",
+  "url": "spiele/boss-runde/boss-runde-lernkontrolle.html",
+  "src": "Boss-Runde/Boss-Runde_Lernkontrolle_Smartboard_Rie_v2.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Satz-Chaos",
+  "title": "Satz-Chaos Klassenspiel",
+  "level": "",
+  "url": "spiele/satz-chaos/satz-chaos-grammatik.html",
+  "src": "Satz-Chaos/Satz-Chaos_Grammatik_Klassenspiel_Smartboard_Rie_v5.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Buchstaben-Salat",
+  "title": "Buchstaben-Salat · Alltag · Teil 1",
+  "level": "",
+  "url": "spiele/buchstaben-salat/buchstaben-salat-alltag-1.html",
+  "src": "Buchstaben-Salat/Buchstaben-Salat_Alltag-1_Rie_v5.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Buchstaben-Salat",
+  "title": "Buchstaben-Salat · Alltag · Teil 2",
+  "level": "",
+  "url": "spiele/buchstaben-salat/buchstaben-salat-alltag-2.html",
+  "src": "Buchstaben-Salat/Buchstaben-Salat_Alltag-2_Rie_v5.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Buchstaben-Salat",
+  "title": "Buchstaben-Salat · Alles gemischt",
+  "level": "",
+  "url": "spiele/buchstaben-salat/buchstaben-salat-gemischt.html",
+  "src": "Buchstaben-Salat/Buchstaben-Salat_Gemischt_Rie_v5.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Buchstaben-Salat",
+  "title": "Buchstaben-Salat · Lerneinheiten LE0 bis LE2",
+  "level": "",
+  "url": "spiele/buchstaben-salat/buchstaben-salat-le0-le2.html",
+  "src": "Buchstaben-Salat/Buchstaben-Salat_LE0-LE2_Rie_v5.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Buchstaben-Salat",
+  "title": "Buchstaben-Salat · Lerneinheiten LE3",
+  "level": "",
+  "url": "spiele/buchstaben-salat/buchstaben-salat-le3.html",
+  "src": "Buchstaben-Salat/Buchstaben-Salat_LE3_Rie_v5.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Buchstaben-Salat",
+  "title": "Buchstaben-Salat · Lerneinheiten LE4 bis LE6",
+  "level": "",
+  "url": "spiele/buchstaben-salat/buchstaben-salat-le4-le6.html",
+  "src": "Buchstaben-Salat/Buchstaben-Salat_LE4-LE6_Rie_v5.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Wer-bin-ich",
+  "title": "Wer bin ich? Klassenspiel",
+  "level": "",
+  "url": "spiele/wer-bin-ich/wer-bin-ich.html",
+  "src": "Wer-bin-ich/Wer-bin-ich_Klassenspiel_Smartboard_Rie_v5.html"
+ },
+ {
+  "group": "Klassenspiele",
+  "game": "Exit-Quiz",
+  "title": "Exit-Quiz Klassenspiel",
+  "level": "",
+  "url": "spiele/exit-quiz/exit-quiz-abcd-donnerstag.html",
+  "src": "Exit-Quiz/Exit-Quiz_ABCD_Donnerstag_Rie_v2.html"
+ }
+]
