@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Was sagen die meisten?</title>
+<style>
+/*FONTS*/
+:root{--ink:#1A1A1A;--muted:#6B6B6B;--bg:#F1EFEB;--orange:#D9690A;--gruen:#059E42;--hell:#BFE6CB;--rosa:#F2A7C3;--line:#DDD7CE;color-scheme:light}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:Andika,Verdana,"DejaVu Sans",sans-serif;font-size:2.4vh;user-select:none;-webkit-user-select:none}
+button,select,input,textarea{font-family:inherit;font-size:inherit}
+button{border:0;cursor:pointer;touch-action:manipulation;color:var(--ink)}
+input,textarea{user-select:text;-webkit-user-select:text}
+[hidden]{display:none!important}
+.deko{position:fixed;border-radius:50%;z-index:0;pointer-events:none}
+.d1{width:44vh;height:44vh;background:var(--rosa);right:-12vh;top:-16vh}.d2{width:14vh;height:14vh;background:#4CBF7A;right:26vh;top:4vh}.d3{width:40vh;height:40vh;background:#DE7A1E;left:-20vh;bottom:-22vh}
+.wrap{position:relative;z-index:1;max-width:178vh;margin:0 auto;padding:3vh 3vh 9vh}
+.head{display:flex;align-items:center;gap:1.6vh;flex-wrap:wrap;margin-bottom:2vh;padding-right:21vh}
+.strich{width:4.6vh;height:.8vh;border-radius:.4vh;background:var(--ink)}
+h1{margin:0;font-size:4.2vh}.sub{color:var(--muted);font-weight:700}
+.sp{flex:1}
+.btn{background:#fff;color:var(--ink);font-weight:700;border-radius:99px;padding:1.5vh 3vh;box-shadow:0 .3vh 0 #0002;font-size:2.6vh}
+.btn.main{background:var(--orange);color:#fff}.btn.go{background:var(--gruen);color:#fff}.btn.kl{font-size:2vh;padding:1vh 2vh}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:#fff;border-radius:3vh;padding:3vh 3.6vh;box-shadow:0 .2vh .8vh #0001}
+.lead{font-size:2.5vh;margin:.4vh 0 2vh;max-width:130vh}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(42vh,1fr));gap:1.6vh 3vh;margin-bottom:2vh}
+.opt>span{display:block;font-weight:700;margin-bottom:.6vh;font-size:2.1vh;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:.8vh}
+.seg button{background:var(--bg);border-radius:99px;padding:1vh 2vh;font-size:2.2vh;font-weight:700}
+.seg button.on{background:var(--ink);color:#fff}
+.info{background:var(--bg);border-radius:1.6vh;padding:1.4vh 2vh;font-size:2.1vh;margin-bottom:2vh}
+.info.warn{background:#FCE3D0}
+.row{display:flex;gap:1.6vh;flex-wrap:wrap;align-items:center}
+/* Fragenliste auf der Startseite */
+#fListe{display:grid;gap:.8vh;margin-bottom:2vh}
+.fz{display:flex;align-items:center;gap:1.4vh;background:var(--bg);border-radius:1.6vh;padding:1vh 1.6vh;font-size:2.3vh;text-align:left;width:100%}
+.fz .hk{flex:none;width:3.6vh;height:3.6vh;border-radius:1vh;border:.3vh solid var(--muted);background:#fff;display:grid;place-items:center;font-weight:700;color:#fff}
+.fz.an .hk{background:var(--gruen);border-color:var(--gruen)}
+.fz .t{flex:1;font-weight:700}.fz small{color:var(--muted);font-weight:400;font-size:1.9vh;white-space:nowrap}
+.fz.leer{opacity:.55}
+/* Spiel */
+#frage{font-size:6vh;font-weight:700;line-height:1.15;text-align:center;margin:1vh auto 2.4vh;max-width:150vh;min-height:7vh}
+#frage.lang{font-size:4.6vh}
+#brett{display:grid;gap:1.4vh 2.4vh;max-width:150vh;margin:0 auto;grid-auto-flow:column}
+.ant{background:var(--ink);color:#fff;border-radius:2vh;height:var(--ah,9vh);display:flex;align-items:center;gap:2vh;padding:0 2.4vh;font-size:var(--af,4.4vh);font-weight:700;text-align:left;box-shadow:0 .3vh 0 #0003;transition:background .25s,transform .25s;width:100%}
+.ant .nr{flex:none;width:1.5em;height:1.5em;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;font-size:.8em}
+.ant .tx{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;letter-spacing:.6em;color:#777}
+.ant .za{flex:none;min-width:1.9em;text-align:center;border-radius:1.2vh;padding:.1em .3em;background:#444;color:#444}
+.ant.auf{background:#fff;color:var(--ink);cursor:default}
+.ant.auf.neu{animation:klapp .35s}
+.ant.auf .nr{background:var(--ink);color:#fff}
+.ant.auf .tx{letter-spacing:0;color:var(--ink)}
+.ant.auf .za{background:var(--orange);color:#fff}
+.ant.auf.top{outline:.5vh solid var(--gruen)}
+.ant.auf.top .za{background:var(--gruen)}
+@keyframes klapp{0%{transform:scaleY(.1)}100%{transform:scaleY(1)}}
+.zeit{height:2vh;border-radius:1vh;background:var(--line);overflow:hidden;max-width:110vh;margin:2.2vh auto 0}
+.zeit i{display:block;height:100%;width:100%;background:var(--gruen);border-radius:1vh}
+.zeit.spaet i{background:var(--orange)}
+#hin{text-align:center;font-size:2.8vh;font-weight:700;color:var(--muted);margin:2vh auto 0;max-width:150vh;min-height:3.6vh}
+.ctrl{display:flex;gap:1.6vh;justify-content:center;flex-wrap:wrap;margin-top:2.2vh;align-items:center}
+.ctrl .btn{font-size:3vh;padding:1.8vh 4vh}
+#falsch{font-size:4vh;font-weight:700;color:#FA3A2F;min-width:9vh;letter-spacing:.4vh}
+#teams{display:flex;gap:1.6vh;justify-content:center;flex-wrap:wrap;margin-top:2.2vh}
+.team{background:#fff;border-radius:2vh;padding:1vh 1.4vh;display:flex;align-items:center;gap:1.2vh;font-weight:700;box-shadow:0 .2vh .5vh #0001}
+.team .p{font-size:3.6vh;min-width:5vh;text-align:center}
+.team button{width:5.4vh;height:5.4vh;border-radius:50%;background:var(--gruen);color:#fff;font-size:3vh;font-weight:700;line-height:1}
+.team button.m{background:var(--bg);color:var(--ink);width:4.2vh;height:4.2vh;font-size:2.4vh}
+#gross{position:fixed;inset:0;z-index:30;display:grid;place-items:center;pointer-events:none;font-size:60vh;font-weight:700;color:#FA3A2F;line-height:1;text-shadow:0 1vh 0 #fff}
+#ende{text-align:center}
+#ende h2{font-size:7vh;margin:4vh 0 2vh}
+#ende p{font-size:3vh;margin:0 0 2vh}
+/* Editor */
+#edit .zwei{display:grid;grid-template-columns:minmax(40vh,1fr) 2fr;gap:2.4vh;align-items:start}
+#eListe{display:grid;gap:.8vh;margin-bottom:1.6vh}
+.ef{display:flex;align-items:center;gap:1vh;background:var(--bg);border-radius:1.6vh;padding:.8vh 1vh .8vh 1.6vh;font-size:2.1vh;font-weight:700;text-align:left;width:100%}
+.ef.akt{background:var(--ink);color:#fff}
+.ef .t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ef small{font-weight:400;opacity:.75}
+.mini{background:#fff;border-radius:50%;width:4.4vh;height:4.4vh;font-size:2.2vh;font-weight:700;flex:none;display:grid;place-items:center;padding:0;box-shadow:0 .2vh 0 #0002}
+label.l{display:block;font-weight:700;color:var(--muted);font-size:2.1vh;margin:0 0 .6vh}
+textarea,input[type=text],input[type=number]{width:100%;border:.3vh solid var(--line);border-radius:1.4vh;padding:1.1vh 1.6vh;background:#fff;color:var(--ink);font-size:2.6vh}
+textarea{resize:vertical;min-height:9vh;font-weight:700}
+textarea:focus,input:focus{outline:.4vh solid var(--orange);border-color:var(--orange)}
+.az{display:grid;grid-template-columns:4vh 1fr 13vh 4.4vh;gap:1vh;align-items:center;margin-bottom:.8vh}
+.az .n{font-weight:700;color:var(--muted);text-align:center}
+.azk{display:grid;grid-template-columns:4vh 1fr 13vh 4.4vh;gap:1vh;font-size:1.9vh;color:var(--muted);font-weight:700;margin:1.6vh 0 .6vh}
+#eStat{color:var(--gruen);font-weight:700;font-size:2.1vh;background:#fff;border-radius:99px;padding:.6vh 1.6vh}#eStat:empty{display:none}
+.datei{margin-top:2.4vh;border-top:.3vh solid var(--line);padding-top:2vh}
+#impBox,#loeBox{background:#FCE3D0;border-radius:1.6vh;padding:1.4vh 2vh;margin-top:1.4vh;font-size:2.2vh}
+#bFull{position:fixed;right:1.6vh;top:1.6vh;z-index:9}
+@media (max-width:700px),(orientation:portrait){
+  body{font-size:16px}.wrap{padding:14px 12px 70px}h1{font-size:24px}.btn{font-size:17px;padding:11px 18px}.btn.kl{font-size:14px;padding:8px 12px}
+  .lead,.info,.seg button,.opt>span,.fz,.ef,label.l,#impBox,#loeBox,#eStat{font-size:15px}.fz small{font-size:13px;white-space:normal}.opts{grid-template-columns:1fr}
+  .deko,#bFull{display:none}.head{padding-right:0}.card{padding:16px;border-radius:18px}
+  #edit .zwei{grid-template-columns:1fr}textarea,input[type=text],input[type=number]{font-size:17px;padding:9px 12px}
+  .az,.azk{grid-template-columns:22px 1fr 76px 36px;gap:6px}.azk{font-size:13px}.mini{width:36px;height:36px;font-size:17px}
+  .fz .hk{width:26px;height:26px}
+  #frage{font-size:26px}#frage.lang{font-size:21px}#brett{grid-auto-flow:row!important;grid-template-columns:1fr!important;grid-template-rows:none!important}
+  .ant{--ah:52px!important;--af:22px!important}#hin{font-size:16px}.ctrl .btn{font-size:18px;padding:12px 20px}
+  .team .p{font-size:22px}.team button{width:40px;height:40px;font-size:22px}.team button.m{width:32px;height:32px;font-size:18px}
+}
+</style></head><body>
+<div class="deko d1"></div><div class="deko d2"></div><div class="deko d3"></div>
+<button class="btn kl" id="bFull">⛶ Vollbild</button>
+
+<div class="wrap" id="start">
+  <div class="head"><div class="strich"></div><h1>Was sagen die meisten?</h1><span class="sub">Fragen der Woche · unsere Klasse</span></div>
+  <div class="card">
+    <p class="lead">Wir haben die Klasse gefragt. Jetzt raten alle: Welche Antwort ist am häufigsten? Alle schreiben <b>eine</b> Antwort auf das Mini-Whiteboard. Dann kommen die Antworten an die Tafel – mit der Zahl.</p>
+    <div class="opts">
+      <div class="opt"><span>Spielform</span><div class="seg" data-k="modus"><button data-v="einzel">Jeder für sich</button><button data-v="teams">Teams</button></div></div>
+      <div class="opt" id="oTeams"><span>Wie viele Teams?</span><div class="seg" data-k="teams"><button data-v="2">2</button><button data-v="3">3</button><button data-v="4">4</button></div></div>
+      <div class="opt"><span>Schreibzeit</span><div class="seg" data-k="zeit"><button data-v="0">ohne Uhr</button><button data-v="20">20 s</button><button data-v="30">30 s</button><button data-v="45">45 s</button></div></div>
+    </div>
+    <div class="opt"><span>Fragen im Spiel (antippen = an / aus)</span></div>
+    <div id="fListe"></div>
+    <div class="info" id="info"></div>
+    <div class="row"><button class="btn main" id="bStart">Spiel starten</button><button class="btn" id="bEdit">✎ Fragen und Antworten eintragen</button></div>
+  </div>
+</div>
+
+<div class="wrap" id="spiel" hidden>
+  <div class="head"><div class="strich"></div><h1>Was sagen die meisten?</h1><span class="sub" id="sSub"></span><span class="sp"></span>
+    <button class="btn kl" id="bMenu1">Einstellungen</button></div>
+  <div id="runde">
+    <div id="frage"></div>
+    <div id="brett"></div>
+    <div class="zeit" id="zt" hidden><i></i></div>
+    <p id="hin"></p>
+    <div class="ctrl"><span id="falsch"></span><button class="btn main" id="bNext"></button><button class="btn" id="bX" title="Antwort steht nicht an der Tafel (Taste X)">✕ nicht dabei</button><button class="btn" id="bAlle">Alle aufdecken</button></div>
+    <div id="teams"></div>
+  </div>
+  <div id="ende" class="card" hidden>
+    <h2>Fertig!</h2><p id="eText"></p><div id="eTeams" class="row" style="justify-content:center;margin-bottom:3vh"></div>
+    <div class="ctrl"><button class="btn main" id="bNoch">↺ Noch einmal</button><button class="btn" id="bMenu2">Einstellungen</button></div>
+  </div>
+</div>
+<div id="gross" hidden>✕</div>
+
+<div class="wrap" id="edit" hidden>
+  <div class="head"><div class="strich"></div><h1>Fragen eintragen</h1><span class="sub">für die Lehrkraft</span><span class="sp"></span><span id="eStat"></span>
+    <button class="btn kl go" id="bFertig">✓ Fertig</button></div>
+  <div class="card">
+    <div class="info">Alles wird <b>nur auf diesem Gerät</b> gespeichert – nichts geht ins Internet. Für ein anderes Gerät: unten als Datei speichern und dort laden. <b>Bitte keine Namen eintragen</b>, nur Antworten und Anzahl.</div>
+    <div class="zwei">
+      <div>
+        <div id="eListe"></div>
+        <button class="btn kl main" id="bNeuF">+ Neue Frage</button>
+      </div>
+      <div id="eForm"></div>
+    </div>
+    <div class="datei">
+      <div class="row"><button class="btn kl" id="bExp">⬇ Als Datei speichern (Export)</button><button class="btn kl" id="bImp">⬆ Datei laden (Import)</button><button class="btn kl" id="bBsp">Beispielfragen dazu</button><input type="file" id="fImp" accept=".json,application/json" hidden></div>
+      <div id="impBox" hidden></div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}};
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const DKEY="rie_meisten_v1",SKEY="rie_meisten_einst",MAXA=8;
+const TEAMS=["Tür","Fenster","Mitte","Tafel"];
+/* Beispielfragen zum Ausprobieren (erfunden) */
+const BEISPIELE=[
+ {id:"b1",f:"Was isst du gern zum Frühstück?",an:true,a:[{t:"Brot",n:7},{t:"Müsli",n:4},{t:"Ei",n:3},{t:"Obst",n:2},{t:"nichts",n:2}]},
+ {id:"b2",f:"Wie kommst du zur Schule?",an:true,a:[{t:"mit dem Bus",n:8},{t:"mit der S-Bahn",n:5},{t:"zu Fuß",n:3},{t:"mit dem Fahrrad",n:2}]},
+ {id:"b3",f:"Was machst du gern am Wochenende?",an:true,a:[{t:"schlafen",n:6},{t:"Fußball spielen",n:5},{t:"Musik hören",n:4},{t:"kochen",n:2},{t:"einkaufen",n:1}]}
+];
+const kopie=x=>JSON.parse(JSON.stringify(x));
+let nr=0;function neuId(){return "f"+Date.now().toString(36)+(nr++)}
+/* Daten prüfen und säubern (auch für Import) */
+function sauber(liste){
+  if(!Array.isArray(liste))return null;
+  const out=[];
+  liste.forEach(q=>{if(!q||typeof q!=="object")return;
+    const a=Array.isArray(q.a)?q.a.slice(0,MAXA).map(x=>({t:String(x&&x.t!=null?x.t:"").slice(0,60),n:Math.max(0,Math.min(999,Math.round(+((x&&x.n)||0))||0))})):[];
+    out.push({id:String(q.id||neuId()),f:String(q.f==null?"":q.f).slice(0,160),an:q.an!==false,a})});
+  return out;
+}
+let D=(()=>{try{const j=JSON.parse(store.get(DKEY));const s=j&&sauber(j.fragen);if(s)return {fragen:s}}catch(e){}return {fragen:kopie(BEISPIELE)}})();
+function speichere(){const ok=store.set(DKEY,JSON.stringify({spiel:"was-sagen-die-meisten",v:1,fragen:D.fragen}));
+  const s=$("eStat");if(s){s.textContent=ok?"✓ gespeichert":"Speichern geht auf diesem Gerät nicht";s.style.color=ok?"":"#FA3A2F"}return ok}
+const S=Object.assign({modus:"einzel",teams:"2",zeit:"0"},(()=>{try{return JSON.parse(store.get(SKEY))||{}}catch(e){return {}}})());
+function spare(){store.set(SKEY,JSON.stringify(S))}
+/* gültige Antworten einer Frage, häufigste zuerst */
+function antworten(q){return q.a.filter(x=>x.t.trim()&&x.n>0).map(x=>({t:x.t.trim(),n:x.n})).sort((a,b)=>b.n-a.n)}
+function spielbar(q){return q.f.trim()&&antworten(q).length>=2}
+function imSpiel(){return D.fragen.filter(q=>q.an&&spielbar(q))}
+function seiten(id){["start","spiel","edit"].forEach(x=>$(x).hidden=x!==id);window.scrollTo(0,0)}
+
+/* ---------- Start ---------- */
+function mark(){
+  document.querySelectorAll(".seg[data-k]").forEach(sg=>sg.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===String(S[sg.dataset.k]))));
+  $("oTeams").hidden=S.modus!=="teams";
+  $("fListe").innerHTML=D.fragen.map((q,i)=>{const ok=spielbar(q),n=antworten(q).length;
+    return `<button class="fz${q.an&&ok?" an":""}${ok?"":" leer"}" data-i="${i}"><span class="hk">${q.an&&ok?"✓":""}</span><span class="t">${esc(q.f.trim()||"(Frage ohne Text)")}</span><small>${ok?n+" Antworten":"noch nicht fertig"}</small></button>`}).join("")||`<div class="info warn">Noch keine Fragen. Bitte unten „Fragen und Antworten eintragen“ antippen.</div>`;
+  const n=imSpiel().length;
+  $("info").innerHTML=n?`<b>${n} ${n===1?"Frage":"Fragen"}</b> im Spiel. <b>Ohne Ton</b>, Musik unten links zuschaltbar. Tasten: Leertaste oder → = weiter, X = nicht dabei, F = Vollbild.`:"Keine Frage ausgewählt. Eine Frage braucht einen Text und mindestens 2 Antworten mit Anzahl.";
+  $("info").classList.toggle("warn",!n);$("bStart").disabled=!n;
+}
+document.querySelectorAll(".seg[data-k]").forEach(sg=>sg.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S[sg.dataset.k]=b.dataset.v;spare();mark()}));
+$("fListe").addEventListener("click",e=>{const b=e.target.closest(".fz");if(!b)return;const q=D.fragen[+b.dataset.i];if(!spielbar(q))return;q.an=!q.an;speichere();mark()});
+
+/* ---------- Spiel ---------- */
+const st={liste:[],i:0,ant:[],auf:[],phase:"",x:0,pkt:[0,0,0,0]};
+let timer=null,xTimer=null;
+function stopUhr(){clearInterval(timer);timer=null;$("zt").hidden=true}
+function start(){st.liste=imSpiel().map(q=>({f:q.f.trim(),a:antworten(q)}));if(!st.liste.length)return;st.i=0;st.pkt=[0,0,0,0];seiten("spiel");frageNeu()}
+function frageNeu(){
+  const q=st.liste[st.i];st.ant=q.a;st.auf=q.a.map(()=>false);st.x=0;st.phase="schreiben";
+  $("runde").hidden=false;$("ende").hidden=true;
+  $("sSub").textContent=`Frage ${st.i+1} von ${st.liste.length}`;
+  const f=$("frage");f.textContent=q.f;f.classList.toggle("lang",q.f.length>44);
+  const n=q.a.length,b=$("brett"),zwei=n>4,rows=zwei?Math.ceil(n/2):n;
+  b.style.gridTemplateColumns=zwei?"1fr 1fr":"minmax(0,100vh)";b.style.justifyContent="center";b.style.gridTemplateRows=`repeat(${rows},auto)`;
+  b.style.setProperty("--ah",(rows<=3?10.5:rows===4?9:7.6)+"vh");b.style.setProperty("--af",(rows<=4?4.4:3.8)+"vh");
+  zeig();
+  stopUhr();
+  if(+S.zeit){const zt=$("zt"),bar=zt.querySelector("i"),T=+S.zeit*1000,t0=Date.now();zt.hidden=false;zt.classList.remove("spaet");bar.style.width="100%";
+    timer=setInterval(()=>{const r=Math.max(0,1-(Date.now()-t0)/T);bar.style.width=(r*100)+"%";if(r<.3)zt.classList.add("spaet");if(r<=0){stopUhr();if(st.phase==="schreiben"){st.phase="auf";zeig()}}},100)}
+}
+function alleAuf(){return st.auf.every(Boolean)}
+function zeig(){
+  const top=st.ant[0].n;
+  $("brett").innerHTML=st.ant.map((a,i)=>st.auf[i]
+    ?`<div class="ant auf${a.n===top?" top":""}${st.neu===i?" neu":""}"><span class="nr">${i+1}</span><span class="tx">${esc(a.t)}</span><span class="za">${a.n}</span></div>`
+    :`<button class="ant" data-i="${i}" aria-label="Antwort ${i+1} aufdecken"><span class="nr">${i+1}</span><span class="tx">●●●</span><span class="za">0</span></button>`).join("");
+  const fertig=alleAuf(),letzte=st.i===st.liste.length-1,b=$("bNext");
+  if(fertig)st.phase="fertig";
+  b.textContent=fertig?(letzte?"Ende ▶":"Nächste Frage ▶"):st.phase==="schreiben"?"Antworten aufdecken ▶":"Nächste Antwort ▶";
+  b.className="btn "+(fertig?"go":"main");
+  $("bAlle").hidden=fertig;$("bX").hidden=fertig;
+  $("falsch").textContent="✕".repeat(st.x);
+  const sum=st.ant.reduce((s,a)=>s+a.n,0);
+  $("hin").innerHTML=st.phase==="schreiben"?(S.modus==="teams"?"Jedes Team schreibt <b>eine</b> Antwort auf das Whiteboard.":"Schreib <b>eine</b> Antwort auf dein Whiteboard. Was sagen die meisten?")
+    :fertig?(S.modus==="teams"?"Welches Team hat die Antwort mit der höchsten Zahl? Dieses Team bekommt 1 Punkt.":`Steht deine Antwort an der Tafel? Die Zahl daneben sind deine Punkte. · ${sum} Antworten gezählt`)
+    :"Die Antworten kommen von unten nach oben. Oder: Antwort sagen und das Feld antippen.";
+  teamsHtml();
+}
+function teamsHtml(){
+  const t=$("teams");if(S.modus!=="teams"){t.innerHTML="";return}
+  t.innerHTML=TEAMS.slice(0,+S.teams).map((n,i)=>`<div class="team"><span>Team ${n}</span><button class="m" data-t="${i}" data-d="-1" aria-label="Punkt weg">−</button><span class="p">${st.pkt[i]}</span><button data-t="${i}" data-d="1" aria-label="Punkt für Team ${n}">+</button></div>`).join("");
+}
+$("teams").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const i=+b.dataset.t;st.pkt[i]=Math.max(0,st.pkt[i]+ +b.dataset.d);teamsHtml()});
+function deckAuf(i){if(st.auf[i])return;stopUhr();st.auf[i]=true;if(st.phase==="schreiben")st.phase="auf";st.neu=i;zeig();st.neu=-1}
+$("brett").addEventListener("click",e=>{const b=e.target.closest("button.ant");if(b)deckAuf(+b.dataset.i)});
+function next(){
+  if($("spiel").hidden||!$("ende").hidden)return;
+  if(st.phase==="fertig"){if(st.i<st.liste.length-1){st.i++;frageNeu()}else ende();return}
+  if(st.phase==="schreiben"){stopUhr();st.phase="auf";zeig();return}
+  for(let i=st.auf.length-1;i>=0;i--)if(!st.auf[i]){deckAuf(i);return}
+}
+function falsch(){
+  if($("spiel").hidden||!$("ende").hidden||st.phase==="fertig")return;
+  st.x=Math.min(3,st.x+1);$("falsch").textContent="✕".repeat(st.x);
+  const g=$("gross");g.hidden=false;clearTimeout(xTimer);xTimer=setTimeout(()=>g.hidden=true,800);
+}
+function ende(){
+  stopUhr();$("runde").hidden=true;$("ende").hidden=false;$("sSub").textContent="";
+  if(S.modus==="teams"){const max=Math.max(...st.pkt.slice(0,+S.teams));
+    $("eText").textContent=max>0?"So viele Punkte haben die Teams:":"Alle Fragen sind gespielt.";
+    $("eTeams").innerHTML=TEAMS.slice(0,+S.teams).map((n,i)=>`<div class="team" style="${st.pkt[i]===max&&max>0?"outline:.5vh solid var(--gruen)":""}"><span>Team ${n}</span><span class="p">${st.pkt[i]}</span></div>`).join("")}
+  else{$("eText").textContent="Alle Fragen sind gespielt. Wer hat oft die häufigste Antwort geschrieben?";$("eTeams").innerHTML=""}
+}
+$("bStart").onclick=start;$("bNext").onclick=next;$("bX").onclick=falsch;$("bNoch").onclick=start;
+$("bAlle").onclick=()=>{stopUhr();st.auf=st.auf.map(()=>true);zeig()};
+["bMenu1","bMenu2"].forEach(b=>$(b).onclick=()=>{stopUhr();seiten("start");mark()});
+
+/* ---------- Editor ---------- */
+let akt=0,loeFrage=false;
+function editAuf(){seiten("edit");akt=Math.min(akt,Math.max(0,D.fragen.length-1));$("eStat").textContent="";$("impBox").hidden=true;eListe();eForm()}
+function eListe(){
+  $("eListe").innerHTML=D.fragen.map((q,i)=>`<button class="ef${i===akt?" akt":""}" data-i="${i}"><span class="t">${i+1}. ${esc(q.f.trim()||"(neue Frage)")}</span><small>${antworten(q).length}</small></button>`).join("")||`<div class="info">Noch keine Frage.</div>`;
+}
+function eForm(){
+  const q=D.fragen[akt],f=$("eForm");loeFrage=false;
+  if(!q){f.innerHTML="";return}
+  f.innerHTML=`<label class="l" for="eF">Frage ${akt+1}</label><textarea id="eF" maxlength="160" placeholder="z. B. Was isst du gern zum Frühstück?">${esc(q.f)}</textarea>
+   <div class="azk"><span></span><span>Antwort</span><span>Anzahl</span><span></span></div><div id="eAnt"></div>
+   <div class="row" style="margin-top:1.2vh"><button class="btn kl" id="bNeuA">+ Antwort</button><span class="sub" style="font-size:1.9vh;font-weight:400">höchstens ${MAXA} · im Spiel steht die höchste Zahl oben</span></div>
+   <div class="row" style="margin-top:2vh"><button class="btn kl" id="bHoch">▲ nach oben</button><button class="btn kl" id="bRunter">▼ nach unten</button><span class="sp"></span><button class="btn kl" id="bLoe">🗑 Frage löschen</button></div>
+   <div id="loeBox" hidden>Diese Frage wirklich löschen? <button class="btn kl main" id="bLoeJa">Ja, löschen</button> <button class="btn kl" id="bLoeNein">Nein</button></div>`;
+  eAnt();
+  $("eF").oninput=e=>{q.f=e.target.value;speichere();eListe()};
+  $("bNeuA").onclick=()=>{if(q.a.length>=MAXA)return;q.a.push({t:"",n:0});speichere();eAnt();const ins=$("eAnt").querySelectorAll("input[type=text]");ins[ins.length-1].focus()};
+  $("bHoch").onclick=()=>schieb(-1);$("bRunter").onclick=()=>schieb(1);
+  $("bLoe").onclick=()=>{$("loeBox").hidden=false};$("bLoeNein").onclick=()=>{$("loeBox").hidden=true};
+  $("bLoeJa").onclick=()=>{D.fragen.splice(akt,1);akt=Math.max(0,akt-1);speichere();eListe();eForm()};
+}
+function eAnt(){
+  const q=D.fragen[akt];
+  $("eAnt").innerHTML=q.a.map((a,i)=>`<div class="az"><span class="n">${i+1}</span><input type="text" data-i="${i}" maxlength="60" value="${esc(a.t)}" placeholder="Antwort" aria-label="Antwort ${i+1}"><input type="number" data-i="${i}" min="0" max="999" inputmode="numeric" value="${a.n||""}" placeholder="0" aria-label="Anzahl ${i+1}"><button class="mini" data-x="${i}" aria-label="Antwort ${i+1} löschen">✕</button></div>`).join("");
+  $("bNeuA").disabled=q.a.length>=MAXA;
+}
+$("eForm").addEventListener("input",e=>{const el=e.target;if(!el.closest("#eAnt"))return;const q=D.fragen[akt],a=q.a[+el.dataset.i];if(!a)return;
+  if(el.type==="number")a.n=Math.max(0,Math.min(999,Math.round(+el.value)||0));else a.t=el.value;speichere();eListe()});
+$("eForm").addEventListener("click",e=>{const b=e.target.closest("[data-x]");if(!b)return;D.fragen[akt].a.splice(+b.dataset.x,1);speichere();eAnt();eListe()});
+function schieb(d){const j=akt+d;if(j<0||j>=D.fragen.length)return;const x=D.fragen.splice(akt,1)[0];D.fragen.splice(j,0,x);akt=j;speichere();eListe();eForm()}
+$("eListe").addEventListener("click",e=>{const b=e.target.closest(".ef");if(!b)return;akt=+b.dataset.i;eListe();eForm()});
+$("bNeuF").onclick=()=>{D.fragen.push({id:neuId(),f:"",an:true,a:[{t:"",n:0},{t:"",n:0},{t:"",n:0},{t:"",n:0}]});akt=D.fragen.length-1;speichere();eListe();eForm();$("eF").focus()};
+$("bEdit").onclick=editAuf;$("bFertig").onclick=()=>{seiten("start");mark()};
+$("bBsp").onclick=()=>{BEISPIELE.forEach(b=>{if(!D.fragen.some(q=>q.f.trim()===b.f)){const k=kopie(b);k.id=neuId();D.fragen.push(k)}});speichere();eListe();eForm()};
+/* Export / Import */
+function heute(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function exportText(){return JSON.stringify({spiel:"was-sagen-die-meisten",v:1,stand:heute(),fragen:D.fragen},null,1)}
+$("bExp").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([exportText()],{type:"application/json"}));a.download="Was-sagen-die-meisten_Fragen_Rie_"+heute()+".json";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+  const box=$("impBox");box.hidden=false;box.innerHTML=`Datei gespeichert: <b>${esc(a.download)}</b> (${D.fragen.length} Fragen). Sie liegt im Download-Ordner.`};
+$("bImp").onclick=()=>{$("fImp").value="";$("fImp").click()};
+let impNeu=null;
+function importText(txt){
+  const box=$("impBox");box.hidden=false;
+  let neu=null;try{const j=JSON.parse(txt);neu=sauber(Array.isArray(j)?j:j&&j.fragen)}catch(e){}
+  if(!neu||!neu.length){impNeu=null;box.innerHTML="Diese Datei passt nicht. Bitte eine Datei nehmen, die mit „Als Datei speichern“ gemacht wurde.";return}
+  impNeu=neu;
+  box.innerHTML=`<b>${neu.length} ${neu.length===1?"Frage":"Fragen"}</b> in der Datei. Was soll passieren? <button class="btn kl main" id="bImpDazu">Dazu nehmen</button> <button class="btn kl" id="bImpErs">Meine ${D.fragen.length} Fragen ersetzen</button> <button class="btn kl" id="bImpAb">Abbrechen</button>`;
+  $("bImpAb").onclick=()=>{impNeu=null;box.hidden=true};
+  $("bImpErs").onclick=()=>importFertig(true);$("bImpDazu").onclick=()=>importFertig(false);
+}
+function importFertig(ersetzen){
+  if(!impNeu)return;const box=$("impBox");let n=0;
+  if(ersetzen){D.fragen=impNeu;n=impNeu.length}
+  else impNeu.forEach(q=>{if(D.fragen.some(x=>x.f.trim()===q.f.trim()&&JSON.stringify(x.a)===JSON.stringify(q.a)))return;if(D.fragen.some(x=>x.id===q.id))q.id=neuId();D.fragen.push(q);n++});
+  impNeu=null;akt=0;speichere();eListe();eForm();box.innerHTML=`Fertig: <b>${n} ${n===1?"Frage":"Fragen"}</b> ${ersetzen?"geladen":"dazugenommen"}.`;
+}
+$("fImp").onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>importText(String(r.result));r.onerror=()=>importText("");r.readAsText(f)};
+
+/* ---------- Vollbild + Tasten ---------- */
+function vollbild(){const d=document,el=d.documentElement;try{if(d.fullscreenElement||d.webkitFullscreenElement){const x=d.exitFullscreen||d.webkitExitFullscreen;const r=x&&x.call(d);if(r&&r.catch)r.catch(()=>{})}else{const q=el.requestFullscreen||el.webkitRequestFullscreen;const r=q&&q.call(el);if(r&&r.catch)r.catch(()=>{})}}catch(e){}}
+function fullTxt(){$("bFull").textContent=(document.fullscreenElement||document.webkitFullscreenElement)?"✕ Vollbild aus":"⛶ Vollbild"}
+$("bFull").onclick=e=>{vollbild();e.currentTarget.blur()};document.addEventListener("fullscreenchange",fullTxt);document.addEventListener("webkitfullscreenchange",fullTxt);
+document.addEventListener("keydown",e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;const t=e.target&&e.target.tagName;if(t==="SELECT"||t==="INPUT"||t==="TEXTAREA")return;
+  if(e.key==="f"||e.key==="F"){e.preventDefault();vollbild()}
+  else if($("spiel").hidden)return;
+  else if(e.key===" "||e.key==="ArrowRight"||e.key==="Enter"){e.preventDefault();if(e.target&&e.target.blur)e.target.blur();next()}
+  else if(e.key==="x"||e.key==="X"){e.preventDefault();falsch()}});
+mark();
+</script>
+</body></html>

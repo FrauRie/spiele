@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Sortiertafel</title>
+<style>
+/*FONTS*/
+:root{--ink:#1A1A1A;--muted:#6B6B6B;--bg:#F1EFEB;--orange:#D9690A;--gruen:#059E42;--hell:#BFE6CB;--rosa:#F2A7C3;--line:#DDD7CE;color-scheme:light}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:Andika,Verdana,"DejaVu Sans",sans-serif;font-size:2.4vh;user-select:none;-webkit-user-select:none}
+button,select,input{font-family:inherit;font-size:inherit}
+button{border:0;cursor:pointer;touch-action:manipulation;color:var(--ink)}
+input{user-select:text;-webkit-user-select:text}
+[hidden]{display:none!important}
+.deko{position:fixed;border-radius:50%;z-index:0;pointer-events:none}
+.d1{width:44vh;height:44vh;background:var(--rosa);right:-12vh;top:-16vh}.d2{width:14vh;height:14vh;background:#4CBF7A;right:26vh;top:4vh}.d3{width:40vh;height:40vh;background:#DE7A1E;left:-20vh;bottom:-22vh}
+body.spielt .deko{display:none}
+.wrap{position:relative;z-index:1;max-width:178vh;margin:0 auto;padding:3vh 3vh 9vh}
+.head{display:flex;align-items:center;gap:1.6vh;flex-wrap:wrap;margin-bottom:2vh;padding-right:21vh}
+.strich{width:4.6vh;height:.8vh;border-radius:.4vh;background:var(--ink)}
+h1{margin:0;font-size:4.2vh}.sub{color:var(--muted);font-weight:700}
+.sp{flex:1}
+.btn{background:#fff;color:var(--ink);font-weight:700;border-radius:99px;padding:1.5vh 3vh;box-shadow:0 .3vh 0 #0002;font-size:2.6vh}
+.btn.main{background:var(--orange);color:#fff}.btn.go{background:var(--gruen);color:#fff}.btn.kl{font-size:2vh;padding:1vh 2vh}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:#fff;border-radius:3vh;padding:3vh 3.6vh;box-shadow:0 .2vh .8vh #0001}
+.lead{font-size:2.5vh;margin:.4vh 0 2vh;max-width:130vh}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(42vh,1fr));gap:1.6vh 3vh;margin-bottom:2vh}
+.opt>span{display:block;font-weight:700;margin-bottom:.6vh;font-size:2.1vh;color:var(--muted)}
+.opt.breit{grid-column:1/-1}
+.seg{display:flex;flex-wrap:wrap;gap:.8vh}
+.seg button{background:var(--bg);border-radius:99px;padding:1vh 2vh;font-size:2.2vh;font-weight:700}
+.seg button.on{background:var(--ink);color:#fff}
+select,input[type=text],input[type=date]{width:100%;padding:1.1vh 1.6vh;border-radius:1.6vh;border:.3vh solid var(--line);background:#fff;font-size:2.2vh;color:var(--ink)}
+input:focus,select:focus{outline:.4vh solid var(--orange);border-color:var(--orange)}
+#eig{display:grid;grid-template-columns:repeat(4,1fr);gap:1vh}
+.info{background:var(--bg);border-radius:1.6vh;padding:1.4vh 2vh;font-size:2.1vh;margin-bottom:2vh}
+.info.warn{background:#FCE3D0}
+.row{display:flex;gap:1.6vh;flex-wrap:wrap;align-items:center}
+/* Farben */
+.a-der{color:#5B8DB8}.a-die{color:#FA3A2F}.a-das{color:#269A31}.a-pl{color:#AF7F23}.t-v{color:#D9690A}.t-adj{color:#3A8C8C}
+/* Tafel */
+#tafel{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;padding:1.4vh 1.6vh 1.4vh;background:var(--bg)}
+#tKopf{display:flex;align-items:center;gap:1.2vh;flex-wrap:wrap;flex:none;margin-bottom:1vh;padding-left:.6vh}
+#tKopf h1{font-size:3.4vh}
+#tHin{flex:none;text-align:center;font-weight:700;font-size:2.5vh;color:var(--muted);min-height:3.4vh;margin-bottom:.8vh}
+#tHin b{color:var(--ink)}
+#feld{flex:1;position:relative;min-height:0;touch-action:none;overflow:hidden;border-radius:2vh}
+.zone{position:absolute;border-radius:2vh;background:#fff;box-shadow:0 .2vh .6vh #0001}
+.zone.spalte{overflow:hidden}
+.zone.spalte .kopf{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;background:var(--ink);white-space:nowrap;overflow:hidden}
+.zone.ziel{outline:.5vh solid var(--orange);outline-offset:-.5vh}
+.zone.stapel{background:#E6E2DA;box-shadow:none;border:.3vh dashed #C9C2B6}
+.zone.frei{background:#fff}
+.zone .zt{position:absolute;right:1.4vh;bottom:.8vh;font-weight:700;color:#B5AEA2;font-size:2vh;pointer-events:none}
+.k{position:absolute;background:#fff;border-radius:calc(var(--cw)*.09);box-shadow:0 .2vh .7vh #0003;border:calc(var(--cw)*.025) solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--cw)*.04);text-align:center;cursor:grab;touch-action:none;transition:left .28s,top .28s,width .28s,height .28s;font-size:calc(var(--cw)*var(--f,.15));font-weight:700;line-height:1.08;z-index:3;overflow:hidden}
+#feld.ohneAnim .k{transition:none}
+.k img{flex:1;min-height:0;width:100%;object-fit:contain;pointer-events:none;-webkit-user-drag:none}
+.k .w0,.k .w1{overflow-wrap:anywhere;max-width:100%}
+.k .w1{display:none}
+.k.ok .w0,#feld.farben .k .w0{display:none}.k.ok .w1,#feld.farben .k .w1{display:block}
+#feld.nurbild .k:not(.ok) .w0{display:none}
+#feld.farben.nurbild .k .w1{display:block}
+.k.zieh{transition:none;z-index:20;cursor:grabbing;box-shadow:0 1vh 2.4vh #0005;transform:scale(1.06)}
+.k.sel{border-color:var(--orange);z-index:10}
+.k.ok{border-color:var(--gruen);cursor:default}
+.k.falsch{border-color:#FA3A2F;animation:nein .5s}
+.k.weg{display:none}
+@keyframes nein{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6%)}40%,80%{transform:translateX(6%)}}
+#bFull{position:fixed;right:1.6vh;top:1.6vh;z-index:9}
+body.spielt #bFull{display:none}
+@media (max-width:700px),(orientation:portrait){
+  body{font-size:16px}.wrap{padding:14px 12px 70px}h1{font-size:24px}.btn{font-size:17px;padding:11px 18px}.btn.kl{font-size:14px;padding:8px 12px}
+  .lead,.info,.seg button,select,input[type=text],input[type=date],.opt>span{font-size:15px}.opts{grid-template-columns:1fr}#eig{grid-template-columns:1fr 1fr}
+  .deko,#bFull,#bFull2{display:none!important}.head{padding-right:0}.card{padding:16px;border-radius:18px}
+  #tafel{padding:8px}#tKopf{gap:6px;margin-bottom:6px}#tKopf h1{font-size:18px}#tKopf .sub,#tKopf .strich{display:none}#tHin{font-size:14px;min-height:20px;margin-bottom:4px}
+  .zone .zt{font-size:12px;right:8px;bottom:4px}
+}
+</style></head><body>
+<div class="deko d1"></div><div class="deko d2"></div><div class="deko d3"></div>
+<button class="btn kl" id="bFull">⛶ Vollbild</button>
+
+<div class="wrap" id="start">
+  <div class="head"><div class="strich"></div><h1>Sortiertafel</h1><span class="sub">Bildkarten in Spalten ziehen</span></div>
+  <div class="card">
+    <p class="lead">Unten liegen die Karten. Zieh jede Karte in die richtige Spalte – oder tipp erst die Karte an und dann die Spalte. Ohne Kontrolle ist es ein Tafelbild: Die Karten bleiben dort liegen, wo man sie hinlegt.</p>
+    <div class="opts">
+      <div class="opt breit"><span>Was sortieren wir?</span><div class="seg" data-k="typ"><button data-v="dda">der · die · das</button><button data-v="sp">Singular · Plural</button><button data-v="ww">wo? · wohin?</button><button data-v="wa">Verb · Nomen · Adjektiv</button><button data-v="eigen">eigene Spalten (Tafelbild)</button></div></div>
+      <div class="opt breit" id="oEig"><span>Überschriften für die Spalten (leer lassen = weniger Spalten · alle leer = freie Fläche)</span><div id="eig"><input type="text" maxlength="24" data-e="0" placeholder="Spalte 1" aria-label="Spalte 1"><input type="text" maxlength="24" data-e="1" placeholder="Spalte 2" aria-label="Spalte 2"><input type="text" maxlength="24" data-e="2" placeholder="Spalte 3" aria-label="Spalte 3"><input type="text" maxlength="24" data-e="3" placeholder="Spalte 4" aria-label="Spalte 4"></div></div>
+      <div class="opt" id="oWa"><span>Welche Karten?</span><div class="seg" data-k="wa"><button data-v="alle">alle</button><button data-v="n">Nomen</button><button data-v="v">Verben</button><button data-v="adj">Adjektive</button></div></div>
+      <div class="opt" id="oForm"><span>Spielform</span><div class="seg" data-k="form"><button data-v="tafel">an der Tafel ziehen</button><button data-v="karte">Karte für Karte – alle schreiben</button></div></div>
+      <div class="opt" id="oKon"><span>Kontrolle</span><div class="seg" data-k="kon"><button data-v="sofort">sofort</button><button data-v="knopf">mit Knopf am Ende</button><button data-v="ohne">ohne (Tafelbild)</button></div></div>
+      <div class="opt"><span>Welche Wörter?</span><div class="seg" data-k="art"><button data-v="le">eine Lerneinheit</button><button data-v="th">ein Thema</button><button data-v="bis">alles bis heute</button></div></div>
+      <div class="opt" id="oLe"><span>Lerneinheit</span><select id="sLe"></select></div>
+      <div class="opt" id="oTh"><span>Thema</span><select id="sTh"></select></div>
+      <div class="opt"><span>Punkte</span><div class="seg" data-k="pt"><button data-v="1">nur ●</button><button data-v="2">● und ●●</button><button data-v="3">alle</button></div></div>
+      <div class="opt"><span>Karten</span><div class="seg" data-k="n"><button data-v="8">8</button><button data-v="12">12</button><button data-v="16">16</button><button data-v="20">20</button></div></div>
+      <div class="opt" id="oBild"><span>Auf der Karte</span><div class="seg" data-k="bild"><button data-v="beides">Bild + Wort</button><button data-v="nurbild">nur Bild</button><button data-v="wort">nur Wort</button></div></div>
+      <div class="opt"><span>Nur Wörter, die bis zu diesem Tag eingeführt sind</span><input type="date" id="sStand" aria-label="Stand"></div>
+    </div>
+    <div class="info" id="info"></div>
+    <div class="row"><button class="btn main" id="bStart">Tafel öffnen</button></div>
+  </div>
+</div>
+
+<div id="tafel" hidden>
+  <div id="tKopf"><div class="strich"></div><h1 id="tTitel">Sortiertafel</h1><span class="sub" id="tSub"></span><span class="sp"></span>
+    <button class="btn kl main" id="bNext" hidden></button><button class="btn kl go" id="bKon" hidden>✓ Kontrolle</button><button class="btn kl" id="bLoes" hidden>Lösung</button><button class="btn kl" id="bFarb" hidden>Farben zeigen</button>
+    <button class="btn kl" id="bNeu">↺ Neue Karten</button><button class="btn kl" id="bMenu">Einstellungen</button><button class="btn kl" id="bFull2">⛶ Vollbild</button></div>
+  <div id="tHin"></div>
+  <div id="feld"></div>
+</div>
+
+<script>
+"use strict";
+const W=/*DATA*/;
+const STAND="/*STAND*/";
+const $=id=>document.getElementById(id);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const S=Object.assign({typ:"dda",form:"tafel",kon:"sofort",art:"le",le:"",th:"",pt:"2",n:"12",bild:"beides",wa:"alle",eig:["","","",""]},(()=>{try{return JSON.parse(store.get("rie_sortiertafel"))||{}}catch(e){return {}}})());
+if(!Array.isArray(S.eig))S.eig=["","","",""];
+function spare(){store.set("rie_sortiertafel",JSON.stringify(S))}
+function iso(d){const p=d.split(".");return "20"+p[2]+"-"+p[1]+"-"+p[0]}
+const HEUTE=(()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")})();
+let stand=HEUTE;
+function misch(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function wortHtml(w){
+  if(w.t==="n"&&w.a){const pl=w.a==="pl";return `<span class="a-${pl?"pl":w.a}">${pl?"die":w.a} ${esc(w.w)}</span>`}
+  if(w.t==="v")return `<span class="t-v">${esc(w.w)}</span>`;
+  if(w.t==="adj")return `<span class="t-adj">${esc(w.w)}</span>`;
+  return esc(w.w);
+}
+/* ---------- Sortierarten ---------- */
+const TYP={
+  dda:{name:"der · die · das",sp:[{k:"der",t:"der",f:"#5B8DB8"},{k:"die",t:"die",f:"#FA3A2F"},{k:"das",t:"das",f:"#269A31"}],
+    passt:w=>w.t==="n"&&(w.a==="der"||w.a==="die"||w.a==="das"),
+    karten:w=>[{k:w.a,tx:w.w,lo:wortHtml(w)}],frage:"der, die oder das?"},
+  sp:{name:"Singular · Plural",sp:[{k:"sg",t:"Singular",f:"#1A1A1A"},{k:"pl",t:"Plural",f:"#AF7F23"}],
+    passt:w=>w.t==="n"&&(w.pl||w.a==="pl"),
+    karten:w=>w.a==="pl"?[{k:"pl",tx:w.w,lo:wortHtml(w)}]:[{k:"sg",tx:w.w,lo:wortHtml(w)},{k:"pl",tx:w.pl,lo:`<span class="a-pl">die ${esc(w.pl)}</span>`}],frage:"Singular oder Plural?"},
+  ww:{name:"wo? · wohin?",sp:[{k:"wo",t:"wo?",f:"#3A8C8C"},{k:"wohin",t:"wohin?",f:"#D9690A"}],
+    passt:w=>!!w.ww,
+    karten:w=>[{k:"wo",tx:w.ww[0],lo:esc(w.ww[0])},{k:"wohin",tx:w.ww[1],lo:esc(w.ww[1])}],frage:"wo oder wohin?"},
+  wa:{name:"Verb · Nomen · Adjektiv",sp:[{k:"v",t:"Verb",f:"#D9690A"},{k:"n",t:"Nomen",f:"#1A1A1A"},{k:"adj",t:"Adjektiv",f:"#3A8C8C"}],
+    passt:w=>true,karten:w=>[{k:w.t,tx:w.w,lo:wortHtml(w)}],frage:"Verb, Nomen oder Adjektiv?"},
+  eigen:{name:"Tafelbild",sp:[],passt:w=>S.wa==="alle"||w.t===S.wa,karten:w=>[{k:"",tx:w.w,lo:wortHtml(w)}],frage:""}
+};
+function spalten(){return S.typ==="eigen"?S.eig.map(x=>String(x||"").trim()).filter(Boolean).map((t,i)=>({k:"e"+i,t,f:"#1A1A1A"})):TYP[S.typ].sp}
+function kon(){return S.typ==="eigen"?"ohne":S.form==="karte"?"sofort":S.kon}
+function form(){return S.typ==="eigen"||S.kon==="ohne"?"tafel":S.form}
+function bildArt(){return S.typ==="sp"?"wort":(S.typ==="ww"&&S.bild==="nurbild")?"beides":S.bild}
+/* ---------- Auswahl: nur eingeführte Wörter ---------- */
+let LES=[],THS=[];
+function listen(){const le={},th={};
+  W.forEach(w=>w.o.forEach(o=>{const d=iso(o[0]);if(d>stand)return;if(!le[o[1]]||d<le[o[1]])le[o[1]]=d;if(!th[o[2]]||d<th[o[2]].d)th[o[2]]={d,le:o[1]}}));
+  LES=Object.keys(le).sort((a,b)=>le[a]<le[b]?-1:1).map(k=>[k,le[k]]);
+  THS=Object.keys(th).sort((a,b)=>th[a].d<th[b].d?-1:1).map(k=>[k,th[k].d,th[k].le]);
+  $("sLe").innerHTML=LES.map(l=>`<option value="${esc(l[0])}">${esc(l[0])}</option>`).join("");
+  $("sTh").innerHTML=THS.map(t=>`<option value="${esc(t[0])}">${esc(t[2])} · ${esc(t[0])}</option>`).join("");
+  if(!LES.some(l=>l[0]===S.le))S.le=LES.length?LES[LES.length-1][0]:"";
+  if(!THS.some(t=>t[0]===S.th))S.th=THS.length?THS[THS.length-1][0]:"";
+}
+function pool(){
+  const p=+S.pt,T=TYP[S.typ];
+  return W.filter(w=>T.passt(w)&&w.o.some(o=>o[3]<=p&&iso(o[0])<=stand&&(S.art==="le"?o[1]===S.le:S.art==="th"?o[2]===S.th:true)));
+}
+function titel(){return S.art==="le"?S.le:S.art==="th"?S.th:"alles bis "+stand.slice(8)+"."+stand.slice(5,7)+"."}
+/* Karten ziehen: pro Wort eine Karte; reichen die Wörter nicht, kommt die zweite Form dazu (Singular + Plural, wo + wohin) */
+function zieheKarten(){
+  const T=TYP[S.typ],n=+S.n,ws=misch(pool()),out=[],rest=[];
+  ws.forEach(w=>{const ks=misch(T.karten(w));out.push({w,c:ks[0]});if(ks[1])rest.push({w,c:ks[1]})});
+  let l=out.slice(0,n);if(l.length<n)l=l.concat(rest.slice(0,n-l.length));
+  return misch(l);
+}
+function mark(){
+  document.querySelectorAll(".seg[data-k]").forEach(sg=>sg.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===String(S[sg.dataset.k]))));
+  const eigen=S.typ==="eigen";
+  $("oEig").hidden=$("oWa").hidden=!eigen;$("oKon").hidden=eigen||S.form==="karte";$("oForm").hidden=eigen||S.kon==="ohne";
+  $("oBild").hidden=S.typ==="sp";
+  $("oLe").hidden=S.art!=="le";$("oTh").hidden=S.art!=="th";$("sLe").value=S.le;$("sTh").value=S.th;$("sStand").value=stand;
+  document.querySelectorAll("#eig input").forEach(i=>{if(document.activeElement!==i)i.value=S.eig[+i.dataset.e]||""});
+  const p=pool(),T=TYP[S.typ],max=p.reduce((s,w)=>s+T.karten(w).length,0),n=Math.min(+S.n,max),i=$("info");
+  const zu=max<4;i.classList.toggle("warn",zu);
+  let extra="";
+  if(S.typ==="sp")extra=" Bei Singular · Plural steht nur das Wort auf der Karte (das Bild zeigt immer nur ein Ding).";
+  if(S.typ==="ww"&&S.bild==="nurbild")extra=" Bei wo? · wohin? steht immer der Ausdruck auf der Karte.";
+  i.innerHTML=!LES.length?"Bis zu diesem Tag sind noch keine Wörter eingeführt. Bitte unten ein späteres Datum wählen."
+    :zu?`In dieser Auswahl gibt es nur <b>${max} ${max===1?"Karte":"Karten"}</b>. Man braucht mindestens 4. Bitte eine andere Lerneinheit, „alles bis heute“ oder mehr Punkte wählen.`
+    :`<b>${p.length} Wörter</b> passen – auf der Tafel liegen <b>${n} Karten</b> (zufällig).${extra} <b>Ohne Ton</b>, Musik unten links zuschaltbar. Taste F = Vollbild.`;
+  $("bStart").disabled=zu||!LES.length;
+}
+document.querySelectorAll(".seg[data-k]").forEach(sg=>sg.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S[sg.dataset.k]=b.dataset.v;spare();mark()}));
+$("sLe").onchange=e=>{S.le=e.target.value;spare();mark()};$("sTh").onchange=e=>{S.th=e.target.value;spare();mark()};
+$("sStand").onchange=e=>{stand=e.target.value||HEUTE;listen();mark()};
+$("eig").addEventListener("input",e=>{const i=e.target;if(i.dataset.e==null)return;S.eig[+i.dataset.e]=i.value;spare()});
+
+/* ---------- Tafel ---------- */
+const tmp=document.createElement("div");function el0(h){tmp.innerHTML=h;return tmp.textContent}
+const st={karten:[],sp:[],kon:"sofort",form:"tafel",sel:null,schritt:0,offen:false,fehler:0,geo:null};
+const feld=$("feld");
+function start(){
+  st.sp=spalten();st.kon=kon();st.form=form();st.sel=null;st.schritt=0;st.offen=false;st.fehler=0;st.letzte="";
+  const ba=bildArt();
+  st.karten=zieheKarten().map((x,i)=>({i,w:x.w,c:x.c,ort:"stapel",fx:0,fy:0,ok:false,el:null}));
+  feld.className=(ba==="nurbild"?"nurbild":"");
+  feld.innerHTML=st.sp.map((s,i)=>`<div class="zone spalte" data-z="${i}"><div class="kopf" style="background:${s.f}">${esc(s.t)}</div></div>`).join("")
+    +(st.sp.length?"":`<div class="zone frei" data-z="frei"></div>`)+`<div class="zone stapel" data-z="stapel"><span class="zt">Stapel</span></div>`;
+  st.karten.forEach(k=>{const el=document.createElement("div");
+    el.className="k"+(ba==="wort"?" nurwort":"");el.dataset.i=k.i;
+    /* Schrift so groß, dass das längste Wortstück in eine Zeile passt (kein Umbruch mitten im Wort) */
+    const lang=Math.max(...(k.c.tx+" "+el0(k.c.lo)).split(/[\s]+|(?<=-)/).map(x=>x.length));
+    el.style.setProperty("--f",Math.max(.06,Math.min(ba==="wort"?.17:.15,.9/(lang*.62))).toFixed(3));
+    el.innerHTML=(ba==="wort"?"":`<img src="${k.w.b}" alt="" draggable="false">`)+`<span class="w0">${esc(k.c.tx)}</span><span class="w1">${k.c.lo}</span>`;
+    k.el=el;feld.appendChild(el)});
+  $("start").hidden=true;$("tafel").hidden=false;document.body.classList.add("spielt");
+  $("tTitel").textContent=S.typ==="eigen"?"Tafelbild":TYP[S.typ].name;$("tSub").textContent=titel();
+  $("bFarb").textContent="Farben zeigen";
+  layout(true);knoepfe();
+}
+function passend(n,Wz,Hz,ratio,cmax,cmin,g){
+  n=Math.max(1,n);
+  for(let cw=cmax;cw>=cmin;cw-=2){const cols=Math.max(1,Math.floor((Wz+g)/(cw+g))),rows=Math.ceil(n/cols);if(rows*(cw*ratio+g)-g<=Hz)return {cw,cols,rows,dy:cw*ratio+g}}
+  const cw=cmin,cols=Math.max(1,Math.floor((Wz+g)/(cw+g))),rows=Math.ceil(n/cols);
+  return {cw,cols,rows,dy:rows>1?Math.max(8,(Hz-cw*ratio)/(rows-1)):0};
+}
+function setz(k,x,y,cw,ratio){const s=k.el.style;s.setProperty("--cw",cw+"px");s.width=cw+"px";s.height=cw*ratio+"px";s.left=x+"px";s.top=y+"px"}
+function raster(liste,x0,y0,Wz,Hz,ratio,cmax,cmin,g){
+  if(!liste.length)return;
+  const f=passend(liste.length,Wz,Hz,ratio,cmax,cmin,g),inRow=Math.min(f.cols,liste.length),bw=inRow*(f.cw+g)-g,ox=x0+Math.max(0,(Wz-bw)/2);
+  liste.forEach((k,j)=>setz(k,ox+(j%f.cols)*(f.cw+g),y0+Math.floor(j/f.cols)*f.dy,f.cw,ratio));
+}
+function layout(sofort){
+  if($("tafel").hidden)return;
+  const Wf=feld.clientWidth,Hf=feld.clientHeight;if(!Wf||!Hf)return;
+  const hoch=Hf>Wf,g=Math.max(5,Math.round(Math.min(Wf,Hf)*.012)),nsp=st.sp.length,ratio=bildArt()==="wort"?.5:1.14;
+  const frei=st.kon==="ohne";
+  const Hs=Math.round(Hf*(frei?.27:st.form==="karte"?.4:hoch?.36:.34)),ys=Hf-Hs,Hc=ys-g;
+  const cmax=Math.round(ratio<1?Math.min(Wf*.2,Hf*.2):Math.min(Wf*(hoch?.26:.115),Hs/ratio-2*g)),cmin=hoch?38:46;
+  st.geo={Wf,Hf,ys,Hc,g,nsp,cmax,ratio};
+  if(sofort)feld.classList.add("ohneAnim");
+  const zs=feld.querySelectorAll(".zone.spalte"),kopfH=Math.max(26,Math.round(Hf*(hoch?.05:.07)));
+  const colW=nsp?(Wf-(nsp-1)*g)/nsp:Wf;
+  zs.forEach((z,i)=>{z.style.left=i*(colW+g)+"px";z.style.top="0";z.style.width=colW+"px";z.style.height=Hc+"px";
+    const kp=z.querySelector(".kopf");kp.style.height=kopfH+"px";kp.style.fontSize=Math.min(kopfH*.62,colW*.16)+"px"});
+  const zf=feld.querySelector(".zone.frei");if(zf){zf.style.left="0";zf.style.top="0";zf.style.width=Wf+"px";zf.style.height=Hc+"px"}
+  const zst=feld.querySelector(".zone.stapel");zst.style.left="0";zst.style.top=ys+"px";zst.style.width=Wf+"px";zst.style.height=Hs+"px";
+  /* Stapel */
+  let imStapel=st.karten.filter(k=>k.ort==="stapel");
+  st.karten.forEach(k=>k.el.classList.remove("weg"));
+  if(st.form==="karte"){
+    imStapel.forEach(k=>k.el.classList.add("weg"));
+    const cur=st.karten[st.schritt];
+    if(cur&&cur.ort==="stapel"){cur.el.classList.remove("weg");const cw=Math.min((Hs-2*g)/ratio,Wf*.42);setz(cur,(Wf-cw)/2,ys+(Hs-cw*ratio)/2,cw,ratio)}
+  }else{const mb=document.getElementById("rieMusik"),fr=feld.getBoundingClientRect(),mr=mb?mb.getBoundingClientRect():null;
+    const mw=mr&&mr.bottom>fr.top+ys?Math.max(0,mr.right-fr.left+g-g):0; /* Platz für den Musik-Knopf unten links */
+    raster(imStapel,g+mw,ys+g,Wf-2*g-mw,Hs-2*g,ratio,cmax,cmin,g)}
+  /* Spalten */
+  if(!frei)st.sp.forEach((s,i)=>raster(st.karten.filter(k=>k.ort===i),i*(colW+g)+g,kopfH+g,colW-2*g,Hc-kopfH-2*g,ratio,cmax,Math.min(cmin,34),g));
+  /* frei liegende Karten */
+  const cf=frei?Math.round(Math.min(cmax,Math.max(cmin,passend(st.karten.length,Wf-2*g,Hs-2*g,ratio,cmax,cmin,g).cw*1.15))):cmax;
+  st.geo.cf=cf;
+  st.karten.filter(k=>k.ort==="frei").forEach(k=>{const x=Math.min(Wf-cf,Math.max(0,k.fx*Wf-cf/2)),y=Math.min(Hc-cf*ratio,Math.max(frei&&nsp?kopfH:0,k.fy*Hf-cf*ratio/2));setz(k,x,y,cf,ratio)});
+  if(sofort){void feld.offsetWidth;feld.classList.remove("ohneAnim")}
+  hinweis();
+}
+function hinweis(){
+  const n=st.karten.length,ok=st.karten.filter(k=>k.ok).length,h=$("tHin"),T=TYP[S.typ];
+  if(st.kon==="ohne"){h.innerHTML=st.sel?"Jetzt die Stelle antippen, wo die Karte liegen soll.":"Karten ziehen und frei hinlegen. Es gibt keine Kontrolle.";return}
+  if(ok===n){h.innerHTML=`<b>Alles sortiert!</b>${st.fehler?` · ${st.fehler} ${st.fehler===1?"Karte":"Karten"} noch einmal üben`:""}`;return}
+  if(st.form==="karte"){const cur=st.karten[st.schritt];
+    h.innerHTML=cur&&cur.ok?`<b>${esc(cur.c.tx)}</b> – stimmt deine Antwort? · Karte ${st.schritt+1} von ${n}`:`Karte ${st.schritt+1} von ${n}: <b>${T.frage}</b> Schreib auf dein Whiteboard.`;return}
+  h.innerHTML=st.sel?"Jetzt die Spalte antippen."
+    :st.kon==="knopf"?(st.letzte||`Sortiere alle Karten. Dann „Kontrolle“ antippen. · <b>${T.frage}</b>`)
+    :`<b>${T.frage}</b> · ${ok} von ${n} richtig`;
+}
+function knoepfe(){
+  const alle=st.karten.every(k=>k.ok),ohne=st.kon==="ohne",b=$("bNext");
+  $("bKon").hidden=st.kon!=="knopf"||alle;$("bLoes").hidden=ohne||alle||st.form==="karte";$("bFarb").hidden=!ohne;
+  b.hidden=st.form!=="karte"||alle;
+  if(!b.hidden){const cur=st.karten[st.schritt];b.textContent=cur&&cur.ok?"Nächste Karte ▶":"Lösung ▶"}
+}
+function waehle(k){if(st.sel)st.sel.el.classList.remove("sel");st.sel=k;if(k)k.el.classList.add("sel");hinweis()}
+function zurueck(k){k.ort="stapel";k.el.classList.remove("falsch");layout()}
+function lege(k,ziel,fx,fy){
+  /* ziel: "stapel" | Spaltennummer | "frei" */
+  if(k.ok)return;
+  if(st.sel===k)waehle(null);
+  st.letzte="";
+  if(ziel==="stapel"||ziel==="frei"){k.ort=ziel;k.fx=fx;k.fy=fy;feld.appendChild(k.el);layout();return}
+  k.ort=ziel;
+  if(st.kon==="sofort"){
+    if(st.sp[ziel].k===k.c.k){k.ok=true;k.el.classList.add("ok")}
+    else{st.fehler++;k.el.classList.add("falsch");setTimeout(()=>zurueck(k),700)}
+  }
+  layout();knoepfe();
+}
+function kontrolle(){
+  let r=0,f=0;
+  st.karten.forEach(k=>{if(k.ok||typeof k.ort!=="number")return;
+    if(st.sp[k.ort].k===k.c.k){k.ok=true;k.el.classList.add("ok");r++}
+    else{f++;st.fehler++;k.el.classList.add("falsch");setTimeout(()=>zurueck(k),900)}});
+  const rest=st.karten.filter(k=>!k.ok).length;
+  st.letzte=f?`<b>${f} ${f===1?"Karte ist":"Karten sind"} noch nicht richtig.</b> Sie gehen zurück in den Stapel.`:rest?`<b>${r} richtig.</b> Es liegen noch Karten im Stapel.`:"";
+  layout();knoepfe();
+}
+function loesung(){
+  st.karten.forEach(k=>{if(k.ok)return;const z=st.sp.findIndex(s=>s.k===k.c.k);if(z<0)return;k.ort=z;k.ok=true;k.el.classList.remove("falsch","sel");k.el.classList.add("ok")});
+  st.sel=null;layout();knoepfe();
+}
+function weiter(){
+  if(st.form!=="karte"||$("tafel").hidden)return;
+  const cur=st.karten[st.schritt];if(!cur)return;
+  if(!cur.ok){const z=st.sp.findIndex(s=>s.k===cur.c.k);cur.ort=z;cur.ok=true;cur.el.classList.remove("falsch","sel");cur.el.classList.add("ok");st.sel=null}
+  else if(st.schritt<st.karten.length-1)st.schritt++;
+  layout();knoepfe();
+}
+/* Wohin zeigt ein Punkt im Feld? */
+function zielBei(x,y){
+  const G=st.geo;if(y>=G.ys)return "stapel";
+  if(st.kon==="ohne"||!G.nsp)return "frei";
+  const colW=(G.Wf-(G.nsp-1)*G.g)/G.nsp;return Math.max(0,Math.min(G.nsp-1,Math.floor(x/(colW+G.g))));
+}
+function markZiel(z){feld.querySelectorAll(".zone").forEach(el=>el.classList.toggle("ziel",z!==null&&z!=="frei"&&el.dataset.z===String(z)))}
+/* Ziehen mit Finger, Stift oder Maus */
+let zug=null;
+feld.addEventListener("pointerdown",e=>{
+  if(e.button>0)return;
+  const el=e.target.closest(".k");
+  if(!el){ /* Antippen einer Zone: gewählte Karte dorthin */
+    if(st.sel){const r=feld.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;lege(st.sel,zielBei(x,y),x/r.width,y/r.height)}
+    return}
+  const k=st.karten[+el.dataset.i];if(!k||k.ok){if(st.sel&&k&&k.ok&&typeof k.ort==="number")lege(st.sel,k.ort,0,0);return}
+  e.preventDefault();
+  const r=feld.getBoundingClientRect(),kr=el.getBoundingClientRect();
+  zug={k,id:e.pointerId,x0:e.clientX,y0:e.clientY,dx:e.clientX-kr.left,dy:e.clientY-kr.top,los:false,r};
+  try{el.setPointerCapture(e.pointerId)}catch(err){}
+});
+feld.addEventListener("pointermove",e=>{
+  if(!zug||e.pointerId!==zug.id)return;
+  if(!zug.los){if(Math.hypot(e.clientX-zug.x0,e.clientY-zug.y0)<8)return;zug.los=true;zug.k.el.classList.add("zieh");zug.k.el.classList.remove("falsch");feld.appendChild(zug.k.el);if(st.sel)waehle(null)}
+  const s=zug.k.el.style;s.left=(e.clientX-zug.r.left-zug.dx)+"px";s.top=(e.clientY-zug.r.top-zug.dy)+"px";
+  markZiel(zielBei(e.clientX-zug.r.left,e.clientY-zug.r.top));
+});
+function zugEnde(e,abbruch){
+  if(!zug||e.pointerId!==zug.id)return;
+  const z=zug;zug=null;markZiel(null);z.k.el.classList.remove("zieh");
+  try{z.k.el.releasePointerCapture(e.pointerId)}catch(err){}
+  if(abbruch){layout();return}
+  if(!z.los){waehle(st.sel===z.k?null:z.k);return}
+  const kr=z.k.el.getBoundingClientRect(),x=kr.left+kr.width/2-z.r.left,y=kr.top+kr.height/2-z.r.top;
+  lege(z.k,zielBei(x,y),x/z.r.width,y/z.r.height);
+}
+feld.addEventListener("pointerup",e=>zugEnde(e,false));
+feld.addEventListener("pointercancel",e=>zugEnde(e,true));
+feld.addEventListener("dragstart",e=>e.preventDefault());
+window.addEventListener("resize",()=>layout(true));
+function menu(){$("tafel").hidden=true;$("start").hidden=false;document.body.classList.remove("spielt");feld.innerHTML="";st.karten=[];mark()}
+$("bStart").onclick=start;$("bNeu").onclick=start;$("bMenu").onclick=menu;$("bKon").onclick=kontrolle;$("bLoes").onclick=loesung;$("bNext").onclick=weiter;
+$("bFarb").onclick=()=>{const an=feld.classList.toggle("farben");$("bFarb").textContent=an?"Farben aus":"Farben zeigen"};
+/* ---------- Vollbild + Tasten ---------- */
+function vollbild(){const d=document,el=d.documentElement;try{if(d.fullscreenElement||d.webkitFullscreenElement){const x=d.exitFullscreen||d.webkitExitFullscreen;const r=x&&x.call(d);if(r&&r.catch)r.catch(()=>{})}else{const q=el.requestFullscreen||el.webkitRequestFullscreen;const r=q&&q.call(el);if(r&&r.catch)r.catch(()=>{})}}catch(e){}}
+function fullTxt(){$("bFull").textContent=$("bFull2").textContent=(document.fullscreenElement||document.webkitFullscreenElement)?"✕ Vollbild aus":"⛶ Vollbild"}
+$("bFull").onclick=$("bFull2").onclick=e=>{vollbild();e.currentTarget.blur()};document.addEventListener("fullscreenchange",fullTxt);document.addEventListener("webkitfullscreenchange",fullTxt);
+document.addEventListener("keydown",e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;const t=e.target&&e.target.tagName;if(t==="SELECT"||t==="INPUT")return;
+  if(e.key==="f"||e.key==="F"){e.preventDefault();vollbild()}
+  else if((e.key===" "||e.key==="ArrowRight"||e.key==="Enter")&&!$("tafel").hidden&&st.form==="karte"){e.preventDefault();if(e.target&&e.target.blur)e.target.blur();weiter()}});
+listen();mark();
+</script>
+</body></html>

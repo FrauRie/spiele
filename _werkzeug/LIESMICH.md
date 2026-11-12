@@ -9,6 +9,7 @@ Die Skripte erwarten ihre Dateien unter `/tmp/work/` und das Repo unter `/home/c
 | `fonts.css` | Andika, eingebettet (für neue Spiele) |
 | `bingo_tpl.html` + `build_bingo.py` | Bingo-Rufer; Wörter und Bilder kommen aus `spiele/vokabelcheck/vokabelcheck.html` (`dW`, `dIMG`) |
 | `stunde_tpl.html`, `index_new_tpl.html`, `index_old.html` + `build_pages.py` | bauen `spielstunde.html`, `handy.html`, `index.html`; neue Spiele in `build_pages.py` eintragen (Liste `einzel`, `DESC`, `KIND`, `TXT`) |
+| `meisten_tpl.html`, `sortiertafel_tpl.html` + `build_neu.py` | bauen „Was sagen die meisten?“ und die Sortiertafel. Sortiertafel: Wörter und Bilder aus dem Vokabelcheck (`dW`, `dIMG`); die Ausdrücke für wo?/wohin? stehen von Hand in `build_neu.py` (Liste `WW`). Nach einem neuen Vokabelcheck `build_neu.py` neu laufen lassen. |
 | `patch.py` | einmaliger Umbau: „Zeigen!“-Schritt entfernt |
 | `zoom_sheets.py` | Zoompunkte prüfen (Startausschnitt, Weißanteil) |
 
@@ -22,3 +23,10 @@ QR-Code: `npm pack qrcode-generator@1.4.4`, entpackt nach `/tmp/work/package/`.
 - Artikelfarben: der #5B8DB8 · die #FA3A2F · das #269A31 · Plural #AF7F23 · Verben #D9690A · Adjektive #3A8C8C.
 - Immer „Plural“/„Singular“ und „Infinitiv“; auf Spielen nur Punkte ●/●●/●●●, keine Niveauangaben.
 - Öffentliches Repo: keine Namen, Fotos oder Daten von Schüler:innen.
+
+## Daten, die nur auf dem Gerät liegen
+- „Was sagen die meisten?“: Fragen und Antworten stehen im `localStorage` (`rie_meisten_v1`) des Geräts, nicht im Repo. Weitergabe über Export/Import im Spiel (JSON-Datei). Im Repo stehen nur 3 erfundene Beispielfragen.
+
+## Noch offen
+- Wort-Comeback für die Leseheft-Wörter (Wortlisten kommen von Frau Rie).
+- Ton bei der Lösung.
