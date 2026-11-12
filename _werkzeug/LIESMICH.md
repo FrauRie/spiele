@@ -7,7 +7,7 @@ Die Skripte erwarten ihre Dateien unter `/tmp/work/` und das Repo unter `/home/c
 |---|---|
 | `musik.html` | Musik-Baustein (3 eigene Stücke, Knopf unten links, `localStorage rie_musik`). Steht in jedem Spiel direkt vor `</body>`. In neue Spiele genauso einsetzen. |
 | `fonts.css` | Andika, eingebettet (für neue Spiele) |
-| `bingo_tpl.html` + `build_bingo.py` | Bingo-Rufer; Wörter und Bilder kommen aus `spiele/vokabelcheck/vokabelcheck.html` (`dW`, `dIMG`) |
+| `bingo_tpl.html` + `build_bingo.py` | Bingo-Rufer; Wörter und Bilder kommen aus `spiele/vokabelcheck/vokabelcheck.html` (`dW`, `dIMG`); Handy-Karte kontrolliert sich selbst: 6-stelliger Spielcode (Startwert + Einstellungen, auch im QR-Link `#s=…&karte=1`) und 3-stellige Prüfzahl neben 📱 pro gezogenem Wort – daraus weiß das Handy, welche Wörter schon dran waren; falsche Kreuze werden gelöscht, erneut prüfen erst beim nächsten Wort |
 | `stunde_tpl.html`, `index_new_tpl.html`, `index_old.html` + `build_pages.py` | bauen `spielstunde.html`, `handy.html`, `index.html`; neue Spiele in `build_pages.py` eintragen (Liste `einzel`, `DESC`, `KIND`, `TXT`) |
 | `meisten_tpl.html`, `sortiertafel_tpl.html` + `build_neu.py` | bauen „Was sagen die meisten?“ und die Sortiertafel. Sortiertafel: Wörter und Bilder aus dem Vokabelcheck (`dW`, `dIMG`); die Ausdrücke für wo?/wohin? stehen von Hand in `build_neu.py` (Liste `WW`). Nach einem neuen Vokabelcheck `build_neu.py` neu laufen lassen. |
 | `patch.py` | einmaliger Umbau: „Zeigen!“-Schritt entfernt |

@@ -68,7 +68,7 @@ open(R+'spielstunde.html','w',encoding='utf-8').write(s)
 URL='https://fraurie.github.io/spiele/handy.html'
 qr=subprocess.run(['node','-e',"const q=require('/tmp/work/package/qrcode.js')(0,'M');q.addData(process.argv[1]);q.make();console.log(q.createSvgTag({cellSize:4,margin:2,scalable:true}))",URL],capture_output=True,text=True).stdout.strip()
 assert qr.startswith('<svg')
-hl=[('Bingo · Meine Karte','Du bekommst 9 Bilder. Hör zu und tipp auf das Bild.','spiele/bingo/bingo-rufer.html')]+[('Buchstaben-Salat · '+t,'Tipp die Buchstaben an und leg das Wort. Wähl am Start „Allein“.',u) for t,u in salat]+[('Sortiertafel','Zieh die Karten in die richtige Spalte. Oder: Tipp die Karte an, dann die Spalte.','spiele/sortiertafel/sortiertafel.html'),('Vokabelcheck','Sieh das Bild, schreib das Wort, kontrollier selbst.','spiele/vokabelcheck/vokabelcheck.html')]
+hl=[('Bingo · Meine Karte','Tipp den Spielcode von der Tafel ein. Du bekommst 9 Bilder. Hör zu und tipp auf das Bild.','spiele/bingo/bingo-rufer.html')]+[('Buchstaben-Salat · '+t,'Tipp die Buchstaben an und leg das Wort. Wähl am Start „Allein“.',u) for t,u in salat]+[('Sortiertafel','Zieh die Karten in die richtige Spalte. Oder: Tipp die Karte an, dann die Spalte.','spiele/sortiertafel/sortiertafel.html'),('Vokabelcheck','Sieh das Bild, schreib das Wort, kontrollier selbst.','spiele/vokabelcheck/vokabelcheck.html')]
 CSS_HEAD='''<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>%s</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">'''

@@ -64,6 +64,18 @@ body.nurbild .cell .w{visibility:hidden}
 .regel{text-align:center;color:var(--muted);font-weight:700;margin-top:1.4vh;font-size:2.1vh}
 #qrBox{display:flex;gap:2vh;align-items:center;background:var(--bg);border-radius:1.6vh;padding:1.4vh 2vh;margin-bottom:2vh;font-size:2.1vh}
 #qr svg{width:17vh;height:17vh;display:block;background:#fff;border-radius:1vh}
+.pz{position:absolute;right:2.4vh;top:1.6vh;font-weight:700;font-size:4.6vh;background:var(--bg);border-radius:99px;padding:.3vh 2.2vh;letter-spacing:.2vh}
+.pz small{font-size:2.6vh;margin-right:1vh;letter-spacing:0}
+#qrBox .code{font-size:4.2vh;font-weight:700;letter-spacing:.3vh;white-space:nowrap}
+input{-webkit-user-select:text;user-select:text}
+.zahl{font-family:inherit;font-size:34px;font-weight:700;text-align:center;width:100%;max-width:260px;padding:10px;border-radius:14px;border:3px solid var(--line);letter-spacing:4px;color:var(--ink);background:#fff}
+.meld{font-weight:700;color:#B3261E;min-height:1.4em;margin:10px 0 0;text-align:center;font-size:17px}
+.meld.gut{color:#04793A}
+#kEin{max-width:440px;margin:0 auto;text-align:center}#kEin p{margin:0 0 12px}
+#karte .f.falsch{background:#FBD0CC;outline:3px solid #B3261E}
+#pruef{position:fixed;inset:0;z-index:19;background:#1A1A1Acc;display:grid;place-items:center;padding:16px}
+#pruef .box{background:#fff;border-radius:22px;padding:20px;max-width:440px;width:100%;text-align:center;font-size:17px}
+#pruef h2{margin:0 0 6px;font-size:26px}#pruef p{margin:0 0 12px}
 /* Farben */
 .a-der{color:#5B8DB8}.a-die{color:#FA3A2F}.a-das{color:#269A31}.a-pl{color:#AF7F23}.t-v{color:#D9690A}.t-adj{color:#3A8C8C}
 /* Handy-Karte */
@@ -79,7 +91,7 @@ body.nurbild .cell .w{visibility:hidden}
 #bFull{position:fixed;right:1.6vh;top:1.6vh;z-index:9}
 @media (max-width:700px),(orientation:portrait){
   body{font-size:16px}.wrap{padding:14px 12px 70px}h1{font-size:24px}.btn{font-size:17px;padding:11px 18px}.btn.kl{font-size:14px;padding:8px 12px}
-  .lead,.info,.anl div,.seg button,select,.opt>span,#qrBox{font-size:15px}.opts{grid-template-columns:1fr}
+  .lead,.info,.anl div,.seg button,select,.opt>span,#qrBox{font-size:15px}.ctrl .btn{font-size:18px;padding:12px 20px}.opts{grid-template-columns:1fr}
   #zieh .main2{grid-template-columns:1fr}.stage{height:46vh}.seite{height:auto;max-height:36vh}.grid{--cols:3!important}
   .deko,#bFull,#qrBox{display:none}.head{padding-right:0}.stage img{height:26vh}.card{padding:16px;border-radius:18px}
 }
@@ -112,7 +124,7 @@ body.nurbild .cell .w{visibility:hidden}
     <div><b><span class="pt">●●</span>Schreib ohne Hilfe.</b>Die Wörter sind versteckt. Du siehst nur die Bilder.</div>
     <div><b><span class="pt">●●●</span>Schreib genau.</b>Nomen mit der, die oder das.</div>
   </div>
-  <div id="qrBox" hidden><div id="qr"></div><div><b>Mit dem Handy spielen?</b><br>Scann den Code. Du bekommst eine Karte mit 9 Bildern aus diesem Spiel.</div></div>
+  <div id="qrBox"><div id="qr"></div><div><b>Mit dem Handy spielen?</b> Scann den Code. Oder: Öffne das Bingo, tipp auf „Meine Karte“ und schreib den Spielcode <span class="code" id="wCode"></span><br>Du bekommst eine Karte mit 9 Bildern aus diesem Spiel. Bei „Bingo!“ prüft das Handy deine Kreuze.</div></div>
   <div class="grid" id="alle"></div>
   <div class="ctrl"><button class="btn go" id="bLos">▶ Alle fertig – los!</button></div>
 </div>
@@ -125,17 +137,28 @@ body.nurbild .cell .w{visibility:hidden}
     <div class="seite"><h2>Schon gezogen <span id="zN"></span></h2><div id="gez"></div></div>
   </div>
   <div class="ctrl"><button class="btn main" id="bNext">Erstes Wort ▶</button><button class="btn" id="bNeu">↺ Neue Runde</button></div>
-  <p class="regel">Runde 1: 3 in einer Reihe = Bingo! · Runde 2: das ganze Feld · Bei „Bingo!“: die Wörter vorlesen und rechts vergleichen.</p>
+  <p class="regel">Runde 1: 3 in einer Reihe = Bingo! · Runde 2: das ganze Feld · Bei „Bingo!“: die Wörter vorlesen und rechts vergleichen. · Handy: die Zahl neben 📱 eintippen, das Handy prüft die Kreuze.</p>
 </div>
 
 <div class="wrap" id="karte" hidden>
   <div class="head"><div class="strich"></div><h1>Meine Karte</h1><span class="sub" id="kSub"></span></div>
+  <div class="card" id="kEin"><p><b>Tipp den Spielcode von der Tafel ein.</b></p>
+    <input class="zahl" id="kCode" inputmode="numeric" maxlength="7" placeholder="000 000" autocomplete="off" aria-label="Spielcode">
+    <p class="meld" id="kMeld"></p>
+    <div class="ctrl"><button class="btn go" id="bKLos">Los</button><button class="btn kl" id="bMenu4">Einstellungen</button></div></div>
+  <div id="kSpiel" hidden>
   <div class="row" style="justify-content:center;margin-bottom:12px"><div class="seg" data-k="kst"><button data-v="1">● Bild + Wort</button><button data-v="2">●● nur Bild</button></div></div>
   <div class="k" id="kGrid"></div>
-  <p class="regel">Hör zu. Tipp auf das Bild. 3 in einer Reihe: Ruf „Bingo!“</p>
-  <div class="ctrl"><button class="btn" id="bKNeu">↺ Neue Karte</button><button class="btn" id="bKLeer">Kreuze löschen</button><button class="btn kl" id="bMenu3">Einstellungen</button></div>
+  <p class="meld" id="kInfo"></p>
+  <p class="regel">Hör zu. Tipp auf das Bild. 3 in einer Reihe: Tipp die Zahl von der Tafel ein. Stimmt alles? Ruf „Bingo!“</p>
+  <div class="ctrl"><button class="btn go" id="bKPruef">Bingo prüfen</button><button class="btn" id="bKNeu">↺ Neue Karte</button><button class="btn" id="bKLeer">Kreuze löschen</button><button class="btn kl" id="bMenu3">Einstellungen</button></div>
+  </div>
 </div>
-<div id="bingo" hidden><div><div>Bingo!</div><p>Ruf laut „Bingo!“ und lies deine 3 Wörter vor.</p><button class="btn" id="bBingoZu">Weiter spielen</button></div></div>
+<div id="pruef" hidden><div class="box"><h2 id="pTitel"></h2><p>Welche Zahl steht an der Tafel neben 📱?</p>
+  <input class="zahl" id="pZahl" inputmode="numeric" maxlength="3" placeholder="000" autocomplete="off" aria-label="Zahl von der Tafel">
+  <p class="meld" id="pMeld"></p>
+  <div class="ctrl"><button class="btn go" id="bPruef">Prüfen</button><button class="btn" id="bPZu">Zurück</button></div></div></div>
+<div id="bingo" hidden><div><div>Bingo!</div><p id="bTxt"></p><button class="btn" id="bBingoZu">Weiter spielen</button></div></div>
 
 <script>//---------------------------------------------------------------------
 //
@@ -2441,7 +2464,7 @@ const STAND="ABC_Wortschatz_Rie_v9.html · gebaut 08.11.2026";
 const $=id=>document.getElementById(id);
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 const S=Object.assign({art:"le",le:"",th:"",pt:"2",n:"16",zeig:"bild",kst:"1"},(()=>{try{return JSON.parse(store.get("rie_bingo"))||{}}catch(e){return {}}})());
-const st={liste:[],rest:[],gez:[],cur:null,offen:true,seed:0,karte:[],kx:[]};
+const st={liste:[],basis:[],rest:[],gez:[],cur:null,offen:true,seed:0,code:0,pz:[],runde:0,r:0,karte:[],kx:[],falsch:[],sperre:null};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function iso(d){const [t,m,j]=d.split(".");return "20"+j+"-"+m+"-"+t}
 const HEUTE=(()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")})();
@@ -2473,7 +2496,7 @@ function mark(){document.querySelectorAll(".seg[data-k]").forEach(sg=>sg.querySe
   const i=$("info");i.classList.toggle("warn",n<9);
   i.innerHTML=n<9?`Hier gibt es nur <b>${n} Wörter</b> mit Bild. Für Bingo braucht man mindestens 9. Bitte eine andere Auswahl nehmen.`:
     `<b>${n} Wörter</b> mit Bild in dieser Auswahl – im Spiel sind <b>${brauch}</b> davon (zufällig). <b>Ohne Ton</b>, Musik unten links zuschaltbar. Tasten: Leertaste oder → = nächstes Wort, F = Vollbild.`;
-  $("bStart").disabled=$("bKarte").disabled=n<9;
+  $("bStart").disabled=n<9;
 }
 document.querySelectorAll(".seg[data-k]").forEach(sg=>sg.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S[sg.dataset.k]=b.dataset.v;spare();mark();if(sg.dataset.k==="kst")zeigKarte()}));
 function fuell(){
@@ -2484,29 +2507,46 @@ function fuell(){
 }
 $("sLe").onchange=e=>{S.le=e.target.value;spare();mark()};$("sTh").onchange=e=>{S.th=e.target.value;spare();mark()};
 /* Spielwörter festlegen */
-function zieheListe(seed){const p=pool().sort((a,b)=>a.i-b.i);st.seed=seed;st.liste=misch(p,rng(seed)).slice(0,Math.min(+S.n,p.length)).sort((a,b)=>a.w.localeCompare(b.w,"de"))}
+/* Spielcode: 6 Ziffern = Startwert + Einstellungen. Tafel und Handys haben damit dieselben Wörter und dieselbe Reihenfolge.
+   Prüfzahl: 3 Ziffern pro gezogenem Wort (4 Runden je Spiel, danach von vorn). Das Handy liest daraus, welche Wörter schon dran waren. */
+const ARTEN=["le","th","bis"],NS=["12","16","20","25"],RUNDEN=4;
+const neuSeed=()=>42+Math.floor(Math.random()*374);
+const fmt=c=>String(c).replace(/^(\d{3})(\d{3})$/,"$1 $2");
+function codeVon(seed){const sel=S.art==="le"?LES.findIndex(l=>l[0]===S.le):S.art==="th"?THS.findIndex(t=>t[0]===S.th):0;
+  return seed*2400+((sel*3+ARTEN.indexOf(S.art))*2+(+S.pt-1))*4+NS.indexOf(String(S.n))}
+function ladeCode(c){c=+c;if(!(c>=100800&&c<=998399))return false;
+  const seed=Math.floor(c/2400);let x=c%2400;const n=NS[x%4];x=Math.floor(x/4);const pt=x%2+1;x=Math.floor(x/2);const art=ARTEN[x%3],sel=Math.floor(x/3);
+  if(art==="le"&&!LES[sel]||art==="th"&&!THS[sel]||art==="bis"&&sel)return false;
+  const alt=Object.assign({},S);S.art=art;if(art==="le")S.le=LES[sel][0];if(art==="th")S.th=THS[sel][0];S.pt=String(pt);S.n=n;
+  if(pool().length<9){Object.assign(S,alt);return false}
+  zieheListe(seed);return true}
+function zieheListe(seed){const p=pool().sort((a,b)=>a.i-b.i);st.seed=seed;st.code=codeVon(seed);
+  st.basis=misch(p,rng(seed)).slice(0,Math.min(+S.n,p.length));st.liste=st.basis.slice().sort((a,b)=>a.w.localeCompare(b.w,"de"));
+  st.pz=misch(Array.from({length:900},(_,i)=>i+100),rng(seed+7777));st.runde=0;st.sperre=null}
+function folge(r){return misch(st.basis,rng(st.seed*10+r+1))}
+function pzahl(r,k){return st.pz[r*st.basis.length+k-1]}
 function seiten(ids){["start","wahl","zieh","karte"].forEach(x=>$(x).hidden=x!==ids)}
-function hashFuer(){return "#k="+encodeURIComponent([S.art,S.art==="le"?S.le:S.art==="th"?S.th:"",S.pt,S.n,st.seed].join("|"))}
+function hashFuer(){return "#s="+st.code}
 function zeigWahl(){
   seiten("wahl");$("wSub").textContent=titel()+" · "+st.liste.length+" Wörter";
   const n=st.liste.length,cols=n<=12?4:n<=16?6:n<=20?7:7,rows=Math.ceil(n/cols);
   const g=$("alle");g.style.setProperty("--cols",cols);g.style.setProperty("--ih",(rows<=2?17:rows===3?12.5:9.5)+"vh");g.style.setProperty("--fs",(rows<=2?2.5:2.1)+"vh");
   g.innerHTML=st.liste.map(w=>`<div class="cell"><img src="${w.b}" alt=""><div class="w">${wortHtml(w)}</div></div>`).join("");
-  const box=$("qrBox");
-  if(/^https?:/.test(location.protocol)&&typeof qrcode==="function"){try{const q=qrcode(0,"M");q.addData(location.origin+location.pathname+hashFuer()+"&karte=1");q.make();$("qr").innerHTML=q.createSvgTag({cellSize:4,margin:2,scalable:true});box.hidden=false}catch(e){box.hidden=true}}else box.hidden=true;
+  $("wCode").textContent=fmt(st.code);const qr=$("qr");qr.hidden=true;
+  if(/^https?:/.test(location.protocol)&&typeof qrcode==="function"){try{const q=qrcode(0,"M");q.addData(location.origin+location.pathname+hashFuer()+"&karte=1");q.make();qr.innerHTML=q.createSvgTag({cellSize:4,margin:2,scalable:true});qr.hidden=false}catch(e){}}
 }
-function start(){zieheListe(Math.floor(Math.random()*90000)+10000);document.body.classList.remove("nurbild");$("bNurBild").textContent="Wörter verstecken";zeigWahl()}
+function start(){zieheListe(neuSeed());document.body.classList.remove("nurbild");$("bNurBild").textContent="Wörter verstecken";zeigWahl()}
 $("bStart").onclick=start;
 $("bNurBild").onclick=()=>{const an=document.body.classList.toggle("nurbild");$("bNurBild").textContent=an?"Wörter zeigen":"Wörter verstecken"};
 /* Ziehen */
-function neueRunde(){st.rest=misch(st.liste,Math.random);st.gez=[];st.cur=null;st.offen=true;zeigZieh()}
+function neueRunde(){st.r=st.runde%RUNDEN;st.runde++;st.rest=folge(st.r).reverse();st.gez=[];st.cur=null;st.offen=true;zeigZieh()}
 function zeigZieh(){
-  seiten("zieh");$("zSub").textContent=titel();
+  seiten("zieh");$("zSub").textContent=titel()+" · Spielcode "+fmt(st.code);
   const s=$("stage"),w=st.cur;
   if(!w)s.innerHTML=`<div class="hin">Alle bereit? Stift weg, Augen nach vorn.</div>`;
   else{const lang=(w.w.length+(w.a?4:0))>14?" lang":"";
     const bild=`<img src="${w.b}" alt="">`,wort=`<div class="wort${lang}">${wortHtml(w)}</div>`;
-    s.innerHTML=`<div class="nr">Wort ${st.gez.length} von ${st.liste.length}</div>`+(st.offen?bild+wort:S.zeig==="bild"?bild:S.zeig==="wort"?wort:`<div class="frage">?</div><div class="hin">Hör zu.</div>`)}
+    s.innerHTML=`<div class="nr">Wort ${st.gez.length} von ${st.liste.length}</div><div class="pz"><small>📱</small>${pzahl(st.r,st.gez.length)}</div>`+(st.offen?bild+wort:S.zeig==="bild"?bild:S.zeig==="wort"?wort:`<div class="frage">?</div><div class="hin">Hör zu.</div>`)}
   const fertig=st.offen?st.gez:st.gez.slice(0,-1);
   $("zN").textContent=fertig.length?"("+fertig.length+")":"";
   $("gez").innerHTML=fertig.slice().reverse().map((x,i)=>`<div class="g${i===0?" neu":""}"><img src="${x.b}" alt="">${wortHtml(x)}</div>`).join("");
@@ -2524,18 +2564,40 @@ function next(){
 }
 $("bLos").onclick=neueRunde;$("bNext").onclick=next;
 $("bNeu").onclick=neueRunde;$("bAlle").onclick=zeigWahl;
-["bMenu1","bMenu2","bMenu3"].forEach(b=>$(b).onclick=()=>{history.replaceState(null,"",location.pathname);seiten("start");mark()});
+["bMenu1","bMenu2","bMenu3","bMenu4"].forEach(b=>$(b).onclick=()=>{history.replaceState(null,"",location.pathname);seiten("start");mark()});
 /* Handy-Karte */
-function neueKarte(){st.karte=misch(st.liste,Math.random).slice(0,9);st.kx=Array(9).fill(false);zeigKarte()}
+const REIHEN=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+function neueKarte(){st.karte=misch(st.liste,Math.random).slice(0,9);st.kx=Array(9).fill(false);st.falsch=[];$("kInfo").textContent="";zeigKarte()}
 function zeigKarte(){
-  if($("karte").hidden)return;mark();$("karte").classList.toggle("nb",S.kst==="2");$("kSub").textContent=titel();
-  $("kGrid").innerHTML=st.karte.map((w,i)=>`<div class="f${st.kx[i]?" x":""}" data-i="${i}"><img src="${w.b}" alt=""><div class="w">${wortHtml(w)}</div></div>`).join("");
+  if($("karte").hidden)return;mark();$("karte").classList.toggle("nb",S.kst==="2");$("kSub").textContent=st.karte.length?titel()+" · Spiel "+fmt(st.code):"";
+  $("kGrid").innerHTML=st.karte.map((w,i)=>`<div class="f${st.kx[i]?" x":""}${st.falsch[i]?" falsch":""}" data-i="${i}"><img src="${w.b}" alt=""><div class="w">${wortHtml(w)}</div></div>`).join("");
 }
-$("kGrid").onclick=e=>{const f=e.target.closest(".f");if(!f)return;const i=+f.dataset.i;st.kx[i]=!st.kx[i];zeigKarte();
-  if(st.kx[i]&&[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(r=>r.includes(i)&&r.every(j=>st.kx[j])))$("bingo").hidden=false};
+function kEingabe(){seiten("karte");st.karte=[];$("kEin").hidden=false;$("kSpiel").hidden=true;$("kSub").textContent="";$("kMeld").textContent="";$("kCode").value=""}
+function kSpiel(){seiten("karte");$("kEin").hidden=true;$("kSpiel").hidden=false;neueKarte()}
+function kLos(){if(ladeCode($("kCode").value.replace(/\D/g,"")))kSpiel();else $("kMeld").textContent="Dieser Code passt nicht. Schau noch einmal an die Tafel."}
+const hatReihe=()=>REIHEN.some(r=>r.every(j=>st.kx[j]));
+function info(t,gut){const e=$("kInfo");e.textContent=t;e.classList.toggle("gut",!!gut)}
+function oeffnePruef(){$("pTitel").textContent=st.kx.every(Boolean)?"Volles Feld!":hatReihe()?"3 in einer Reihe!":"Kreuze prüfen";$("pZahl").value="";$("pMeld").textContent="";$("pruef").hidden=false;try{$("pZahl").focus()}catch(e){}}
+function pruefe(){
+  const z=+$("pZahl").value.replace(/\D/g,""),n=st.basis.length,idx=st.pz.indexOf(z);
+  if(idx<0||idx>=n*RUNDEN){$("pMeld").textContent="Diese Zahl passt nicht. Schau noch einmal an die Tafel.";return}
+  const r=Math.floor(idx/n),k=idx%n+1;
+  if(st.sperre&&st.sperre[0]===r&&k<=st.sperre[1]){$("pMeld").textContent="Warte auf das nächste Wort. Dann kannst du wieder prüfen.";return}
+  const dran=new Set(folge(r).slice(0,k).map(w=>w.i)),f=st.karte.map((w,i)=>st.kx[i]&&!dran.has(w.i)),nf=f.filter(Boolean).length;
+  $("pruef").hidden=true;
+  if(nf){st.sperre=[r,k];f.forEach((x,i)=>{if(x)st.kx[i]=false});st.falsch=f;zeigKarte();
+    info(nf===1?"1 Kreuz war falsch: Das Wort war noch nicht dran. Das Kreuz ist weg.":nf+" Kreuze waren falsch: Die Wörter waren noch nicht dran. Die Kreuze sind weg.")}
+  else if(hatReihe()){const voll=st.kx.every(Boolean);info("");$("bTxt").textContent=voll?"Alle 9 Kreuze stimmen. Ruf laut „Bingo!“":"Alle Kreuze stimmen. Ruf laut „Bingo!“ und lies deine 3 Wörter vor.";$("bingo").hidden=false}
+  else info(st.kx.some(Boolean)?"Alle Kreuze stimmen. Noch keine Reihe – spiel weiter.":"Du hast noch kein Kreuz.",true);
+}
+$("kGrid").onclick=e=>{const f=e.target.closest(".f");if(!f)return;const i=+f.dataset.i;st.kx[i]=!st.kx[i];st.falsch=[];info("");zeigKarte();
+  if(st.kx[i]&&(st.kx.every(Boolean)||REIHEN.some(r=>r.includes(i)&&r.every(j=>st.kx[j]))))oeffnePruef()};
 $("bBingoZu").onclick=()=>$("bingo").hidden=true;
-$("bKNeu").onclick=neueKarte;$("bKLeer").onclick=()=>{st.kx=Array(9).fill(false);zeigKarte()};
-$("bKarte").onclick=()=>{zieheListe(Math.floor(Math.random()*90000)+10000);seiten("karte");neueKarte()};
+$("bKPruef").onclick=oeffnePruef;$("bPruef").onclick=pruefe;$("bPZu").onclick=()=>$("pruef").hidden=true;
+$("pZahl").addEventListener("keydown",e=>{if(e.key==="Enter")pruefe()});$("kCode").addEventListener("keydown",e=>{if(e.key==="Enter")kLos()});
+$("bKLos").onclick=kLos;
+$("bKNeu").onclick=neueKarte;$("bKLeer").onclick=()=>{st.kx=Array(9).fill(false);st.falsch=[];info("");zeigKarte()};
+$("bKarte").onclick=kEingabe;
 /* Vollbild + Tasten */
 function vollbild(){const d=document,el=d.documentElement;try{if(d.fullscreenElement||d.webkitFullscreenElement){const x=d.exitFullscreen||d.webkitExitFullscreen;const r=x&&x.call(d);if(r&&r.catch)r.catch(()=>{})}else{const q=el.requestFullscreen||el.webkitRequestFullscreen;const r=q&&q.call(el);if(r&&r.catch)r.catch(()=>{})}}catch(e){}}
 function fullTxt(){$("bFull").textContent=(document.fullscreenElement||document.webkitFullscreenElement)?"✕ Vollbild aus":"⛶ Vollbild"}
@@ -2545,9 +2607,8 @@ document.addEventListener("keydown",e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.rep
   else if((e.key===" "||e.key==="ArrowRight"||e.key==="Enter")&&!$("zieh").hidden){e.preventDefault();next()}});
 /* Start: Link vom QR-Code? */
 fuell();
-(function(){const m=location.hash.match(/k=([^&]+)/);
-  if(m){try{const p=decodeURIComponent(m[1]).split("|");S.art=p[0];if(p[0]==="le")S.le=p[1];if(p[0]==="th")S.th=p[1];S.pt=p[2];S.n=p[3];
-    if(pool().length>=9){zieheListe(+p[4]||1);if(/karte=1/.test(location.hash)){seiten("karte");neueKarte();return}zeigWahl();return}}catch(e){}}
+(function(){const m=location.hash.match(/s=(\d+)/);
+  if(m&&ladeCode(m[1])){if(/karte=1/.test(location.hash))kSpiel();else zeigWahl();return}
   mark();
 })();
 </script>
