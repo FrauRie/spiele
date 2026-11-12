@@ -4,13 +4,13 @@ import re,json,base64,io,os
 from PIL import Image
 R='/home/claude/spiele/'; T='/tmp/work/'
 fonts=open(T+'fonts.css',encoding='utf-8').read(); musik=open(T+'musik.html',encoding='utf-8').read()
-def schreib(ziel,h):
+def schreib(ziel,h,vor=''):
     assert h.count('</body>')==1
-    h=h.replace('</body>',musik+'</body>')
+    h=h.replace('</body>',vor+musik+'</body>')
     os.makedirs(os.path.dirname(R+ziel),exist_ok=True)
     open(R+ziel,'w',encoding='utf-8').write(h); print(ziel,f'{len(h)/1e6:.1f} MB')
 # ---------- Was sagen die meisten? ----------
-schreib('spiele/was-sagen-die-meisten/was-sagen-die-meisten.html',open(T+'meisten_tpl.html',encoding='utf-8').read().replace('/*FONTS*/',fonts))
+schreib('spiele/was-sagen-die-meisten/was-sagen-die-meisten.html',open(T+'meisten_tpl.html',encoding='utf-8').read().replace('/*FONTS*/',fonts),open(T+'ton.html',encoding='utf-8').read()+open(T+'auto.html',encoding='utf-8').read())
 # ---------- Sortiertafel ----------
 # wo? / wohin? – von Hand festgelegt, nur für Orte aus dem Wortschatz: Lemma -> (wo, wohin)
 WW={'Schule':('in der Schule','in die Schule'),'Klasse':('in der Klasse','in die Klasse'),'Raum':('im Raum','in den Raum'),'Schulbüro':('im Schulbüro','ins Schulbüro'),

@@ -625,6 +625,52 @@ function tStep(d){const tn=$('tnum');if(tn)tn.style.fontSize='';clearInterval(tt
 renderSetup();
 if(/[?#]tablet/.test(location.href)) openTablet();
 </script>
+<!-- rie-ton v1 (12.11.2026): kurzer Ton bei der Lösung, zuschaltbar (Standard aus). Steht vor dem Automatik- bzw. Musik-Baustein. -->
+<style>
+#rieTon{position:fixed;left:calc(2.2vh + max(5.6vh,34px));bottom:1.2vh;z-index:9999;width:5.6vh;height:5.6vh;min-width:34px;min-height:34px;border-radius:50%;border:.3vh solid #C9C2B6;background:#fff;font-size:2.4vh;line-height:1;cursor:pointer;opacity:.6;padding:0;display:grid;place-items:center;font-family:inherit;filter:grayscale(1)}
+#rieTon[hidden]{display:none}
+#rieTon:hover{opacity:1}
+#rieTon.an{background:#FCE3D0;border-color:#D9690A;opacity:.95;filter:none}
+@media print{#rieTon{display:none}}
+</style>
+<button id="rieTon" type="button" hidden title="Ton bei der Lösung: an / aus" aria-label="Ton bei der Lösung umschalten">🔔</button>
+<script>
+(function(){
+  var KEY="rie_ton",btn=document.getElementById("rieTon"),an=false,ctx=null,K=null,V=null,prev="";
+  try{an=localStorage.getItem(KEY)==="1"}catch(e){}
+  function $(id){return document.getElementById(id)}
+  function ac(){try{if(!ctx){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;ctx=new AC()}if(ctx.state==="suspended")ctx.resume();return ctx}catch(e){return null}}
+  function note(c,f,t,d,g){var o=c.createOscillator(),v=c.createGain();o.type="triangle";o.frequency.value=f;v.gain.setValueAtTime(0.0001,t);v.gain.exponentialRampToValueAtTime(g,t+0.015);v.gain.exponentialRampToValueAtTime(0.0001,t+d);o.connect(v);v.connect(c.destination);o.start(t);o.stop(t+d+0.05)}
+  function kling(){var c=ac();if(!c)return;var t=c.currentTime+0.02;note(c,659.25,t,0.35,0.2);note(c,987.77,t+0.12,0.65,0.18)}   /* eigener Zweiklang, nichts Fremdes */
+  /* K() = Kennung der gerade sichtbaren Lösung ("" = keine). Ändert sie sich auf einen neuen Wert, klingt der Ton. */
+  try{
+    if(typeof st!=="undefined"&&$("brett")&&typeof deckAuf==="function")                       /* Was sagen die meisten?: Ton pro aufgedeckter Antwort */
+      K=function(){if($("spiel").hidden||st.phase==="schreiben")return"";var n=st.auf.filter(Boolean).length;return n?st.i+":"+n:""};
+    else if(typeof st!=="undefined"&&$("zieh")&&"offen" in st){                                 /* Bingo */
+      K=function(){return !$("zieh").hidden&&st.cur&&st.offen?String(st.gez.length):""};V=function(){return $("karte").hidden}}
+    else if(typeof plenumLoesung==="function")                                                  /* Vokabelcheck (Plenum) */
+      K=function(){return document.querySelector(".stage .loes")?"1":""};
+    else if(typeof G!=="undefined")                                     /* Zoom-Bild, Wer bin ich?, Activity, Eis schmilzt */
+      K=function(){if(!G)return"";if(typeof solve==="function"&&typeof reveal==="function")return G.step===5?"1":"";
+        return (G.show===true||G.phase==="sol"||G.phase==="aufloesen"||G.phase==="fertig"||G.done===true)?"1":""};
+    else if(typeof st!=="undefined"&&st&&typeof st==="object")                                  /* Quiz-Spiele, Blitzbild */
+      K=function(){return (st.shown===true||st.phase==="reveal"||st.phase==="loesung"||st.phase==="umbau")?"1":""};
+    else if($("stage")&&$("bMain"))                                                              /* Buchstaben-Salat, Was fehlt? (Zustand nicht von außen lesbar → Anzeige prüfen) */
+      K=function(){return document.querySelector("#flip.turn,#stage.rev")?"1":""};
+  }catch(e){K=null}
+  if(!K)return;
+  function zeig(){btn.classList.toggle("an",an);btn.textContent=an?"🔔":"🔕"}
+  btn.hidden=false;zeig();
+  btn.onclick=function(){an=!an;try{localStorage.setItem(KEY,an?"1":"0")}catch(e){}zeig();if(an)kling();btn.blur()};
+  ["pointerdown","keydown"].forEach(function(ev){document.addEventListener(ev,function(){if(an)ac()},true)});
+  try{prev=K()||""}catch(e){}
+  setInterval(function(){
+    if(V)btn.hidden=!V();
+    var k="";try{k=K()||""}catch(e){}
+    if(k!==prev){if(k&&an)kling();prev=k}
+  },120);
+})();
+</script>
 <!-- rie-musik v2 (12.11.2026): eigene Quizmusik, 3 Stücke, zuschaltbar, Standard aus -->
 <style>
 #rieMusik sub{font-size:.55em;margin-left:.1em;align-self:end;padding-bottom:.9em}

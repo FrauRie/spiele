@@ -1,6 +1,6 @@
-<!-- rie-auto v1 (12.11.2026): Automatik – die Zeit startet von selbst, nach Zeitablauf kommt die Lösung. Abschaltbar (dann wie bisher mit Knopf). -->
+<!-- rie-auto v2 (12.11.2026): Automatik – die Zeit startet von selbst, nach Zeitablauf kommt die Lösung. Abschaltbar (dann wie bisher mit Knopf). -->
 <style>
-#rieAuto{position:fixed;left:calc(2.2vh + max(5.6vh,34px));bottom:1.2vh;z-index:9999;height:5.6vh;min-height:34px;border-radius:99px;border:.3vh solid #C9C2B6;background:#fff;color:#8A8378;font-size:max(2vh,13px);font-weight:700;line-height:1;cursor:pointer;opacity:.6;padding:0 1.8vh;font-family:inherit;white-space:nowrap}
+#rieAuto{position:fixed;left:calc(3.2vh + 2*max(5.6vh,34px));bottom:1.2vh;z-index:9999;height:5.6vh;min-height:34px;border-radius:99px;border:.3vh solid #C9C2B6;background:#fff;color:#8A8378;font-size:max(2vh,13px);font-weight:700;line-height:1;cursor:pointer;opacity:.6;padding:0 1.8vh;font-family:inherit;white-space:nowrap}
 #rieAuto:hover{opacity:1}
 #rieAuto.an{background:#059E42;border-color:#04793A;color:#fff;opacity:.95}
 @media print{#rieAuto{display:none}}
@@ -16,7 +16,11 @@
   function txt(sek){btn.textContent=an?(sek?"⏱ "+sek:"⏱ Auto an"):"⏱ Auto aus";btn.classList.toggle("an",an)}
   /* Welches Spiel? ready = Aufgabe wartet · sig = welche Aufgabe · lead = Sekunden bis zur Aktion · go = Aktion */
   try{
-    if(typeof st!=="undefined"&&$("stage")&&$("zieh")&&"offen" in st){            /* Bingo: Wort nach x Sekunden auflösen */
+    if(typeof st!=="undefined"&&$("brett")&&typeof deckAuf==="function"){            /* Was sagen die meisten?: Antworten im Takt aufdecken */
+      A={ready:function(){return !$("spiel").hidden&&st.phase==="auf"},
+         sig:function(){return st.i+"|"+st.auf.filter(Boolean).length},lead:function(){return 4},
+         go:function(){$("bNext").click()}};
+    }else if(typeof st!=="undefined"&&$("stage")&&$("zieh")&&"offen" in st){            /* Bingo: Wort nach x Sekunden auflösen */
       A={ready:function(){return !$("zieh").hidden&&!!st.cur&&!st.offen},
          sig:function(){return st.seed+"|"+st.runde+"|"+st.gez.length},
          lead:function(){return +S.az||8},

@@ -1,7 +1,7 @@
 import re,html,json,collections,subprocess,os
 R='/home/claude/spiele/'
 exec(open('/tmp/work/build_index.py',encoding='utf-8').read().split("e=html.escape")[0].replace("old=open(R+'index.html',encoding='utf-8').read()","old=open('/tmp/work/index_old.html',encoding='utf-8').read()"))
-DESC['bingo']=('Bingo','Ohne Druck: 3 × 3 aufs Whiteboard, das Smartboard zieht die Wörter.')
+DESC['bingo']=('Bingo','Ohne Ausdrucken: 3 × 3 aufs Whiteboard, das Smartboard zieht die Wörter.')
 einzel.insert(1,('Bingo',DESC['bingo'][1],'spiele/bingo/bingo-rufer.html'))
 # neu am 12.11.2026: Sortiertafel und „Was sagen die meisten?“ (gebaut mit build_neu.py)
 DESC['sortiertafel']=('Sortiertafel','Bildkarten in Spalten ziehen: der/die/das, Singular/Plural, wo?/wohin? – auch als Tafelbild.')
