@@ -491,9 +491,9 @@ function buildStart(){
   rieSolo();const solo=SOLO();
   const alle=S.modus==="alle";
   $("startLead").textContent=alle
-    ?"Ein Bild erscheint. Alle schreiben das Wort auf ihr Whiteboard, während das Eis in der Sonne schmilzt. Dann: Zeigen! Die Lösung kommt Buchstabe für Buchstabe – alle prüfen ihr Board."
+    ?"Ein Bild erscheint. Alle schreiben das Wort auf ihr Whiteboard, während das Eis in der Sonne schmilzt. Dann kommt die Lösung Buchstabe für Buchstabe – alle prüfen ihr Board."
     :"Buchstaben raten: Ein Team ist dran. Alle im Team schreiben einen Buchstaben auf, die Mehrheit wird getippt. Der Buchstabe erscheint überall im Wort. Falscher Buchstabe: eine Eiskugel schmilzt.";
-  const steps=alle?[["Bild","Bild und Striche zeigen, wie lang das Wort ist."],["Schreiben","Alle schreiben leise. Das Eis schmilzt = die Zeit läuft."],["Zeigen!","Alle Whiteboards gleichzeitig hoch."],["Prüfen","Buchstabe für Buchstabe. Achtung-Stellen sind markiert. 1 Punkt pro Team, wenn mind. die Hälfte richtig hat."]]
+  const steps=alle?[["Bild","Bild und Striche zeigen, wie lang das Wort ist."],["Schreiben","Alle schreiben leise. Das Eis schmilzt = die Zeit läuft."],["Zeit um","Die Lösung kommt sofort."],["Prüfen","Buchstabe für Buchstabe. Achtung-Stellen sind markiert. 1 Punkt pro Team, wenn mind. die Hälfte richtig hat."]]
     :[["Bild","Ein Team ist dran. Die Striche zeigen das Wort."],["Aufschreiben","Alle im Team schreiben einen Buchstaben."],["Mehrheit","Zeigen – der häufigste Buchstabe wird getippt."],["Überall","Der Buchstabe erscheint überall im Wort (groß und klein)."],["Punkte","Wort geschafft (nicht alles geschmolzen) = 1 Punkt für das Team."]];
   if(solo){if(alle)steps[3]=["Prüfen","Buchstabe für Buchstabe. Achtung-Stellen sind markiert. Alle prüfen ihr Board."];else{$("startLead").textContent="Buchstaben raten: Alle raten zusammen. Alle schreiben einen Buchstaben auf, die Mehrheit wird getippt. Der Buchstabe erscheint überall im Wort. Falscher Buchstabe: eine Eiskugel schmilzt.";steps[0]=["Bild","Die Striche zeigen das Wort."];steps[1]=["Aufschreiben","Alle schreiben einen Buchstaben."];steps[4]=["Eis retten","Wort geschafft, bevor alles geschmolzen ist? Super!"]}}
   $("startSteps").style.gridTemplateColumns=`repeat(${steps.length},1fr)`;$("startSteps").innerHTML=steps.map((s,i)=>`<div class="st"><span class="n">${i+1}</span><b>${s[0]}</b>${s[1]}</div>`).join("");
@@ -661,7 +661,7 @@ function timeUp(){
   if(G.phase!=="schreiben")return;
   clearTimers();G.phase="zeigen";updMain();
   $("coneTxt").textContent="Zeit ist um!";
-  $("zeigen").hidden=false;
+  aufloesen();
 }
 function aufloesen(){
   $("zeigen").hidden=true;
@@ -844,5 +844,59 @@ document.addEventListener("keydown",e=>{
   if(G.mode==="raten"&&e.key.length===1&&isL(e.key)){e.preventDefault();tap(e.key)}
 });
 buildStart();buildMehr();
+</script>
+<!-- rie-musik v1 (12.11.2026): eigene Quizmusik, zuschaltbar, Standard aus -->
+<style>
+#rieMusik{position:fixed;left:1.2vh;bottom:1.2vh;z-index:9999;width:5.6vh;height:5.6vh;min-width:34px;min-height:34px;border-radius:50%;border:.3vh solid #C9C2B6;background:#fff;color:#8A8378;font-size:2.6vh;line-height:1;cursor:pointer;opacity:.6;padding:0;display:grid;place-items:center;font-family:inherit}
+#rieMusik:hover{opacity:1}
+#rieMusik.an{background:#F28C28;border-color:#D9690A;color:#fff;opacity:.95}
+@media print{#rieMusik{display:none}}
+</style>
+<button id="rieMusik" type="button" title="Musik an / aus (Taste M)" aria-label="Musik an oder aus">♪</button>
+<script>
+(function(){
+  var KEY="rie_musik",btn=document.getElementById("rieMusik"),ctx=null,master=null,an=false,timer=null,nextT=0,step=0,noise=null;
+  function get(){try{return localStorage.getItem(KEY)==="1"}catch(e){return false}}
+  function set(v){try{localStorage.setItem(KEY,v?"1":"0")}catch(e){}}
+  /* Eigene Schleife: 4 Takte, 16tel-Raster. Akkorde Dm – G – B – C (Grundtöne als MIDI). */
+  var ROOT=[38,43,46,48];
+  var BASS=[0,-1,-1,0,-1,-1,7,-1,0,-1,12,-1,-1,7,-1,-1];
+  var RIFF=[[12,-1,-1,15,-1,19,-1,-1,22,-1,19,-1,15,-1,17,-1],[12,-1,16,-1,-1,19,-1,21,-1,-1,19,-1,16,-1,14,-1],[12,-1,-1,16,-1,19,-1,-1,24,-1,19,-1,17,-1,16,-1],[12,-1,16,-1,19,-1,-1,23,-1,19,-1,16,-1,14,-1,11]];
+  function hz(m){return 440*Math.pow(2,(m-69)/12)}
+  function ton(t,m,dur,typ,vol){var o=ctx.createOscillator(),g=ctx.createGain();o.type=typ;o.frequency.value=hz(m);
+    g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+0.03)}
+  function kick(t){var o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(45,t+0.12);
+    g.gain.setValueAtTime(0.5,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.16);o.connect(g);g.connect(master);o.start(t);o.stop(t+0.2)}
+  function hat(t,vol){if(!noise){var n=ctx.sampleRate*0.05;noise=ctx.createBuffer(1,n,ctx.sampleRate);var d=noise.getChannelData(0);for(var i=0;i<n;i++)d[i]=Math.random()*2-1}
+    var s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=noise;f.type="highpass";f.frequency.value=6500;
+    g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.045);s.connect(f);f.connect(g);g.connect(master);s.start(t)}
+  function eilig(){try{return !!document.querySelector(".spaet,.late,.blink")}catch(e){return false}}
+  function plan(){
+    if(!an||!ctx)return;
+    while(nextT<ctx.currentTime+0.25){
+      var bpm=eilig()?144:120,d=60/bpm/4,bar=Math.floor(step/16)%4,i=step%16,r=ROOT[bar];
+      if(BASS[i]>=0)ton(nextT,r+BASS[i],d*1.7,"triangle",0.22);
+      if(RIFF[bar][i]>=0)ton(nextT,r+12+RIFF[bar][i],d*1.5,"square",0.045);
+      if(i%4===0)kick(nextT);
+      if(i%2===0)hat(nextT,i%4===2?0.05:0.022);
+      nextT+=d;step++;
+    }
+  }
+  function start(){
+    try{if(!ctx){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();master.gain.value=0.5;master.connect(ctx.destination)}
+      if(ctx.state==="suspended")ctx.resume();
+      nextT=ctx.currentTime+0.06;step=0;clearInterval(timer);timer=setInterval(plan,60);plan()}catch(e){}
+  }
+  function stop(){clearInterval(timer);timer=null;try{if(ctx&&ctx.state==="running")ctx.suspend()}catch(e){}}
+  function zeig(){btn.classList.toggle("an",an);btn.textContent=an?"♫":"♪"}
+  function schalt(v){an=v;set(v);zeig();if(v)start();else stop()}
+  btn.addEventListener("click",function(e){e.stopPropagation();schalt(!an);btn.blur()});
+  document.addEventListener("keydown",function(e){var t=e.target&&e.target.tagName;if(t==="INPUT"||t==="TEXTAREA"||t==="SELECT"||(e.target&&e.target.isContentEditable))return;
+    if((e.key==="m"||e.key==="M")&&!e.ctrlKey&&!e.metaKey&&!e.altKey)schalt(!an)});
+  /* War die Musik beim letzten Mal an, startet sie mit dem ersten Tipp (Browser-Regel). */
+  if(get()){an=true;zeig();var los=function(){document.removeEventListener("pointerdown",los,true);document.removeEventListener("keydown",los,true);if(an)start()};
+    document.addEventListener("pointerdown",los,true);document.addEventListener("keydown",los,true)}
+})();
 </script>
 </body></html>

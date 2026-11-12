@@ -162,7 +162,7 @@ body.solo .head{padding-right:calc(var(--u)*17)}
 
 <div class="ov" id="start"><div class="card">
   <div class="ttl"><h1>Was fehlt?</h1><p class="sub2">Quartett am Smartboard</p></div>
-  <p class="lead">Drei Karten von einem Quartett liegen offen. Eine Karte ist verdeckt. <b>Welche Karte fehlt?</b> Alle schreiben sie auf ihr Mini-Whiteboard. Dann „Zeigen!“ – und die Karte dreht sich um.</p>
+  <p class="lead">Drei Karten von einem Quartett liegen offen. Eine Karte ist verdeckt. <b>Welche Karte fehlt?</b> Alle schreiben sie auf ihr Mini-Whiteboard. Dann dreht sich die Karte um.</p>
   <div class="opts">
     <div class="opt breit"><span>Quartette <small style="font-weight:400;color:var(--muted)">(mehrere möglich – gemischt ist gut für das Gedächtnis)</small></span>
       <div class="pkrow"><div class="seg" id="segAll"><button data-v="alle">alle</button><button data-v="keine">keine</button></div></div>
@@ -174,7 +174,7 @@ body.solo .head{padding-right:calc(var(--u)*17)}
     </div></div>
     <div class="opt"><span>Runden</span><div class="seg" data-k="anz"><button data-v="8">8</button><button data-v="12">12</button><button data-v="16">16</button></div></div>
     <div class="opt"><span>Spielform</span><div class="seg" data-k="teams"><button data-v="0">👤 Jeder für sich</button><button data-v="2">2 Teams</button><button data-v="3">3 Teams</button><button data-v="4">4 Teams</button></div></div>
-    <div class="opt breit"><span>Zeit pro Runde (dann „Zeigen!“)</span><div class="seg" data-k="zeit"><button data-v="45">45 s</button><button data-v="60">60 s</button><button data-v="90">90 s</button><button data-v="0">ohne</button></div></div>
+    <div class="opt breit"><span>Zeit pro Runde (dann Lösung)</span><div class="seg" data-k="zeit"><button data-v="45">45 s</button><button data-v="60">60 s</button><button data-v="90">90 s</button><button data-v="0">ohne</button></div></div>
   </div>
   <div class="info" id="info"></div>
   <div class="startrow">
@@ -293,7 +293,7 @@ function markAll(){
   document.querySelectorAll(".seg[data-k]").forEach(seg=>{const k=seg.dataset.k;seg.querySelectorAll("button").forEach(b=>b.classList.toggle("sel",String(S[k])===b.dataset.v))});
   $("lv").querySelectorAll("button").forEach(b=>b.classList.toggle("sel",+b.dataset.v===S.lv));
   $("bHeute").hidden=!HT;spielform();
-  $("info").innerHTML=`<b>Ablauf:</b> 3 Karten offen, 1 Karte verdeckt → alle schreiben die fehlende Karte aufs Mini-Whiteboard → „Zeigen!“ → die Karte dreht sich um<span class="teamonly"> → Punkte</span>. <b>Ohne Ton</b> – die Zeit läuft als Balken. Tasten: Leertaste = weiter, F = Vollbild.`;
+  $("info").innerHTML=`<b>Ablauf:</b> 3 Karten offen, 1 Karte verdeckt → alle schreiben die fehlende Karte aufs Mini-Whiteboard → die Karte dreht sich um<span class="teamonly"> → Punkte</span>. <b>Ohne Ton</b> – die Zeit läuft als Balken. Tasten: Leertaste = weiter, F = Vollbild.`;
 }
 document.querySelectorAll(".seg[data-k]").forEach(seg=>{const k=seg.dataset.k;seg.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{S[k]=+b.dataset.v;markAll();save()}))});
 $("lv").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.lv=+b.dataset.v;markAll();save()});
@@ -324,11 +324,11 @@ function play(){
     h+=j===r.m?`<div class="flip" id="flip">${rueckHtml(r.s,r.q,j)}${faceHtml(r.s,r.q,j,"vorn")}</div>`:faceHtml(r.s,r.q,j);
     h+=`</div></div>`}
   h+=`</div>${S.zeit?`<div class="zeit" id="zeit"><i id="zeitI"></i></div>`:""}`;
-  stage(h);btns(["✋ Zeigen!","main"],false);
+  stage(h);btns(["🔄 Karte umdrehen","main"],false);
   if(S.zeit){st.iv=setInterval(tick,100);tick()}
 }
 function tick(){const el=(Date.now()-st.t0)/1000;const r=Math.max(0,1-el/S.zeit);const i=$("zeitI");if(i){i.style.width=(r*100)+"%";$("zeit").classList.toggle("spaet",r<.25)}if(r<=0)zeigen()}
-function zeigen(){if(st.phase!=="play")return;clearT();st.phase="zeigen";$("zeigen").hidden=false}
+function zeigen(){if(st.phase!=="play")return;umdrehen()}
 function umdrehen(){
   clearT();$("zeigen").hidden=true;st.phase="reveal";const z=$("zeit");if(z)z.style.visibility="hidden";
   const f=$("flip");if(f){fit(f);requestAnimationFrame(()=>f.classList.add("turn"))}
@@ -400,6 +400,60 @@ document.addEventListener("keydown",e=>{if(!$("start").hidden||!$("ende").hidden
   if(e.key===" "||e.key==="Enter"||e.key==="ArrowRight"){e.preventDefault();if(e.repeat)return;main()}});
 markAll();drawPk();
 st.score=Array(S.teams).fill(0);
+})();
+</script>
+<!-- rie-musik v1 (12.11.2026): eigene Quizmusik, zuschaltbar, Standard aus -->
+<style>
+#rieMusik{position:fixed;left:1.2vh;bottom:1.2vh;z-index:9999;width:5.6vh;height:5.6vh;min-width:34px;min-height:34px;border-radius:50%;border:.3vh solid #C9C2B6;background:#fff;color:#8A8378;font-size:2.6vh;line-height:1;cursor:pointer;opacity:.6;padding:0;display:grid;place-items:center;font-family:inherit}
+#rieMusik:hover{opacity:1}
+#rieMusik.an{background:#F28C28;border-color:#D9690A;color:#fff;opacity:.95}
+@media print{#rieMusik{display:none}}
+</style>
+<button id="rieMusik" type="button" title="Musik an / aus (Taste M)" aria-label="Musik an oder aus">♪</button>
+<script>
+(function(){
+  var KEY="rie_musik",btn=document.getElementById("rieMusik"),ctx=null,master=null,an=false,timer=null,nextT=0,step=0,noise=null;
+  function get(){try{return localStorage.getItem(KEY)==="1"}catch(e){return false}}
+  function set(v){try{localStorage.setItem(KEY,v?"1":"0")}catch(e){}}
+  /* Eigene Schleife: 4 Takte, 16tel-Raster. Akkorde Dm – G – B – C (Grundtöne als MIDI). */
+  var ROOT=[38,43,46,48];
+  var BASS=[0,-1,-1,0,-1,-1,7,-1,0,-1,12,-1,-1,7,-1,-1];
+  var RIFF=[[12,-1,-1,15,-1,19,-1,-1,22,-1,19,-1,15,-1,17,-1],[12,-1,16,-1,-1,19,-1,21,-1,-1,19,-1,16,-1,14,-1],[12,-1,-1,16,-1,19,-1,-1,24,-1,19,-1,17,-1,16,-1],[12,-1,16,-1,19,-1,-1,23,-1,19,-1,16,-1,14,-1,11]];
+  function hz(m){return 440*Math.pow(2,(m-69)/12)}
+  function ton(t,m,dur,typ,vol){var o=ctx.createOscillator(),g=ctx.createGain();o.type=typ;o.frequency.value=hz(m);
+    g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+0.03)}
+  function kick(t){var o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(45,t+0.12);
+    g.gain.setValueAtTime(0.5,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.16);o.connect(g);g.connect(master);o.start(t);o.stop(t+0.2)}
+  function hat(t,vol){if(!noise){var n=ctx.sampleRate*0.05;noise=ctx.createBuffer(1,n,ctx.sampleRate);var d=noise.getChannelData(0);for(var i=0;i<n;i++)d[i]=Math.random()*2-1}
+    var s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=noise;f.type="highpass";f.frequency.value=6500;
+    g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.045);s.connect(f);f.connect(g);g.connect(master);s.start(t)}
+  function eilig(){try{return !!document.querySelector(".spaet,.late,.blink")}catch(e){return false}}
+  function plan(){
+    if(!an||!ctx)return;
+    while(nextT<ctx.currentTime+0.25){
+      var bpm=eilig()?144:120,d=60/bpm/4,bar=Math.floor(step/16)%4,i=step%16,r=ROOT[bar];
+      if(BASS[i]>=0)ton(nextT,r+BASS[i],d*1.7,"triangle",0.22);
+      if(RIFF[bar][i]>=0)ton(nextT,r+12+RIFF[bar][i],d*1.5,"square",0.045);
+      if(i%4===0)kick(nextT);
+      if(i%2===0)hat(nextT,i%4===2?0.05:0.022);
+      nextT+=d;step++;
+    }
+  }
+  function start(){
+    try{if(!ctx){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();master.gain.value=0.5;master.connect(ctx.destination)}
+      if(ctx.state==="suspended")ctx.resume();
+      nextT=ctx.currentTime+0.06;step=0;clearInterval(timer);timer=setInterval(plan,60);plan()}catch(e){}
+  }
+  function stop(){clearInterval(timer);timer=null;try{if(ctx&&ctx.state==="running")ctx.suspend()}catch(e){}}
+  function zeig(){btn.classList.toggle("an",an);btn.textContent=an?"♫":"♪"}
+  function schalt(v){an=v;set(v);zeig();if(v)start();else stop()}
+  btn.addEventListener("click",function(e){e.stopPropagation();schalt(!an);btn.blur()});
+  document.addEventListener("keydown",function(e){var t=e.target&&e.target.tagName;if(t==="INPUT"||t==="TEXTAREA"||t==="SELECT"||(e.target&&e.target.isContentEditable))return;
+    if((e.key==="m"||e.key==="M")&&!e.ctrlKey&&!e.metaKey&&!e.altKey)schalt(!an)});
+  /* War die Musik beim letzten Mal an, startet sie mit dem ersten Tipp (Browser-Regel). */
+  if(get()){an=true;zeig();var los=function(){document.removeEventListener("pointerdown",los,true);document.removeEventListener("keydown",los,true);if(an)start()};
+    document.addEventListener("pointerdown",los,true);document.addEventListener("keydown",los,true)}
 })();
 </script>
 </body></html>

@@ -150,7 +150,7 @@ body.solo #game{grid-template-columns:minmax(0,1fr)}body.solo .left .head{paddin
 
 <div class="ov" id="start"><div class="card">
   <div class="ttl"><h1>Blitzbild</h1><p class="sub2">Alltag · Sommerferien · <span id="nivTxt"></span></p></div>
-  <p class="lead">Ein Bild erscheint nur ganz kurz. Alle schreiben auf ihr Mini-Whiteboard. Was genau? Das zeigt die Antwort-Stufe. Dann heißt es: Zeigen! Danach kommt die Lösung.</p>
+  <p class="lead">Ein Bild erscheint nur ganz kurz. Alle schreiben auf ihr Mini-Whiteboard. Was genau? Das zeigt die Antwort-Stufe. Danach kommt die Lösung.</p>
   <div class="opts">
     <div class="opt"><span>Spielform</span><div class="seg" data-k="teams"><button data-v="0">👤 Jeder für sich</button><button data-v="2">2 Teams</button><button data-v="3">3 Teams</button><button data-v="4">4 Teams</button></div></div>
     <div class="opt"><span>Bilder</span><div class="seg" data-k="anzahl" id="segAnz"></div></div>
@@ -165,8 +165,7 @@ body.solo #game{grid-template-columns:minmax(0,1fr)}body.solo .left .head{paddin
   <div class="steps">
     <div class="st"><span class="n">1</span><b>Blitz!</b>Alle schauen nach vorn. Das Bild ist nur kurz zu sehen.</div>
     <div class="st"><span class="n">2</span><b>Schreiben</b>Alle schreiben leise. Die Zeit läuft als Balken.</div>
-    <div class="st"><span class="n">3</span><b>Zeigen!</b>Alle zeigen gleichzeitig ihr Whiteboard.</div>
-    <div class="st"><span class="n">4</span><b>Lösung</b><span class="teamonly">1 Punkt pro Team, wenn mind. die Hälfte richtig hat.</span><span class="soloonly">Alle vergleichen mit der Lösung.</span></div>
+    <div class="st"><span class="n">3</span><b>Lösung</b><span class="teamonly">1 Punkt pro Team, wenn mind. die Hälfte richtig hat.</span><span class="soloonly">Alle vergleichen mit der Lösung.</span></div>
   </div>
   <div class="startrow">
     <button class="btn main" id="bStart">Spiel starten</button>
@@ -266,10 +265,10 @@ function writeText(){
 }
 function write(){
   clearT();st.phase="write";$("bMain").style.visibility="";
-  writeText();btns(["✋ Zeigen!","main"],true,false);
+  writeText();btns(["👁 Lösung","main"],true,false);
   if(S.wz){const t0=Date.now(),T=S.wz*1000;
     const upd=()=>{const r=Math.max(0,1-(Date.now()-t0)/T);const i=$("zeitI");if(i){i.style.width=(r*100)+"%";$("zeit").classList.toggle("spaet",r<.25);$("sek").textContent=Math.ceil(r*S.wz)+" s"}
-      if(r<=0){clearInterval(st.iv);st.iv=null;zeigen()}};
+      if(r<=0){clearInterval(st.iv);st.iv=null;loesung()}};
     upd();st.iv=setInterval(upd,100)}
 }
 function zeigen(){clearT();st.phase="zeigen";$("zeigen").hidden=false}
@@ -283,7 +282,7 @@ function loesung(){
   btns([nextLabel(),"go"],false,false);
 }
 function next(){st.i++;if(st.i>=st.list.length){ende();return}ready()}
-function main(){({ready:()=>blitz(false),write:zeigen,zeigen:loesung,reveal:next})[st.phase]?.()}
+function main(){({ready:()=>blitz(false),write:loesung,zeigen:loesung,reveal:next})[st.phase]?.()}
 /* Teams und Wertung: 1 Punkt pro Team und Bild, wenn mind. die Hälfte richtig hat (Knopf = Umschalter) */
 function teams(){
   $("teams").innerHTML=st.score.map((s,i)=>`<div class="team" style="--tc:${TEAMS[i].c};--tx:${TXF[i]}"><div class="thead"><div style="flex:1;min-width:0"><div class="tname">${ticon(i)}${esc(tname(i))}</div>${TEAMS[i].m.length?`<div class="tmit">${esc(TEAMS[i].m.join(", "))}</div>`:""}</div><div class="tpts" id="tp${i}">${s}</div></div>
@@ -414,5 +413,59 @@ document.addEventListener("keydown",e=>{if((e.key==="f"||e.key==="F")&&!e.ctrlKe
 document.addEventListener("keydown",e=>{if(!$("start").hidden||!$("ende").hidden||!$("liste").hidden)return;
   if(e.key===" "||e.key==="Enter"||e.key==="ArrowRight"){e.preventDefault();if(e.repeat)return;if(st.phase!=="flash")main()}});
 st.score=Array(S.teams).fill(0);st.list=DATA.slice();teams();ready();
+</script>
+<!-- rie-musik v1 (12.11.2026): eigene Quizmusik, zuschaltbar, Standard aus -->
+<style>
+#rieMusik{position:fixed;left:1.2vh;bottom:1.2vh;z-index:9999;width:5.6vh;height:5.6vh;min-width:34px;min-height:34px;border-radius:50%;border:.3vh solid #C9C2B6;background:#fff;color:#8A8378;font-size:2.6vh;line-height:1;cursor:pointer;opacity:.6;padding:0;display:grid;place-items:center;font-family:inherit}
+#rieMusik:hover{opacity:1}
+#rieMusik.an{background:#F28C28;border-color:#D9690A;color:#fff;opacity:.95}
+@media print{#rieMusik{display:none}}
+</style>
+<button id="rieMusik" type="button" title="Musik an / aus (Taste M)" aria-label="Musik an oder aus">♪</button>
+<script>
+(function(){
+  var KEY="rie_musik",btn=document.getElementById("rieMusik"),ctx=null,master=null,an=false,timer=null,nextT=0,step=0,noise=null;
+  function get(){try{return localStorage.getItem(KEY)==="1"}catch(e){return false}}
+  function set(v){try{localStorage.setItem(KEY,v?"1":"0")}catch(e){}}
+  /* Eigene Schleife: 4 Takte, 16tel-Raster. Akkorde Dm – G – B – C (Grundtöne als MIDI). */
+  var ROOT=[38,43,46,48];
+  var BASS=[0,-1,-1,0,-1,-1,7,-1,0,-1,12,-1,-1,7,-1,-1];
+  var RIFF=[[12,-1,-1,15,-1,19,-1,-1,22,-1,19,-1,15,-1,17,-1],[12,-1,16,-1,-1,19,-1,21,-1,-1,19,-1,16,-1,14,-1],[12,-1,-1,16,-1,19,-1,-1,24,-1,19,-1,17,-1,16,-1],[12,-1,16,-1,19,-1,-1,23,-1,19,-1,16,-1,14,-1,11]];
+  function hz(m){return 440*Math.pow(2,(m-69)/12)}
+  function ton(t,m,dur,typ,vol){var o=ctx.createOscillator(),g=ctx.createGain();o.type=typ;o.frequency.value=hz(m);
+    g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+0.03)}
+  function kick(t){var o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(45,t+0.12);
+    g.gain.setValueAtTime(0.5,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.16);o.connect(g);g.connect(master);o.start(t);o.stop(t+0.2)}
+  function hat(t,vol){if(!noise){var n=ctx.sampleRate*0.05;noise=ctx.createBuffer(1,n,ctx.sampleRate);var d=noise.getChannelData(0);for(var i=0;i<n;i++)d[i]=Math.random()*2-1}
+    var s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=noise;f.type="highpass";f.frequency.value=6500;
+    g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.045);s.connect(f);f.connect(g);g.connect(master);s.start(t)}
+  function eilig(){try{return !!document.querySelector(".spaet,.late,.blink")}catch(e){return false}}
+  function plan(){
+    if(!an||!ctx)return;
+    while(nextT<ctx.currentTime+0.25){
+      var bpm=eilig()?144:120,d=60/bpm/4,bar=Math.floor(step/16)%4,i=step%16,r=ROOT[bar];
+      if(BASS[i]>=0)ton(nextT,r+BASS[i],d*1.7,"triangle",0.22);
+      if(RIFF[bar][i]>=0)ton(nextT,r+12+RIFF[bar][i],d*1.5,"square",0.045);
+      if(i%4===0)kick(nextT);
+      if(i%2===0)hat(nextT,i%4===2?0.05:0.022);
+      nextT+=d;step++;
+    }
+  }
+  function start(){
+    try{if(!ctx){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();master.gain.value=0.5;master.connect(ctx.destination)}
+      if(ctx.state==="suspended")ctx.resume();
+      nextT=ctx.currentTime+0.06;step=0;clearInterval(timer);timer=setInterval(plan,60);plan()}catch(e){}
+  }
+  function stop(){clearInterval(timer);timer=null;try{if(ctx&&ctx.state==="running")ctx.suspend()}catch(e){}}
+  function zeig(){btn.classList.toggle("an",an);btn.textContent=an?"♫":"♪"}
+  function schalt(v){an=v;set(v);zeig();if(v)start();else stop()}
+  btn.addEventListener("click",function(e){e.stopPropagation();schalt(!an);btn.blur()});
+  document.addEventListener("keydown",function(e){var t=e.target&&e.target.tagName;if(t==="INPUT"||t==="TEXTAREA"||t==="SELECT"||(e.target&&e.target.isContentEditable))return;
+    if((e.key==="m"||e.key==="M")&&!e.ctrlKey&&!e.metaKey&&!e.altKey)schalt(!an)});
+  /* War die Musik beim letzten Mal an, startet sie mit dem ersten Tipp (Browser-Regel). */
+  if(get()){an=true;zeig();var los=function(){document.removeEventListener("pointerdown",los,true);document.removeEventListener("keydown",los,true);if(an)start()};
+    document.addEventListener("pointerdown",los,true);document.addEventListener("keydown",los,true)}
+})();
 </script>
 </body></html>

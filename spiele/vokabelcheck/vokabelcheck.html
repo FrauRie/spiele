@@ -253,7 +253,7 @@ function lehrkraft(){
    ${S.modus==='plenum'?`
    <div class="row"><label>Ablauf</label>${seg('ablauf',[['bild','Bild für Bild'],['alle','alle Bilder auf einmal (Zettel)']])}</div>
    ${S.ablauf==='bild'?`<div class="row"><label>Schreibzeit</label>${seg('zeit',[[10,'10 s'],[20,'20 s'],[30,'30 s'],[0,'ohne']])}</div>`:''}
-   <div class="info">Alle schreiben, dann <b>„Zeigen!“</b> bzw. Lösung. Die SuS korrigieren selbst oder mit Partner. Falsches Wort → Karteikarte in den Stapel <b>„noch üben“</b>. Keine Punkte, keine Note.<br>Bei der Lösung tippst du kurz an: <b>Wie viele falsch?</b> keiner · einige · viele (geht auch ohne). Daraus entsteht die Liste <b>„häufige Fehler“</b> – ohne Namen, nur auf diesem Gerät.</div>`
+   <div class="info">Alle schreiben, dann kommt die <b>Lösung</b>. Die SuS korrigieren selbst oder mit Partner. Falsches Wort → Karteikarte in den Stapel <b>„noch üben“</b>. Keine Punkte, keine Note.<br>Bei der Lösung tippst du kurz an: <b>Wie viele falsch?</b> keiner · einige · viele (geht auch ohne). Daraus entsteht die Liste <b>„häufige Fehler“</b> – ohne Namen, nur auf diesem Gerät.</div>`
    :`<div class="row"><label>Aufgabe</label>${seg('stufe',[[0,'jede:r wählt'],[1,'● Wort antippen'],[2,'●● Wort schreiben'],[3,'●●● mit Artikel / er-Form']])}</div>
    <div class="info">Das Gerät korrigiert sofort. Am Ende stehen die Wörter zum Üben da. Es wird nichts gespeichert und nichts verschickt.</div>`}
   </div>
@@ -303,13 +303,13 @@ function plenumBild(){
   clearInterval(timer);const w=PL.l[PL.i],n=PL.l.length;
   app.innerHTML=`<div id="spiel">${kopf('Vokabelcheck',PL.i+1,n)}
    <div class="stage gross"><div><img class="pic" src="${IMG[w.bilder[0]]}" alt="">${aufgaben()}${S.zeit?`<div class="zeit" id="zt"><i></i></div>`:''}</div></div>
-   <div class="ctrl"><button class="btn main" id="bZ">Zeigen!</button></div></div>`;
+   <div class="ctrl"><button class="btn main" id="bZ">Lösung</button></div></div>`;
   document.getElementById('bZ').onclick=plenumZeigen;
   if(S.zeit){const t0=Date.now(),T=S.zeit*1000,bar=document.querySelector('#zt i'),zt=document.getElementById('zt');
     timer=setInterval(()=>{const r=Math.max(0,1-(Date.now()-t0)/T);bar.style.width=(r*100)+'%';if(r<.3)zt.classList.add('spaet');if(r<=0){clearInterval(timer);plenumZeigen()}},100)}
 }
 function plenumZeigen(){
-  clearInterval(timer);
+  clearInterval(timer);plenumLoesung();return;
   app.querySelector('.stage').innerHTML=`<div class="zeigen">Zeigen!</div>`;
   app.querySelector('.ctrl').innerHTML=`<button class="btn go" id="bL">Lösung</button>`;
   document.getElementById('bL').onclick=plenumLoesung;
@@ -489,5 +489,59 @@ function fallback(t){const ta=document.createElement('textarea');ta.value=t;docu
 function schuelerStart(){alleinStart(W.filter(geeignet),0,W.filter(geeignet))}
 
 if(CFG.fest)schuelerStart();else lehrkraft();
+</script>
+<!-- rie-musik v1 (12.11.2026): eigene Quizmusik, zuschaltbar, Standard aus -->
+<style>
+#rieMusik{position:fixed;left:1.2vh;bottom:1.2vh;z-index:9999;width:5.6vh;height:5.6vh;min-width:34px;min-height:34px;border-radius:50%;border:.3vh solid #C9C2B6;background:#fff;color:#8A8378;font-size:2.6vh;line-height:1;cursor:pointer;opacity:.6;padding:0;display:grid;place-items:center;font-family:inherit}
+#rieMusik:hover{opacity:1}
+#rieMusik.an{background:#F28C28;border-color:#D9690A;color:#fff;opacity:.95}
+@media print{#rieMusik{display:none}}
+</style>
+<button id="rieMusik" type="button" title="Musik an / aus (Taste M)" aria-label="Musik an oder aus">♪</button>
+<script>
+(function(){
+  var KEY="rie_musik",btn=document.getElementById("rieMusik"),ctx=null,master=null,an=false,timer=null,nextT=0,step=0,noise=null;
+  function get(){try{return localStorage.getItem(KEY)==="1"}catch(e){return false}}
+  function set(v){try{localStorage.setItem(KEY,v?"1":"0")}catch(e){}}
+  /* Eigene Schleife: 4 Takte, 16tel-Raster. Akkorde Dm – G – B – C (Grundtöne als MIDI). */
+  var ROOT=[38,43,46,48];
+  var BASS=[0,-1,-1,0,-1,-1,7,-1,0,-1,12,-1,-1,7,-1,-1];
+  var RIFF=[[12,-1,-1,15,-1,19,-1,-1,22,-1,19,-1,15,-1,17,-1],[12,-1,16,-1,-1,19,-1,21,-1,-1,19,-1,16,-1,14,-1],[12,-1,-1,16,-1,19,-1,-1,24,-1,19,-1,17,-1,16,-1],[12,-1,16,-1,19,-1,-1,23,-1,19,-1,16,-1,14,-1,11]];
+  function hz(m){return 440*Math.pow(2,(m-69)/12)}
+  function ton(t,m,dur,typ,vol){var o=ctx.createOscillator(),g=ctx.createGain();o.type=typ;o.frequency.value=hz(m);
+    g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+0.03)}
+  function kick(t){var o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(45,t+0.12);
+    g.gain.setValueAtTime(0.5,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.16);o.connect(g);g.connect(master);o.start(t);o.stop(t+0.2)}
+  function hat(t,vol){if(!noise){var n=ctx.sampleRate*0.05;noise=ctx.createBuffer(1,n,ctx.sampleRate);var d=noise.getChannelData(0);for(var i=0;i<n;i++)d[i]=Math.random()*2-1}
+    var s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=noise;f.type="highpass";f.frequency.value=6500;
+    g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.045);s.connect(f);f.connect(g);g.connect(master);s.start(t)}
+  function eilig(){try{return !!document.querySelector(".spaet,.late,.blink")}catch(e){return false}}
+  function plan(){
+    if(!an||!ctx)return;
+    while(nextT<ctx.currentTime+0.25){
+      var bpm=eilig()?144:120,d=60/bpm/4,bar=Math.floor(step/16)%4,i=step%16,r=ROOT[bar];
+      if(BASS[i]>=0)ton(nextT,r+BASS[i],d*1.7,"triangle",0.22);
+      if(RIFF[bar][i]>=0)ton(nextT,r+12+RIFF[bar][i],d*1.5,"square",0.045);
+      if(i%4===0)kick(nextT);
+      if(i%2===0)hat(nextT,i%4===2?0.05:0.022);
+      nextT+=d;step++;
+    }
+  }
+  function start(){
+    try{if(!ctx){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();master.gain.value=0.5;master.connect(ctx.destination)}
+      if(ctx.state==="suspended")ctx.resume();
+      nextT=ctx.currentTime+0.06;step=0;clearInterval(timer);timer=setInterval(plan,60);plan()}catch(e){}
+  }
+  function stop(){clearInterval(timer);timer=null;try{if(ctx&&ctx.state==="running")ctx.suspend()}catch(e){}}
+  function zeig(){btn.classList.toggle("an",an);btn.textContent=an?"♫":"♪"}
+  function schalt(v){an=v;set(v);zeig();if(v)start();else stop()}
+  btn.addEventListener("click",function(e){e.stopPropagation();schalt(!an);btn.blur()});
+  document.addEventListener("keydown",function(e){var t=e.target&&e.target.tagName;if(t==="INPUT"||t==="TEXTAREA"||t==="SELECT"||(e.target&&e.target.isContentEditable))return;
+    if((e.key==="m"||e.key==="M")&&!e.ctrlKey&&!e.metaKey&&!e.altKey)schalt(!an)});
+  /* War die Musik beim letzten Mal an, startet sie mit dem ersten Tipp (Browser-Regel). */
+  if(get()){an=true;zeig();var los=function(){document.removeEventListener("pointerdown",los,true);document.removeEventListener("keydown",los,true);if(an)start()};
+    document.addEventListener("pointerdown",los,true);document.addEventListener("keydown",los,true)}
+})();
 </script>
 </body></html>

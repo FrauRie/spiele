@@ -215,7 +215,7 @@ button.tile:active{transform:translateY(calc(var(--s)*.05));box-shadow:none}
   <p class="lead">Die Buchstaben von einem Wort sind gemischt. Wie heißt das Wort? Wer es nicht weiß, wartet: Nach <b id="leadSek">20</b> Sekunden kommt ein Bild als Hilfe.</p>
   <div class="opts">
     <div class="opt breit"><span>Wie spielt ihr?</span><div class="modus" id="modus">
-      <button data-v="klasse"><b>👥 Ganze Klasse</b><span>Am Smartboard. Alle schreiben auf ihr Mini-Whiteboard, dann „Zeigen!“. Mit Teams oder jeder für sich.</span></button>
+      <button data-v="klasse"><b>👥 Ganze Klasse</b><span>Am Smartboard. Alle schreiben auf ihr Mini-Whiteboard, dann kommt die Lösung. Mit Teams oder jeder für sich.</span></button>
       <button data-v="allein"><b>👤 Allein oder zu dritt / zu viert</b><span>An einem Handy oder Tablet. Buchstaben antippen und das Wort legen.</span></button>
     </div></div>
     <div class="opt breit" id="optWA" hidden><span>Welche Wörter? <small style="font-weight:400;color:var(--muted)">(nur was laut Progression schon dran war)</small></span><div id="waBox"></div></div>
@@ -230,7 +230,7 @@ button.tile:active{transform:translateY(calc(var(--s)*.05));box-shadow:none}
     <div class="opt"><span>Bild-Hilfe nach</span><div class="seg" data-k="hilfe"><button data-v="10">10 s</button><button data-v="20">20 s</button><button data-v="30">30 s</button><button data-v="0">nie</button></div></div>
     <div class="opt"><span>Wörter</span><div class="seg" data-k="anz" id="segAnz"></div></div>
     <div class="opt" id="optTeams"><span>Spielform</span><div class="seg" data-k="teams"><button data-v="0">👤 Jeder für sich</button><button data-v="2">2 Teams</button><button data-v="3">3 Teams</button><button data-v="4">4 Teams</button></div></div>
-    <div class="opt" id="optZeit"><span>Zeit pro Wort (dann „Zeigen!“)</span><div class="seg" data-k="zeit"><button data-v="45">45 s</button><button data-v="60">60 s</button><button data-v="90">90 s</button><button data-v="0">ohne</button></div></div>
+    <div class="opt" id="optZeit"><span>Zeit pro Wort (dann Lösung)</span><div class="seg" data-k="zeit"><button data-v="45">45 s</button><button data-v="60">60 s</button><button data-v="90">90 s</button><button data-v="0">ohne</button></div></div>
   </div>
   <div class="info" id="info"></div>
   <div class="startrow">
@@ -397,7 +397,7 @@ function markAll(){
   document.body.classList.toggle("solo",S.teams===0||S.mode==="allein");$("bWeiter").textContent=S.teams?"▶ Weiter spielen (Punkte bleiben)":"▶ Weiter spielen";
   $("leadSek").textContent=S.hilfe?S.hilfe:"–";
   $("info").innerHTML=kl?
-   `<b>Ablauf:</b> Buchstaben erscheinen → alle schreiben das Wort aufs Mini-Whiteboard → ${S.hilfe?`nach ${S.hilfe} s kommt das Bild als Hilfe`:"ohne Bild-Hilfe"} → „Zeigen!“ → Lösung${S.teams?" → Punkte":""}. <b>Ohne Ton</b> – die Zeit läuft als Kreis und Balken.`:
+   `<b>Ablauf:</b> Buchstaben erscheinen → alle schreiben das Wort aufs Mini-Whiteboard → ${S.hilfe?`nach ${S.hilfe} s kommt das Bild als Hilfe`:"ohne Bild-Hilfe"} → Lösung${S.teams?" → Punkte":""}. <b>Ohne Ton</b> – die Zeit läuft als Kreis und Balken.`:
    `<b>Ablauf:</b> Buchstaben der Reihe nach antippen, das Wort legen, „Prüfen“. ${S.hilfe?`Nach ${S.hilfe} s kommt das Bild als Hilfe.`:"Ohne Bild-Hilfe."} Zu dritt oder zu viert: das Gerät liegt in der Mitte, ihr sprecht euch ab und tippt abwechselnd.`;
 }
 document.querySelectorAll(".seg[data-k]").forEach(seg=>{if(seg.id==="segAnz")return;const k=seg.dataset.k;
@@ -453,7 +453,7 @@ function play(){
   clearT();st.phase="play";const d=cur();st.L=salat(d);st.bild=false;st.t0=Date.now();st.att=0;
   if(S.mode==="klasse"){
     stage(`${tilesHtml(st.L,false)}<div class="aufg">${aufgText(d)}</div><div class="hint" id="hint">${hintHtml()}</div>${S.zeit?`<div class="zeit" id="zeit"><i id="zeitI"></i></div>`:""}`);
-    btns(["✋ Zeigen!","main"],!!S.hilfe,false);
+    btns(["👁 Lösung","main"],!!S.hilfe,false);
   }else{
     st.slots=st.L.want.map((c,i)=>({want:c,t:null,fix:i===0&&!!st.L.erst}));if(st.L.erst)st.slots[0].t=-1;
     st.used=st.L.t.map(()=>false);st.stack=[];st.choice=null;st.mark=null;
@@ -505,7 +505,7 @@ function check(){
   fb(wOk?"Das Wort stimmt! Der Artikel noch nicht.":!aOk?"Noch nicht. Schau auf die markierten Felder – und auf den Artikel.":"Noch nicht. Schau auf die markierten Felder."+(st.bild||!S.hilfe?"":" Oder warte auf das Bild."));
 }
 /* Klasse: Zeigen */
-function zeigen(){if(st.phase!=="play")return;clearT();st.phase="zeigen";$("zeigen").hidden=false}
+function zeigen(){if(st.phase!=="play")return;loesung(true)}
 function loesung(ok){
   clearT();$("zeigen").hidden=true;const d=cur();const mitBild=st.bild;st.phase="reveal";
   let ban="";
@@ -609,6 +609,60 @@ document.addEventListener("keydown",e=>{if(!$("start").hidden||!$("ende").hidden
 document.querySelectorAll('.seg[data-k="teams"] button').forEach(b=>b.addEventListener("click",()=>{try{localStorage.setItem("rie_spielform",b.dataset.v)}catch(e){}}));
 markAll();drawPk();anzOpts();
 st.score=Array(S.teams).fill(0);
+})();
+</script>
+<!-- rie-musik v1 (12.11.2026): eigene Quizmusik, zuschaltbar, Standard aus -->
+<style>
+#rieMusik{position:fixed;left:1.2vh;bottom:1.2vh;z-index:9999;width:5.6vh;height:5.6vh;min-width:34px;min-height:34px;border-radius:50%;border:.3vh solid #C9C2B6;background:#fff;color:#8A8378;font-size:2.6vh;line-height:1;cursor:pointer;opacity:.6;padding:0;display:grid;place-items:center;font-family:inherit}
+#rieMusik:hover{opacity:1}
+#rieMusik.an{background:#F28C28;border-color:#D9690A;color:#fff;opacity:.95}
+@media print{#rieMusik{display:none}}
+</style>
+<button id="rieMusik" type="button" title="Musik an / aus (Taste M)" aria-label="Musik an oder aus">♪</button>
+<script>
+(function(){
+  var KEY="rie_musik",btn=document.getElementById("rieMusik"),ctx=null,master=null,an=false,timer=null,nextT=0,step=0,noise=null;
+  function get(){try{return localStorage.getItem(KEY)==="1"}catch(e){return false}}
+  function set(v){try{localStorage.setItem(KEY,v?"1":"0")}catch(e){}}
+  /* Eigene Schleife: 4 Takte, 16tel-Raster. Akkorde Dm – G – B – C (Grundtöne als MIDI). */
+  var ROOT=[38,43,46,48];
+  var BASS=[0,-1,-1,0,-1,-1,7,-1,0,-1,12,-1,-1,7,-1,-1];
+  var RIFF=[[12,-1,-1,15,-1,19,-1,-1,22,-1,19,-1,15,-1,17,-1],[12,-1,16,-1,-1,19,-1,21,-1,-1,19,-1,16,-1,14,-1],[12,-1,-1,16,-1,19,-1,-1,24,-1,19,-1,17,-1,16,-1],[12,-1,16,-1,19,-1,-1,23,-1,19,-1,16,-1,14,-1,11]];
+  function hz(m){return 440*Math.pow(2,(m-69)/12)}
+  function ton(t,m,dur,typ,vol){var o=ctx.createOscillator(),g=ctx.createGain();o.type=typ;o.frequency.value=hz(m);
+    g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+0.03)}
+  function kick(t){var o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(45,t+0.12);
+    g.gain.setValueAtTime(0.5,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.16);o.connect(g);g.connect(master);o.start(t);o.stop(t+0.2)}
+  function hat(t,vol){if(!noise){var n=ctx.sampleRate*0.05;noise=ctx.createBuffer(1,n,ctx.sampleRate);var d=noise.getChannelData(0);for(var i=0;i<n;i++)d[i]=Math.random()*2-1}
+    var s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=noise;f.type="highpass";f.frequency.value=6500;
+    g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.045);s.connect(f);f.connect(g);g.connect(master);s.start(t)}
+  function eilig(){try{return !!document.querySelector(".spaet,.late,.blink")}catch(e){return false}}
+  function plan(){
+    if(!an||!ctx)return;
+    while(nextT<ctx.currentTime+0.25){
+      var bpm=eilig()?144:120,d=60/bpm/4,bar=Math.floor(step/16)%4,i=step%16,r=ROOT[bar];
+      if(BASS[i]>=0)ton(nextT,r+BASS[i],d*1.7,"triangle",0.22);
+      if(RIFF[bar][i]>=0)ton(nextT,r+12+RIFF[bar][i],d*1.5,"square",0.045);
+      if(i%4===0)kick(nextT);
+      if(i%2===0)hat(nextT,i%4===2?0.05:0.022);
+      nextT+=d;step++;
+    }
+  }
+  function start(){
+    try{if(!ctx){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();master.gain.value=0.5;master.connect(ctx.destination)}
+      if(ctx.state==="suspended")ctx.resume();
+      nextT=ctx.currentTime+0.06;step=0;clearInterval(timer);timer=setInterval(plan,60);plan()}catch(e){}
+  }
+  function stop(){clearInterval(timer);timer=null;try{if(ctx&&ctx.state==="running")ctx.suspend()}catch(e){}}
+  function zeig(){btn.classList.toggle("an",an);btn.textContent=an?"♫":"♪"}
+  function schalt(v){an=v;set(v);zeig();if(v)start();else stop()}
+  btn.addEventListener("click",function(e){e.stopPropagation();schalt(!an);btn.blur()});
+  document.addEventListener("keydown",function(e){var t=e.target&&e.target.tagName;if(t==="INPUT"||t==="TEXTAREA"||t==="SELECT"||(e.target&&e.target.isContentEditable))return;
+    if((e.key==="m"||e.key==="M")&&!e.ctrlKey&&!e.metaKey&&!e.altKey)schalt(!an)});
+  /* War die Musik beim letzten Mal an, startet sie mit dem ersten Tipp (Browser-Regel). */
+  if(get()){an=true;zeig();var los=function(){document.removeEventListener("pointerdown",los,true);document.removeEventListener("keydown",los,true);if(an)start()};
+    document.addEventListener("pointerdown",los,true);document.addEventListener("keydown",los,true)}
 })();
 </script>
 </body></html>
