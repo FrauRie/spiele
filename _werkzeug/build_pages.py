@@ -38,6 +38,11 @@ for t,d,u in einzel: SP.append(dict(t=t,u=u,k=KIND[u.split('/')[1]],g='Klassensp
 for t,u in zoomA: SP.append(dict(t='Zoom-Bild · '+t,u=u,k='zoom',g='Zoom-Bild'))
 for t,u in zoomL: SP.append(dict(t='Zoom-Bild · '+t,u=u,k='zoom',g='Zoom-Bild'))
 for t,u in salat: SP.append(dict(t='Buchstaben-Salat · '+t,u=u,k='salat',g='Buchstaben-Salat'))
+# neu am 12.11.2026: Blitz! (Dobble) – gebaut mit build_blitz.py, Namen in blitz_namen.json
+BZ=json.load(open('/tmp/work/blitz_namen.json',encoding='utf-8'))
+bzB=[(t,'spiele/blitz/'+f) for f,(g,t) in BZ.items() if g=='Bild-Blitz']; bzW=[(t,'spiele/blitz/'+f) for f,(g,t) in BZ.items() if g=='Wort-Blitz']
+for t,u in bzB: SP.append(dict(t='Blitz! · '+t,u=u,k='dobble',g='Blitz! · Bild-Blitz'))
+for t,u in bzW: SP.append(dict(t='Wort-Blitz! · '+t,u=u,k='dobble',g='Blitz! · Wort-Blitz'))
 for h in ['Blitzbild · Lerneinheiten','Blitzbild · Alltag','Blitzbild · Grammatik','Blitzbild · Extra']:
     for t,links,_ in data[h]:
         for _,u,l in links: SP.append(dict(t='Blitzbild · '+t.split(' · Wörter nach')[0]+' '+l,u=u,k='blitz',g=h))
@@ -58,6 +63,7 @@ TXT={'blitz':['Ein Bild blitzt ganz kurz auf. Alle schreiben das Wort auf ihr Mi
 'sortier':['Unten liegen Bildkarten. Jede Karte kommt in die richtige Spalte, zum Beispiel der, die oder das.','Am Start „Karte für Karte – alle schreiben“ wählen: Alle schreiben die Spalte auf ihr Mini-Whiteboard, dann kommt die Lösung.'],
 'meisten':['Viele Menschen haben geantwortet. Welche Antwort ist am häufigsten? Alle schreiben eine Antwort auf ihr Mini-Whiteboard. Dann kommen die Antworten mit der Zahl.','Am Start „Deutschland (fertig)“ wählen – oder „unsere Klasse“ und die Antworten vorher eintragen.'],
 'suchsel':['Im Gitter sind Wörter versteckt. Die Bilder helfen. Wer ein Wort findet, zieht mit dem Finger darüber.','Am Smartboard kommt immer eine Person nach vorn. Oder alle spielen am Handy.'],
+'dobble':['Zwei Karten haben immer genau ein gleiches Motiv. Wer es zuerst findet, tippt es auf der eigenen Karte an und sagt das Wort laut.','Am Start „Für sich / Erklären“ wählen – oder „Duell“: zwei kommen nach vorn.'],
 'pause':['Aufstehen, Fenster auf, etwas trinken. Whiteboards sauber wischen.','']}
 BL='blitzbild/extra/alles-gemischt-n2.html'; SA='spiele/buchstaben-salat/buchstaben-salat-gemischt.html'; SC='spiele/satz-chaos/satz-chaos-grammatik.html'
 ZO='spiele/zoom-bild/zoom-bild-le0-schulsachen.html'; FD='spiele/fehler-detektiv/fehler-detektiv-grammatik-dienstag.html'; WF='spiele/was-fehlt/was-fehlt-quartett.html'; BI='spiele/bingo/bingo-rufer.html'
@@ -104,9 +110,9 @@ def rows2(cards,**kw):
     return re.sub(r'<div class="row" .*?</span></div>',fix,h)
 page=open('/tmp/work/index_new_tpl.html',encoding='utf-8').read()
 page=(page.replace('/*TILES*/',''.join(tile(i,x) for i,x in enumerate(einzel)))
- .replace('/*ZA*/',''.join(pill(t,u,'Zoom-Bild') for t,u in zoomA)).replace('/*ZL*/',''.join(pill(t,u,'Zoom-Bild') for t,u in zoomL)).replace('/*SA*/',''.join(pill(t,u,'Buchstaben-Salat') for t,u in salat))
+ .replace('/*ZA*/',''.join(pill(t,u,'Zoom-Bild') for t,u in zoomA)).replace('/*ZL*/',''.join(pill(t,u,'Zoom-Bild') for t,u in zoomL)).replace('/*BZB*/',''.join(pill(t,u,'Blitz!') for t,u in bzB)).replace('/*BZW*/',''.join(pill(t,u,'Wort-Blitz!') for t,u in bzW)).replace('/*SA*/',''.join(pill(t,u,'Buchstaben-Salat') for t,u in salat))
  .replace('/*BLE*/',rows2(data['Blitzbild · Lerneinheiten'])).replace('/*BAL*/',rows2(data['Blitzbild · Alltag'],byurl=True)).replace('/*BGR*/',rows2(data['Blitzbild · Grammatik'],merge=True)).replace('/*BEX*/',rows2(data['Blitzbild · Extra'],merge=True)))
 n=len(set(re.findall(r'href="((?:blitzbild|spiele)/[^"]+)"',page)))
-assert n==105,n
+assert n==134,n
 for u in re.findall(r'href="([^"#]+\.html)"',page): assert os.path.exists(R+u),u
 open(R+'index.html','w',encoding='utf-8').write(page); print('Seiten gebaut:',len(SP),'Spiele in der Auswahl,',n,'Links auf der Startseite')

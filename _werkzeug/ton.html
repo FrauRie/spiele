@@ -1,4 +1,4 @@
-<!-- rie-ton v1 (12.11.2026): kurzer Ton bei der Lösung, zuschaltbar (Standard aus). Steht vor dem Automatik- bzw. Musik-Baustein. -->
+<!-- rie-ton v2 (12.11.2026, + Blitz!): kurzer Ton bei der Lösung, zuschaltbar (Standard aus). Steht vor dem Automatik- bzw. Musik-Baustein. -->
 <style>
 #rieTon{position:fixed;left:calc(2.2vh + max(5.6vh,34px));bottom:1.2vh;z-index:9999;width:5.6vh;height:5.6vh;min-width:34px;min-height:34px;border-radius:50%;border:.3vh solid #C9C2B6;background:#fff;font-size:2.4vh;line-height:1;cursor:pointer;opacity:.6;padding:0;display:grid;place-items:center;font-family:inherit;filter:grayscale(1)}
 #rieTon[hidden]{display:none}
@@ -28,6 +28,8 @@
         return (G.show===true||G.phase==="sol"||G.phase==="aufloesen"||G.phase==="fertig"||G.done===true)?"1":""};
     else if(typeof st!=="undefined"&&st&&typeof st==="object")                                  /* Quiz-Spiele, Blitzbild */
       K=function(){return (st.shown===true||st.phase==="reveal"||st.phase==="loesung"||st.phase==="umbau")?"1":""};
+    else if($("tisch")&&$("bLoesung")&&$("chipStapel"))                                        /* Blitz! (Dobble): Ton, sobald das gleiche Motiv markiert ist */
+      K=function(){var h=document.querySelectorAll("#tisch .sym.hit").length;return h?$("chipStapel").textContent+"|"+$("km").textContent.length+"|"+h:""};
     else if($("stage")&&$("bMain"))                                                              /* Buchstaben-Salat, Was fehlt? (Zustand nicht von außen lesbar → Anzeige prüfen) */
       K=function(){return document.querySelector("#flip.turn,#stage.rev")?"1":""};
   }catch(e){K=null}
