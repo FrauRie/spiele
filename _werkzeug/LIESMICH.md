@@ -11,7 +11,6 @@ Die Skripte erwarten ihre Dateien unter `/tmp/work/` und das Repo unter `/home/c
 | `stunde_tpl.html`, `index_new_tpl.html`, `index_old.html` + `build_pages.py` | bauen `spielstunde.html`, `handy.html`, `index.html`; neue Spiele in `build_pages.py` eintragen (Liste `einzel`, `DESC`, `KIND`, `TXT`) |
 | `meisten_tpl.html`, `sortiertafel_tpl.html` + `build_neu.py` | bauen „Was sagen die meisten?“ und die Sortiertafel. Sortiertafel: Wörter und Bilder aus dem Vokabelcheck (`dW`, `dIMG`); die Ausdrücke für wo?/wohin? stehen von Hand in `build_neu.py` (Liste `WW`). Nach einem neuen Vokabelcheck `build_neu.py` neu laufen lassen. |
 | `spiele/suchsel/suchsel.html` | Suchsel (36 Themen, nur ●-Wörter, „Bild“ oder „Bild + Wort“, Druckknopf). Fertig gebaute Einzeldatei; Wörter und Bilder kommen aus dem Suchsel-Generator im Material-Ordner (`08_Vorlagen_BS29/Suchsel_Generator/topics.json`, `topics2.json`), nicht aus dem Vokabelcheck. Eingetragen in `build_pages.py` (Startseite, Spielstunde, Handy-Seite). |
-| `spiele/suchsel/suchsel.html` | Suchsel (36 Themen, nur ●-Wörter, „Bild“ oder „Bild + Wort“, Druckknopf). Fertig gebaute Einzeldatei; Wörter und Bilder kommen aus dem Suchsel-Generator im Material-Ordner (`08_Vorlagen_BS29/Suchsel_Generator/topics.json`, `topics2.json`), nicht aus dem Vokabelcheck. Eingetragen in `build_pages.py` (Startseite, Spielstunde, Handy-Seite). |
 | `patch.py` | einmaliger Umbau: „Zeigen!“-Schritt entfernt |
 | `zoom_sheets.py` | Zoompunkte prüfen (Startausschnitt, Weißanteil) |
 
