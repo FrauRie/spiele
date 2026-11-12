@@ -29,6 +29,12 @@ QR-Code: `npm pack qrcode-generator@1.4.4`, entpackt nach `/tmp/work/package/`.
 - Immer „Plural“/„Singular“ und „Infinitiv“; auf Spielen nur Punkte ●/●●/●●●, keine Niveauangaben.
 - Öffentliches Repo: keine Namen, Fotos oder Daten von Schüler:innen.
 
+### Knöpfe (Wunsch von Frau Rie, 12.11.2026 – bei jedem neuen oder geänderten Spiel prüfen)
+- Nicht überall Knöpfe: nur da, wo man wirklich etwas tun muss. Infos, Überschriften, Wörter und Bilder sind keine Knöpfe.
+- Knöpfe einer Gruppe sind immer gleich groß (gleiche Breite und Höhe), auch bei unterschiedlich langen Texten.
+- Die Schrift läuft nie bis an den Rand: ringsum genug Innenabstand; wird ein Text zu lang, Schrift kleiner oder Knopf für alle der Gruppe breiter – nie abschneiden, nie bis an den Rand.
+- Der Hauptknopf (z. B. „Loslegen“, „Start“, „Weiter“) liegt nie hinter oder unter anderen Dingen – auch nicht unter Musik-/Ton-/Auto-Knöpfen, Karten, Bildern oder der Handy-Tastatur. Auf dem Handy (schmal, ca. 360 px) und am Smartboard prüfen, ob er ganz sichtbar und antippbar ist.
+
 ## Daten, die nur auf dem Gerät liegen
 - „Was sagen die meisten?“: Fragen und Antworten stehen im `localStorage` (`rie_meisten_v1`) des Geräts, nicht im Repo. Weitergabe über Export/Import im Spiel (JSON-Datei). Im Repo stehen nur 3 erfundene Beispielfragen.
 - Fertiger Satz „Deutschland“ (Liste `FERTIG` in `meisten_tpl.html`): 9 Fragen mit echten Zahlen (Quelle steht an jeder Frage, Stand 12.11.2026) und 7 geschätzte Fragen (`art:"g"`, im Spiel als „geschätzt“ markiert). Neue Umfragen dort ergänzen, Quelle immer mit Jahr.
