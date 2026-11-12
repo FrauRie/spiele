@@ -33,5 +33,12 @@ QR-Code: `npm pack qrcode-generator@1.4.4`, entpackt nach `/tmp/work/package/`.
 - „Was sagen die meisten?“: Fragen und Antworten stehen im `localStorage` (`rie_meisten_v1`) des Geräts, nicht im Repo. Weitergabe über Export/Import im Spiel (JSON-Datei). Im Repo stehen nur 3 erfundene Beispielfragen.
 - Fertiger Satz „Deutschland“ (Liste `FERTIG` in `meisten_tpl.html`): 9 Fragen mit echten Zahlen (Quelle steht an jeder Frage, Stand 12.11.2026) und 7 geschätzte Fragen (`art:"g"`, im Spiel als „geschätzt“ markiert). Neue Umfragen dort ergänzen, Quelle immer mit Jahr.
 
+## Fehler-Detektiv: Sätze und Themengruppen (Stand 12.11.2026)
+- Sätze stehen in zwei Blöcken in `spiele/fehler-detektiv/fehler-detektiv-grammatik-dienstag.html`: `saetze-original` (14 Themen) und `saetze-neu` (neue Sätze für diese Themen, 14 Themen „später“, 10 Themen „Experten“).
+- Themenkopf: `# Name | Hinweis für ● | später` bzw. `| Experten`. Solche Themen sind beim Start nicht ausgewählt und stehen auf dem Startbildschirm zum Aufklappen („Kommt später“, „Experten“). „Alle“ meint nur die Themen ohne Gruppe.
+- Quelle der neuen Sätze: Reihen „Grammatik interaktiv“ im Material-Ordner (Basis, A2-Reihe mit Satzpool `19_Moodle_Wortschatz/Grammatik_Interaktiv_A2/Grammatik_Interaktiv_Satzpool_Rie_v1.json`, Experten). Wortschatz nicht gegen das ABC-Lexikon geprüft.
+- Geräte mit eigenen gespeicherten Sätzen (`localStorage fehlerdetektiv_saetze_v2`) bekommen die neuen Themen und Sätze einmalig dazugemischt (Merker `fehlerdetektiv_saetze_v2_neu1`); eigene Änderungen bleiben.
+- Weitere neue Sätze später: neuen Block und neuen Merker anlegen (z. B. `saetze-neu2`, `_neu2`), nicht den alten Block ändern – sonst kommen sie auf Geräten mit gespeicherten Sätzen nicht an.
+
 ## Noch offen
 - Wort-Comeback für die Leseheft-Wörter (Wortlisten kommen von Frau Rie).
