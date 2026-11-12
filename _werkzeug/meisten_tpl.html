@@ -52,6 +52,8 @@ h1{margin:0;font-size:4.2vh}.sub{color:var(--muted);font-weight:700}
 .ant.auf .nr{background:var(--ink);color:#fff}
 .ant.auf .tx{letter-spacing:0;color:var(--ink)}
 .ant.auf .za{background:var(--orange);color:#fff}
+.ant.auf.lg .tx{white-space:normal;font-size:.68em;line-height:1.08}
+.ant .za small{font-size:.6em}.ant:not(.auf) .za small{display:none}
 .ant.auf.top{outline:.5vh solid var(--gruen)}
 .ant.auf.top .za{background:var(--gruen)}
 @keyframes klapp{0%{transform:scaleY(.1)}100%{transform:scaleY(1)}}
@@ -108,8 +110,9 @@ textarea:focus,input:focus{outline:.4vh solid var(--orange);border-color:var(--o
 <div class="wrap" id="start">
   <div class="head"><div class="strich"></div><h1>Was sagen die meisten?</h1><span class="sub">Fragen der Woche · unsere Klasse</span></div>
   <div class="card">
-    <p class="lead">Wir haben die Klasse gefragt. Jetzt raten alle: Welche Antwort ist am häufigsten? Alle schreiben <b>eine</b> Antwort auf das Mini-Whiteboard. Dann kommen die Antworten an die Tafel – mit der Zahl.</p>
+    <p class="lead">Viele Menschen haben geantwortet – unsere Klasse oder Menschen in ganz Deutschland. Jetzt raten alle: Welche Antwort ist am häufigsten? Alle schreiben <b>eine</b> Antwort auf das Mini-Whiteboard. Dann kommen die Antworten an die Tafel – mit der Zahl.</p>
     <div class="opts">
+      <div class="opt"><span>Welche Fragen?</span><div class="seg" data-k="satz"><button data-v="klasse">unsere Klasse (selbst eingetragen)</button><button data-v="de">Deutschland (fertig)</button></div></div>
       <div class="opt"><span>Spielform</span><div class="seg" data-k="modus"><button data-v="einzel">Jeder für sich</button><button data-v="teams">Teams</button></div></div>
       <div class="opt" id="oTeams"><span>Wie viele Teams?</span><div class="seg" data-k="teams"><button data-v="2">2</button><button data-v="3">3</button><button data-v="4">4</button></div></div>
       <div class="opt"><span>Schreibzeit</span><div class="seg" data-k="zeit"><button data-v="0">ohne Uhr</button><button data-v="20">20 s</button><button data-v="30">30 s</button><button data-v="45">45 s</button></div></div>
@@ -171,6 +174,26 @@ const BEISPIELE=[
  {id:"b2",f:"Wie kommst du zur Schule?",an:true,a:[{t:"mit dem Bus",n:8},{t:"mit der S-Bahn",n:5},{t:"zu Fuß",n:3},{t:"mit dem Fahrrad",n:2}]},
  {id:"b3",f:"Was machst du gern am Wochenende?",an:true,a:[{t:"schlafen",n:6},{t:"Fußball spielen",n:5},{t:"Musik hören",n:4},{t:"kochen",n:2},{t:"einkaufen",n:1}]}
 ];
+/* Fertiger Fragensatz „Deutschland“. art "u" = echte Umfrage/Statistik (mit Quelle), art "g" = geschätzt (erfunden, keine Umfrage).
+   e = Einheit der Zahl, z = Anzeige der Zahl (wenn nicht die ganze Zahl n). Stand der Quellen: 12.11.2026. */
+const FERTIG=[
+ {id:"d1",art:"u",e:"%",f:"Wie fahren die meisten Menschen zur Arbeit?",q:"Statistisches Bundesamt, Mikrozensus 2024",a:[{t:"mit dem Auto",n:65},{t:"mit Bus oder Bahn",n:16},{t:"mit dem Fahrrad",n:10},{t:"zu Fuß",n:7}]},
+ {id:"d2",art:"u",e:"%",f:"Welche Jahreszeit mögen die meisten am liebsten?",q:"YouGov-Umfrage für dpa, Dezember 2021",a:[{t:"den Sommer",n:41},{t:"den Frühling",n:30},{t:"den Herbst",n:13},{t:"den Winter",n:5}]},
+ {id:"d3",art:"u",e:"%",f:"Welchen Wochentag mögen die meisten am liebsten?",q:"YouGov-Umfrage für dpa, Dezember 2021",a:[{t:"Samstag",n:28},{t:"Freitag",n:24},{t:"Sonntag",n:8},{t:"Mittwoch",n:4},{t:"Donnerstag",n:4}]},
+ {id:"d4",art:"u",e:"%",f:"Welches Eis mögen die meisten am liebsten?",q:"YouGov-Umfrage, August 2024",a:[{t:"Schokolade",n:16},{t:"Stracciatella",n:15},{t:"Vanille",n:13},{t:"Haselnuss",n:10},{t:"Joghurt",n:10},{t:"Erdbeere",n:8}]},
+ {id:"d5",art:"u",e:"Mio.",f:"Welche Haustiere gibt es am meisten?",q:"ZZF und IVH, Heimtiere in Deutschland 2025",a:[{t:"Katzen",n:157,z:"15,7"},{t:"Hunde",n:100,z:"10,0"},{t:"kleine Tiere, z. B. Hamster",n:44,z:"4,4"},{t:"Vögel",n:33,z:"3,3"}]},
+ {id:"d6",art:"u",e:"%",f:"Was machen die meisten Menschen jede Woche in der Freizeit?",q:"Stiftung für Zukunftsfragen, Freizeit-Monitor 2025",a:[{t:"im Internet sein",n:98},{t:"fernsehen",n:83},{t:"Musik hören",n:83},{t:"am Handy spielen und chatten",n:79}]},
+ {id:"d7",art:"u",e:"",f:"Welche Ausbildung machen die meisten?",q:"BIBB, neue Ausbildungsverträge 2025",a:[{t:"Kfz-Mechatroniker/in",n:24531,z:"24.531"},{t:"Kaufleute für Büromanagement",n:21732,z:"21.732"},{t:"Verkäufer/in",n:21585,z:"21.585"}]},
+ {id:"d8",art:"u",e:"%",f:"Welches Obst mögen die meisten am liebsten?",q:"YouGov-Umfrage, Mai 2015",a:[{t:"Erdbeeren",n:25},{t:"Äpfel",n:17},{t:"Bananen",n:12}]},
+ {id:"d9",art:"u",e:"%",f:"Was essen die meisten gern zum Frühstück?",q:"YouGov-Umfrage für dpa, März 2023",a:[{t:"Brot mit Käse oder Wurst",n:34},{t:"Brötchen mit Marmelade",n:18},{t:"von allem etwas",n:15},{t:"Müsli",n:10},{t:"Ei",n:6},{t:"Obst",n:5}]},
+ {id:"g1",art:"g",e:"",f:"Was trinken die meisten gern?",a:[{t:"Wasser",n:30},{t:"Cola",n:22},{t:"Tee",n:18},{t:"Saft",n:16},{t:"Kaffee",n:14}]},
+ {id:"g2",art:"g",e:"",f:"Was essen die meisten am liebsten?",a:[{t:"Pizza",n:28},{t:"Nudeln",n:22},{t:"Reis mit Hähnchen",n:18},{t:"Döner",n:17},{t:"Burger",n:15}]},
+ {id:"g3",art:"g",e:"",f:"Welchen Sport mögen die meisten?",a:[{t:"Fußball",n:40},{t:"Schwimmen",n:18},{t:"Fitness",n:16},{t:"Basketball",n:14},{t:"Laufen",n:12}]},
+ {id:"g4",art:"g",e:"",f:"Was haben die meisten immer in der Tasche?",a:[{t:"das Handy",n:38},{t:"den Schlüssel",n:24},{t:"Geld",n:18},{t:"einen Stift",n:11},{t:"Wasser",n:9}]},
+ {id:"g5",art:"g",e:"",f:"Was kaufen die meisten im Supermarkt?",a:[{t:"Brot",n:26},{t:"Milch",n:20},{t:"Obst",n:19},{t:"Wasser",n:18},{t:"Reis",n:17}]},
+ {id:"g6",art:"g",e:"",f:"Was machen die meisten gern am Wochenende?",a:[{t:"lange schlafen",n:30},{t:"Freunde treffen",n:25},{t:"Sport machen",n:18},{t:"einkaufen",n:15},{t:"kochen",n:12}]},
+ {id:"g7",art:"g",e:"",f:"Was ist im Praktikum am wichtigsten?",a:[{t:"pünktlich sein",n:34},{t:"freundlich sein",n:24},{t:"Fragen stellen",n:18},{t:"gut zuhören",n:14},{t:"sauber arbeiten",n:10}]}
+];
 const kopie=x=>JSON.parse(JSON.stringify(x));
 let nr=0;function neuId(){return "f"+Date.now().toString(36)+(nr++)}
 /* Daten prüfen und säubern (auch für Import) */
@@ -185,36 +208,43 @@ function sauber(liste){
 let D=(()=>{try{const j=JSON.parse(store.get(DKEY));const s=j&&sauber(j.fragen);if(s)return {fragen:s}}catch(e){}return {fragen:kopie(BEISPIELE)}})();
 function speichere(){const ok=store.set(DKEY,JSON.stringify({spiel:"was-sagen-die-meisten",v:1,fragen:D.fragen}));
   const s=$("eStat");if(s){s.textContent=ok?"✓ gespeichert":"Speichern geht auf diesem Gerät nicht";s.style.color=ok?"":"#FA3A2F"}return ok}
-const S=Object.assign({modus:"einzel",teams:"2",zeit:"0"},(()=>{try{return JSON.parse(store.get(SKEY))||{}}catch(e){return {}}})());
+const S=Object.assign({satz:"klasse",aus:[],modus:"einzel",teams:"2",zeit:"0"},(()=>{try{return JSON.parse(store.get(SKEY))||{}}catch(e){return {}}})());
+if(!Array.isArray(S.aus))S.aus=[];
 function spare(){store.set(SKEY,JSON.stringify(S))}
+const fertig=()=>S.satz==="de";
 /* gültige Antworten einer Frage, häufigste zuerst */
-function antworten(q){return q.a.filter(x=>x.t.trim()&&x.n>0).map(x=>({t:x.t.trim(),n:x.n})).sort((a,b)=>b.n-a.n)}
+function antworten(q){return q.a.filter(x=>x.t.trim()&&x.n>0).map(x=>({t:x.t.trim(),n:x.n,z:x.z})).sort((a,b)=>b.n-a.n)}
 function spielbar(q){return q.f.trim()&&antworten(q).length>=2}
-function imSpiel(){return D.fragen.filter(q=>q.an&&spielbar(q))}
+function imSpiel(){return fertig()?FERTIG.filter(q=>!S.aus.includes(q.id)):D.fragen.filter(q=>q.an&&spielbar(q))}
 function seiten(id){["start","spiel","edit"].forEach(x=>$(x).hidden=x!==id);window.scrollTo(0,0)}
 
 /* ---------- Start ---------- */
 function mark(){
   document.querySelectorAll(".seg[data-k]").forEach(sg=>sg.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===String(S[sg.dataset.k]))));
   $("oTeams").hidden=S.modus!=="teams";
-  $("fListe").innerHTML=D.fragen.map((q,i)=>{const ok=spielbar(q),n=antworten(q).length;
+  if(fertig())$("fListe").innerHTML=FERTIG.map((q,i)=>{const an=!S.aus.includes(q.id);
+    return `<button class="fz${an?" an":""}" data-i="${i}"><span class="hk">${an?"✓":""}</span><span class="t">${esc(q.f)}</span><small>${q.art==="u"?"Umfrage":"geschätzt"}</small></button>`}).join("");
+  else $("fListe").innerHTML=D.fragen.map((q,i)=>{const ok=spielbar(q),n=antworten(q).length;
     return `<button class="fz${q.an&&ok?" an":""}${ok?"":" leer"}" data-i="${i}"><span class="hk">${q.an&&ok?"✓":""}</span><span class="t">${esc(q.f.trim()||"(Frage ohne Text)")}</span><small>${ok?n+" Antworten":"noch nicht fertig"}</small></button>`}).join("")||`<div class="info warn">Noch keine Fragen. Bitte unten „Fragen und Antworten eintragen“ antippen.</div>`;
   const n=imSpiel().length;
-  $("info").innerHTML=n?`<b>${n} ${n===1?"Frage":"Fragen"}</b> im Spiel. <b>Ohne Ton</b>, Musik unten links zuschaltbar. Tasten: Leertaste oder → = weiter, X = nicht dabei, F = Vollbild.`:"Keine Frage ausgewählt. Eine Frage braucht einen Text und mindestens 2 Antworten mit Anzahl.";
+  $("bEdit").hidden=fertig();
+  $("info").innerHTML=n?`<b>${n} ${n===1?"Frage":"Fragen"}</b> im Spiel. ${fertig()?"„Umfrage“ = echte Zahlen aus Deutschland, die Quelle steht im Spiel. „geschätzt“ = keine echte Umfrage, die Zahlen sind ausgedacht. ":""}<b>Ohne Ton</b>, Musik unten links zuschaltbar. Tasten: Leertaste oder → = weiter, X = nicht dabei, F = Vollbild.`:"Keine Frage ausgewählt. Eine Frage braucht einen Text und mindestens 2 Antworten mit Anzahl.";
   $("info").classList.toggle("warn",!n);$("bStart").disabled=!n;
 }
 document.querySelectorAll(".seg[data-k]").forEach(sg=>sg.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S[sg.dataset.k]=b.dataset.v;spare();mark()}));
-$("fListe").addEventListener("click",e=>{const b=e.target.closest(".fz");if(!b)return;const q=D.fragen[+b.dataset.i];if(!spielbar(q))return;q.an=!q.an;speichere();mark()});
+$("fListe").addEventListener("click",e=>{const b=e.target.closest(".fz");if(!b)return;
+  if(fertig()){const id=FERTIG[+b.dataset.i].id;S.aus=S.aus.includes(id)?S.aus.filter(x=>x!==id):S.aus.concat(id);spare();mark();return}
+  const q=D.fragen[+b.dataset.i];if(!spielbar(q))return;q.an=!q.an;speichere();mark()});
 
 /* ---------- Spiel ---------- */
 const st={liste:[],i:0,ant:[],auf:[],phase:"",x:0,pkt:[0,0,0,0]};
 let timer=null,xTimer=null;
 function stopUhr(){clearInterval(timer);timer=null;$("zt").hidden=true}
-function start(){st.liste=imSpiel().map(q=>({f:q.f.trim(),a:antworten(q)}));if(!st.liste.length)return;st.i=0;st.pkt=[0,0,0,0];seiten("spiel");frageNeu()}
+function start(){st.liste=imSpiel().map(q=>({f:q.f.trim(),a:antworten(q),e:q.e||"",art:q.art||"",q:q.q||""}));if(!st.liste.length)return;st.i=0;st.pkt=[0,0,0,0];seiten("spiel");frageNeu()}
 function frageNeu(){
   const q=st.liste[st.i];st.ant=q.a;st.auf=q.a.map(()=>false);st.x=0;st.phase="schreiben";
   $("runde").hidden=false;$("ende").hidden=true;
-  $("sSub").textContent=`Frage ${st.i+1} von ${st.liste.length}`;
+  $("sSub").textContent=`Frage ${st.i+1} von ${st.liste.length}`+(q.art==="u"?" · Umfrage in Deutschland":q.art==="g"?" · geschätzt":"");
   const f=$("frage");f.textContent=q.f;f.classList.toggle("lang",q.f.length>44);
   const n=q.a.length,b=$("brett"),zwei=n>4,rows=zwei?Math.ceil(n/2):n;
   b.style.gridTemplateColumns=zwei?"1fr 1fr":"minmax(0,100vh)";b.style.justifyContent="center";b.style.gridTemplateRows=`repeat(${rows},auto)`;
@@ -226,9 +256,9 @@ function frageNeu(){
 }
 function alleAuf(){return st.auf.every(Boolean)}
 function zeig(){
-  const top=st.ant[0].n;
+  const top=st.ant[0].n,q=st.liste[st.i];
   $("brett").innerHTML=st.ant.map((a,i)=>st.auf[i]
-    ?`<div class="ant auf${a.n===top?" top":""}${st.neu===i?" neu":""}"><span class="nr">${i+1}</span><span class="tx">${esc(a.t)}</span><span class="za">${a.n}</span></div>`
+    ?`<div class="ant auf${a.n===top?" top":""}${st.neu===i?" neu":""}${a.t.length>(st.ant.length>4?15:30)?" lg":""}"><span class="nr">${i+1}</span><span class="tx">${esc(a.t)}</span><span class="za">${esc(a.z||a.n)}${q.e?`<small> ${esc(q.e)}</small>`:""}</span></div>`
     :`<button class="ant" data-i="${i}" aria-label="Antwort ${i+1} aufdecken"><span class="nr">${i+1}</span><span class="tx">●●●</span><span class="za">0</span></button>`).join("");
   const fertig=alleAuf(),letzte=st.i===st.liste.length-1,b=$("bNext");
   if(fertig)st.phase="fertig";
@@ -238,7 +268,7 @@ function zeig(){
   $("falsch").textContent="✕".repeat(st.x);
   const sum=st.ant.reduce((s,a)=>s+a.n,0);
   $("hin").innerHTML=st.phase==="schreiben"?(S.modus==="teams"?"Jedes Team schreibt <b>eine</b> Antwort auf das Whiteboard.":"Schreib <b>eine</b> Antwort auf dein Whiteboard. Was sagen die meisten?")
-    :fertig?(S.modus==="teams"?"Welches Team hat die Antwort mit der höchsten Zahl? Dieses Team bekommt 1 Punkt.":`Steht deine Antwort an der Tafel? Die Zahl daneben sind deine Punkte. · ${sum} Antworten gezählt`)
+    :fertig?(S.modus==="teams"?"Welches Team hat die Antwort mit der höchsten Zahl? Dieses Team bekommt 1 Punkt."+(q.art==="u"?` · Quelle: ${esc(q.q)}`:q.art==="g"?" · Zahlen geschätzt":""):q.art==="u"?`Steht deine Antwort an der Tafel? · Quelle: ${esc(q.q)}`:q.art==="g"?"Steht deine Antwort an der Tafel? · Diese Zahlen sind geschätzt, es ist keine echte Umfrage.":`Steht deine Antwort an der Tafel? Die Zahl daneben sind deine Punkte. · ${sum} Antworten gezählt`)
     :"Die Antworten kommen von unten nach oben. Oder: Antwort sagen und das Feld antippen.";
   teamsHtml();
 }

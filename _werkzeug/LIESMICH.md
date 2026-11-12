@@ -26,6 +26,7 @@ QR-Code: `npm pack qrcode-generator@1.4.4`, entpackt nach `/tmp/work/package/`.
 
 ## Daten, die nur auf dem Gerät liegen
 - „Was sagen die meisten?“: Fragen und Antworten stehen im `localStorage` (`rie_meisten_v1`) des Geräts, nicht im Repo. Weitergabe über Export/Import im Spiel (JSON-Datei). Im Repo stehen nur 3 erfundene Beispielfragen.
+- Fertiger Satz „Deutschland“ (Liste `FERTIG` in `meisten_tpl.html`): 9 Fragen mit echten Zahlen (Quelle steht an jeder Frage, Stand 12.11.2026) und 7 geschätzte Fragen (`art:"g"`, im Spiel als „geschätzt“ markiert). Neue Umfragen dort ergänzen, Quelle immer mit Jahr.
 
 ## Noch offen
 - Wort-Comeback für die Leseheft-Wörter (Wortlisten kommen von Frau Rie).

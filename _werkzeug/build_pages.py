@@ -5,7 +5,7 @@ DESC['bingo']=('Bingo','Ohne Druck: 3 × 3 aufs Whiteboard, das Smartboard zieht
 einzel.insert(1,('Bingo',DESC['bingo'][1],'spiele/bingo/bingo-rufer.html'))
 # neu am 12.11.2026: Sortiertafel und „Was sagen die meisten?“ (gebaut mit build_neu.py)
 DESC['sortiertafel']=('Sortiertafel','Bildkarten in Spalten ziehen: der/die/das, Singular/Plural, wo?/wohin? – auch als Tafelbild.')
-DESC['was-sagen-die-meisten']=('Was sagen die meisten?','Wie Familien-Duell: die Antworten der Klasse auf die Fragen der Woche raten.')
+DESC['was-sagen-die-meisten']=('Was sagen die meisten?','Wie Familien-Duell: Welche Antwort ist am häufigsten? Mit fertigen Fragen (Deutschland) oder mit den Antworten der Klasse.')
 def nach(titel,neu):
     i=[x[0] for x in einzel].index(titel); einzel.insert(i+1,(DESC[neu][0],DESC[neu][1],'spiele/%s/%s.html'%(neu,neu)))
 nach('Satz-Chaos','sortiertafel'); nach('Was fehlt?','was-sagen-die-meisten')
@@ -53,7 +53,7 @@ TXT={'blitz':['Ein Bild blitzt ganz kurz auf. Alle schreiben das Wort auf ihr Mi
 'vokabel':['Ein Bild erscheint. Alle schreiben das Wort und kontrollieren selbst.',''],
 'wer':['Drei Sätze sind Tipps. Wer oder was ist es? Alle schreiben ihren Tipp auf.',''],
 'sortier':['Unten liegen Bildkarten. Jede Karte kommt in die richtige Spalte, zum Beispiel der, die oder das.','Am Start „Karte für Karte – alle schreiben“ wählen: Alle schreiben die Spalte auf ihr Mini-Whiteboard, dann kommt die Lösung.'],
-'meisten':['Wir haben die Klasse gefragt. Welche Antwort ist am häufigsten? Alle schreiben eine Antwort auf ihr Mini-Whiteboard. Dann kommen die Antworten mit der Zahl.','Die Fragen und Antworten vorher im Spiel eintragen („Fragen und Antworten eintragen“).'],
+'meisten':['Viele Menschen haben geantwortet. Welche Antwort ist am häufigsten? Alle schreiben eine Antwort auf ihr Mini-Whiteboard. Dann kommen die Antworten mit der Zahl.','Am Start „Deutschland (fertig)“ wählen – oder „unsere Klasse“ und die Antworten vorher eintragen.'],
 'pause':['Aufstehen, Fenster auf, etwas trinken. Whiteboards sauber wischen.','']}
 BL='blitzbild/extra/alles-gemischt-n2.html'; SA='spiele/buchstaben-salat/buchstaben-salat-gemischt.html'; SC='spiele/satz-chaos/satz-chaos-grammatik.html'
 ZO='spiele/zoom-bild/zoom-bild-le0-schulsachen.html'; FD='spiele/fehler-detektiv/fehler-detektiv-grammatik-dienstag.html'; WF='spiele/was-fehlt/was-fehlt-quartett.html'; BI='spiele/bingo/bingo-rufer.html'
