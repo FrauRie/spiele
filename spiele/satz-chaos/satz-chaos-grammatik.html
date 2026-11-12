@@ -183,6 +183,46 @@ body.solo .head{padding-right:15vh}
    Die Reihenfolge der Themen folgt den Dienstags-Inputs / Heften „Schon fertig?“ 4–10.
    ===================================================================== */
 const THEMEN=[
+{name:"Normale Verben",heft:"Verben 1",saetze:[
+ {s:"Ich wohne_v in Hamburg .",u:["Schreib mit: Sofia","Sofia wohnt_v in Hamburg ."]},
+ {s:"Du lernst_v Deutsch .",u:["Mach eine Frage.","Lernst_v du Deutsch ?"]},
+ {s:"Bilal spielt_v gern Fußball .",u:["Schreib mit: wir","Wir spielen_v gern Fußball ."]},
+ {s:"Wir kochen_v heute Reis .",altS:["Heute kochen_v wir Reis ."],u:["Schreib mit: ich","Ich koche_v heute Reis ."],alt:["Heute koche ich Reis."]},
+ {s:"Nadia trinkt_v gern Tee .",u:["Frag mit: du","Trinkst_v du gern Tee ?"]},
+ {s:"Ihr macht_v jetzt Pause .",altS:["Jetzt macht_v ihr Pause ."],u:["Schreib mit: wir","Wir machen_v jetzt Pause ."],alt:["Jetzt machen wir Pause."]},
+ {s:"Omar kauft_v ein_n Brot .",u:["Schreib mit: ich","Ich kaufe_v ein_n Brot ."]},
+ {s:"Ich höre_v gern Musik .",u:["Frag mit: ihr","Hört_v ihr gern Musik ?"]},
+]},
+{name:"sein und haben",heft:"Verben 2",saetze:[
+ {s:"Ich bin_v heute müde .",altS:["Heute bin_v ich müde ."],u:["Schreib mit: Lina","Lina ist_v heute müde ."],alt:["Heute ist Lina müde."]},
+ {s:"Du hast_v ein_n Handy .",u:["Mach eine Frage.","Hast_v du ein_n Handy ?"]},
+ {s:"Kofi ist_v neu in der_f Klasse .",u:["Schreib mit: ich","Ich bin_v neu in der_f Klasse ."]},
+ {s:"Wir haben_v heute Sport .",altS:["Heute haben_v wir Sport ."],u:["Schreib mit: ihr","Ihr habt_v heute Sport ."],alt:["Heute habt ihr Sport."]},
+ {s:"Ihr seid_v pünktlich .",u:["Schreib mit: wir","Wir sind_v pünktlich ."]},
+ {s:"Daria hat_v Hunger .",u:["Frag mit: du","Hast_v du Hunger ?"]},
+ {s:"Ich habe_v Durst .",u:["Schreib mit: wir","Wir haben_v Durst ."]},
+ {s:"Die_p Schuhe sind_v neu .",u:["Schreib mit: das Handy","Das_n Handy ist_v neu ."]},
+]},
+{name:"Verben mit Vokalwechsel",heft:"Verben 3",saetze:[
+ {s:"Du sprichst_v gut Englisch .",u:["Schreib mit: ich","Ich spreche_v gut Englisch ."]},
+ {s:"Malik fährt_v mit dem_m Bus .",u:["Schreib mit: wir","Wir fahren_v mit dem_m Bus ."]},
+ {s:"Ich lese_v ein_n Buch .",u:["Schreib mit: Hana","Hana liest_v ein_n Buch ."]},
+ {s:"Dana isst_v gern Reis .",u:["Frag mit: du","Isst_v du gern Reis ?"]},
+ {s:"Wir sehen_v heute einen_m Film .",altS:["Heute sehen_v wir einen_m Film ."],u:["Schreib mit: er","Er sieht_v heute einen_m Film ."],alt:["Heute sieht er einen Film."]},
+ {s:"Du schläfst_v am_m Sonntag lange .",altS:["Am_m Sonntag schläfst_v du lange ."],u:["Schreib mit: ich","Ich schlafe_v am_m Sonntag lange ."],alt:["Am Sonntag schlafe ich lange."]},
+ {s:"Ihr fahrt_v Fahrrad .",u:["Schreib mit: du","Du fährst_v Fahrrad ."]},
+ {s:"Jamal hilft_v gern .",u:["Schreib mit: ich","Ich helfe_v gern ."]},
+]},
+{name:"Adjektive",heft:"Adjektive",saetze:[
+ {s:"Das_n Handy ist_v neu .",u:["Gegenteil: alt","Das_n Handy ist_v alt ."],alt:["Das Handy ist nicht neu."]},
+ {s:"Der_m Bus ist_v heute langsam .",altS:["Heute ist_v der_m Bus langsam ."],u:["Gegenteil: schnell","Der_m Bus ist_v heute schnell ."],alt:["Heute ist der Bus schnell."]},
+ {s:"Die_f Musik ist_v zu laut .",u:["Gegenteil: leise","Die_f Musik ist_v zu leise ."]},
+ {s:"Die_p Schuhe sind_v teuer .",u:["Schreib mit: die Jacke","Die_f Jacke ist_v teuer ."]},
+ {s:"Ich bin_v heute fröhlich .",altS:["Heute bin_v ich fröhlich ."],u:["Frag mit: du","Bist_v du heute fröhlich ?"]},
+ {s:"Der_m Film ist_v langweilig .",u:["Schreib mit: ich (gelangweilt)","Ich bin_v gelangweilt ."]},
+ {s:"Die_f Tasche ist_v sehr schwer .",u:["Mach eine Frage.","Ist_v die_f Tasche sehr schwer ?"]},
+ {s:"Das_n Wasser ist_v kalt .",u:["Gegenteil: warm","Das_n Wasser ist_v warm ."]},
+]},
 {name:"Verb auf Platz 2 · nicht",heft:"Heft 4",saetze:[
  {s:"Ich verstehe_v das nicht .",altS:["Das verstehe_v ich nicht ."],u:["Schreib mit: Amir","Amir versteht_v das nicht ."],alt:["Das versteht Amir nicht."],b:"verstehe"},
  {s:"Wir wohnen_v in Hamburg .",u:["Frag mit: ihr","Wohnt_v ihr in Hamburg ?"],alt:["Wo wohnt ihr?"],b:"wohne"},
