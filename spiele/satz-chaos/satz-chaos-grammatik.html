@@ -775,23 +775,28 @@ document.addEventListener("keydown",e=>{if(e.key!=="f"&&e.key!=="F")return;if(e.
   e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)fsToggle()},true);
 
 </script>
-<!-- rie-musik v1 (12.11.2026): eigene Quizmusik, zuschaltbar, Standard aus -->
+<!-- rie-musik v2 (12.11.2026): eigene Quizmusik, 3 Stücke, zuschaltbar, Standard aus -->
 <style>
+#rieMusik sub{font-size:.55em;margin-left:.1em;align-self:end;padding-bottom:.9em}
 #rieMusik{position:fixed;left:1.2vh;bottom:1.2vh;z-index:9999;width:5.6vh;height:5.6vh;min-width:34px;min-height:34px;border-radius:50%;border:.3vh solid #C9C2B6;background:#fff;color:#8A8378;font-size:2.6vh;line-height:1;cursor:pointer;opacity:.6;padding:0;display:grid;place-items:center;font-family:inherit}
 #rieMusik:hover{opacity:1}
 #rieMusik.an{background:#F28C28;border-color:#D9690A;color:#fff;opacity:.95}
 @media print{#rieMusik{display:none}}
 </style>
-<button id="rieMusik" type="button" title="Musik an / aus (Taste M)" aria-label="Musik an oder aus">♪</button>
+<button id="rieMusik" type="button" title="Musik: aus → Stück 1 → 2 → 3 (Taste M)" aria-label="Musik umschalten">♪</button>
 <script>
 (function(){
-  var KEY="rie_musik",btn=document.getElementById("rieMusik"),ctx=null,master=null,an=false,timer=null,nextT=0,step=0,noise=null;
-  function get(){try{return localStorage.getItem(KEY)==="1"}catch(e){return false}}
-  function set(v){try{localStorage.setItem(KEY,v?"1":"0")}catch(e){}}
-  /* Eigene Schleife: 4 Takte, 16tel-Raster. Akkorde Dm – G – B – C (Grundtöne als MIDI). */
-  var ROOT=[38,43,46,48];
-  var BASS=[0,-1,-1,0,-1,-1,7,-1,0,-1,12,-1,-1,7,-1,-1];
-  var RIFF=[[12,-1,-1,15,-1,19,-1,-1,22,-1,19,-1,15,-1,17,-1],[12,-1,16,-1,-1,19,-1,21,-1,-1,19,-1,16,-1,14,-1],[12,-1,-1,16,-1,19,-1,-1,24,-1,19,-1,17,-1,16,-1],[12,-1,16,-1,19,-1,-1,23,-1,19,-1,16,-1,14,-1,11]];
+  var KEY="rie_musik",btn=document.getElementById("rieMusik"),ctx=null,master=null,an=0,timer=null,nextT=0,step=0,noise=null;
+  function get(){try{var v=parseInt(localStorage.getItem(KEY),10);return v>=1&&v<=3?v:0}catch(e){return 0}}
+  function set(v){try{localStorage.setItem(KEY,String(v))}catch(e){}}
+  /* Drei eigene Schleifen: je 4 Takte im 16tel-Raster. r = Grundtöne (MIDI), b = Bass, f = Melodie (Halbtöne über dem Grundton). */
+  var X=-1,STUECKE=[
+   {bpm:120,eil:144,r:[38,43,46,48],lead:"square",lv:0.045,b:[0,X,X,0,X,X,7,X,0,X,12,X,X,7,X,X],
+    f:[[12,X,X,15,X,19,X,X,22,X,19,X,15,X,17,X],[12,X,16,X,X,19,X,21,X,X,19,X,16,X,14,X],[12,X,X,16,X,19,X,X,24,X,19,X,17,X,16,X],[12,X,16,X,19,X,X,23,X,19,X,16,X,14,X,11]]},
+   {bpm:100,eil:118,r:[45,41,36,43],lead:"triangle",lv:0.11,b:[0,X,X,X,7,X,X,X,0,X,X,7,X,X,12,X],
+    f:[[12,X,15,X,19,X,24,X,19,X,15,X,12,X,X,X],[12,X,16,X,19,X,24,X,19,X,16,X,21,X,X,X],[24,X,19,X,16,X,12,X,16,X,19,X,26,X,X,X],[12,X,16,X,19,X,14,X,X,X,19,X,16,X,14,X]]},
+   {bpm:134,eil:156,r:[40,40,45,47],lead:"sawtooth",lv:0.032,b:[0,X,0,X,12,X,0,X,0,X,0,X,12,X,7,X],
+    f:[[12,X,12,15,X,X,19,X,12,X,12,15,X,X,22,X],[12,X,12,15,X,X,19,X,24,X,22,X,19,X,15,X],[12,X,12,15,X,X,19,X,12,X,12,15,X,X,24,X],[12,X,16,X,19,X,16,X,12,X,16,X,19,X,22,X]]}];
   function hz(m){return 440*Math.pow(2,(m-69)/12)}
   function ton(t,m,dur,typ,vol){var o=ctx.createOscillator(),g=ctx.createGain();o.type=typ;o.frequency.value=hz(m);
     g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
@@ -804,10 +809,11 @@ document.addEventListener("keydown",e=>{if(e.key!=="f"&&e.key!=="F")return;if(e.
   function eilig(){try{return !!document.querySelector(".spaet,.late,.blink")}catch(e){return false}}
   function plan(){
     if(!an||!ctx)return;
+    var T=STUECKE[an-1];
     while(nextT<ctx.currentTime+0.25){
-      var bpm=eilig()?144:120,d=60/bpm/4,bar=Math.floor(step/16)%4,i=step%16,r=ROOT[bar];
-      if(BASS[i]>=0)ton(nextT,r+BASS[i],d*1.7,"triangle",0.22);
-      if(RIFF[bar][i]>=0)ton(nextT,r+12+RIFF[bar][i],d*1.5,"square",0.045);
+      var bpm=eilig()?T.eil:T.bpm,d=60/bpm/4,bar=Math.floor(step/16)%4,i=step%16,r=T.r[bar];
+      if(T.b[i]>=0)ton(nextT,r+T.b[i],d*1.7,"triangle",0.22);
+      if(T.f[bar][i]>=0)ton(nextT,r+12+T.f[bar][i],d*1.5,T.lead,T.lv);
       if(i%4===0)kick(nextT);
       if(i%2===0)hat(nextT,i%4===2?0.05:0.022);
       nextT+=d;step++;
@@ -819,13 +825,14 @@ document.addEventListener("keydown",e=>{if(e.key!=="f"&&e.key!=="F")return;if(e.
       nextT=ctx.currentTime+0.06;step=0;clearInterval(timer);timer=setInterval(plan,60);plan()}catch(e){}
   }
   function stop(){clearInterval(timer);timer=null;try{if(ctx&&ctx.state==="running")ctx.suspend()}catch(e){}}
-  function zeig(){btn.classList.toggle("an",an);btn.textContent=an?"♫":"♪"}
+  function zeig(){btn.classList.toggle("an",an>0);btn.innerHTML=an?"♫<sub>"+an+"</sub>":"♪"}
   function schalt(v){an=v;set(v);zeig();if(v)start();else stop()}
-  btn.addEventListener("click",function(e){e.stopPropagation();schalt(!an);btn.blur()});
+  btn.addEventListener("click",function(e){e.stopPropagation();schalt((an+1)%4);btn.blur()});
   document.addEventListener("keydown",function(e){var t=e.target&&e.target.tagName;if(t==="INPUT"||t==="TEXTAREA"||t==="SELECT"||(e.target&&e.target.isContentEditable))return;
-    if((e.key==="m"||e.key==="M")&&!e.ctrlKey&&!e.metaKey&&!e.altKey)schalt(!an)});
+    if((e.key==="m"||e.key==="M")&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.repeat)schalt((an+1)%4)});
   /* War die Musik beim letzten Mal an, startet sie mit dem ersten Tipp (Browser-Regel). */
-  if(get()){an=true;zeig();var los=function(){document.removeEventListener("pointerdown",los,true);document.removeEventListener("keydown",los,true);if(an)start()};
+  an=get();
+  if(an){zeig();var los=function(){document.removeEventListener("pointerdown",los,true);document.removeEventListener("keydown",los,true);if(an)start()};
     document.addEventListener("pointerdown",los,true);document.addEventListener("keydown",los,true)}
 })();
 </script>
