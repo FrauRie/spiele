@@ -4,7 +4,7 @@
 import os, re, json, glob
 W = '/tmp/work/'; R = '/home/claude/spiele/'; OUT = R + 'spiele/blitz/'
 os.makedirs(OUT, exist_ok=True)
-TON = open(W + 'ton.html', encoding='utf-8').read(); MUSIK = open(W + 'musik.html', encoding='utf-8').read()
+KNOEPFE = open(W + 'knoepfe.html', encoding='utf-8').read(); TON = open(W + 'ton.html', encoding='utf-8').read(); MUSIK = open(W + 'musik.html', encoding='utf-8').read()
 
 def patch(h):
     old = "function lab(it,plain){"
@@ -15,8 +15,10 @@ def patch(h):
     h = h.replace(old, '<button data-v="erkl">Für sich / Erklären (1 Karte + Mitte)</button>')
     assert h.count('vh*0.72')==1
     h = h.replace('vh*0.72', 'vh*0.66')   # Platz für lange Aufgabenzeile
+    # Knopf-Regeln (12.11.2026): „Einstellungen“ darf „Lösung zeigen“ nicht berühren
+    h = h.replace('.mini{position:fixed;right:2vh;bottom:1.2vh;', '.mini{position:fixed;right:2vh;bottom:.3vh;', 1).replace('.unten{display:flex;', '.unten{margin-bottom:1.4vh;display:flex;', 1)
     assert '</body>' in h and 'rie-ton' not in h
-    return h.replace('</body>', TON + '\n' + MUSIK + '\n</body>')
+    return h.replace('</body>', KNOEPFE + '\n' + TON + '\n' + MUSIK + '\n</body>')
 
 def slug(k): return k.lower().replace('ae', 'ä').replace('ä', 'ae')  # Dateinamen ohne Umlaute
 NAMEN = {}   # dateiname -> (Gruppe, Titel)
