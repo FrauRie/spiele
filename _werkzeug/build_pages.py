@@ -9,6 +9,9 @@ DESC['was-sagen-die-meisten']=('Was sagen die meisten?','Wie Familien-Duell: Wel
 def nach(titel,neu):
     i=[x[0] for x in einzel].index(titel); einzel.insert(i+1,(DESC[neu][0],DESC[neu][1],'spiele/%s/%s.html'%(neu,neu)))
 nach('Satz-Chaos','sortiertafel'); nach('Was fehlt?','was-sagen-die-meisten')
+# neu am 12.11.2026: Suchsel (nur ●-Wörter, Bild oder Bild + Wort; Quelle: Suchsel_Generator topics.json/topics2.json)
+DESC['suchsel']=('Suchsel','Wörter im Buchstabengitter suchen: 36 Themen, nur ●-Wörter, mit Bild oder mit Bild + Wort.')
+nach('Sortiertafel','suchsel')
 e=html.escape
 def rows(cards,merge=False,byurl=False):
     items=[]
@@ -30,7 +33,7 @@ def rows(cards,merge=False,byurl=False):
     return h
 # ---------- Liste aller Spiele für die Spielstunde ----------
 SP=[]
-KIND={'activity':'activity','bingo':'bingo','boss-runde':'boss','buchstaben-pizza':'pizza','eis-schmilzt':'eis','exit-quiz':'exit','fehler-detektiv':'fehler','satz-chaos':'satz','vokabelcheck':'vokabel','was-fehlt':'wasfehlt','wer-bin-ich':'wer','sortiertafel':'sortier','was-sagen-die-meisten':'meisten'}
+KIND={'activity':'activity','bingo':'bingo','boss-runde':'boss','buchstaben-pizza':'pizza','eis-schmilzt':'eis','exit-quiz':'exit','fehler-detektiv':'fehler','satz-chaos':'satz','vokabelcheck':'vokabel','was-fehlt':'wasfehlt','wer-bin-ich':'wer','sortiertafel':'sortier','was-sagen-die-meisten':'meisten','suchsel':'suchsel'}
 for t,d,u in einzel: SP.append(dict(t=t,u=u,k=KIND[u.split('/')[1]],g='Klassenspiele'))
 for t,u in zoomA: SP.append(dict(t='Zoom-Bild · '+t,u=u,k='zoom',g='Zoom-Bild'))
 for t,u in zoomL: SP.append(dict(t='Zoom-Bild · '+t,u=u,k='zoom',g='Zoom-Bild'))
@@ -54,6 +57,7 @@ TXT={'blitz':['Ein Bild blitzt ganz kurz auf. Alle schreiben das Wort auf ihr Mi
 'wer':['Drei Sätze sind Tipps. Wer oder was ist es? Alle schreiben ihren Tipp auf.',''],
 'sortier':['Unten liegen Bildkarten. Jede Karte kommt in die richtige Spalte, zum Beispiel der, die oder das.','Am Start „Karte für Karte – alle schreiben“ wählen: Alle schreiben die Spalte auf ihr Mini-Whiteboard, dann kommt die Lösung.'],
 'meisten':['Viele Menschen haben geantwortet. Welche Antwort ist am häufigsten? Alle schreiben eine Antwort auf ihr Mini-Whiteboard. Dann kommen die Antworten mit der Zahl.','Am Start „Deutschland (fertig)“ wählen – oder „unsere Klasse“ und die Antworten vorher eintragen.'],
+'suchsel':['Im Gitter sind Wörter versteckt. Die Bilder helfen. Wer ein Wort findet, zieht mit dem Finger darüber.','Am Smartboard kommt immer eine Person nach vorn. Oder alle spielen am Handy.'],
 'pause':['Aufstehen, Fenster auf, etwas trinken. Whiteboards sauber wischen.','']}
 BL='blitzbild/extra/alles-gemischt-n2.html'; SA='spiele/buchstaben-salat/buchstaben-salat-gemischt.html'; SC='spiele/satz-chaos/satz-chaos-grammatik.html'
 ZO='spiele/zoom-bild/zoom-bild-le0-schulsachen.html'; FD='spiele/fehler-detektiv/fehler-detektiv-grammatik-dienstag.html'; WF='spiele/was-fehlt/was-fehlt-quartett.html'; BI='spiele/bingo/bingo-rufer.html'
@@ -68,7 +72,7 @@ open(R+'spielstunde.html','w',encoding='utf-8').write(s)
 URL='https://fraurie.github.io/spiele/handy.html'
 qr=subprocess.run(['node','-e',"const q=require('/tmp/work/package/qrcode.js')(0,'M');q.addData(process.argv[1]);q.make();console.log(q.createSvgTag({cellSize:4,margin:2,scalable:true}))",URL],capture_output=True,text=True).stdout.strip()
 assert qr.startswith('<svg')
-hl=[('Bingo · Meine Karte','Tipp den Spielcode von der Tafel ein. Du bekommst 9 Bilder. Hör zu und tipp auf das Bild.','spiele/bingo/bingo-rufer.html')]+[('Buchstaben-Salat · '+t,'Tipp die Buchstaben an und leg das Wort. Wähl am Start „Allein“.',u) for t,u in salat]+[('Sortiertafel','Zieh die Karten in die richtige Spalte. Oder: Tipp die Karte an, dann die Spalte.','spiele/sortiertafel/sortiertafel.html'),('Vokabelcheck','Sieh das Bild, schreib das Wort, kontrollier selbst.','spiele/vokabelcheck/vokabelcheck.html')]
+hl=[('Bingo · Meine Karte','Tipp den Spielcode von der Tafel ein. Du bekommst 9 Bilder. Hör zu und tipp auf das Bild.','spiele/bingo/bingo-rufer.html')]+[('Buchstaben-Salat · '+t,'Tipp die Buchstaben an und leg das Wort. Wähl am Start „Allein“.',u) for t,u in salat]+[('Suchsel','Such die Wörter im Gitter. Zieh mit dem Finger über das Wort.','spiele/suchsel/suchsel.html')]+[('Sortiertafel','Zieh die Karten in die richtige Spalte. Oder: Tipp die Karte an, dann die Spalte.','spiele/sortiertafel/sortiertafel.html'),('Vokabelcheck','Sieh das Bild, schreib das Wort, kontrollier selbst.','spiele/vokabelcheck/vokabelcheck.html')]
 CSS_HEAD='''<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>%s</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">'''
@@ -103,6 +107,6 @@ page=(page.replace('/*TILES*/',''.join(tile(i,x) for i,x in enumerate(einzel)))
  .replace('/*ZA*/',''.join(pill(t,u,'Zoom-Bild') for t,u in zoomA)).replace('/*ZL*/',''.join(pill(t,u,'Zoom-Bild') for t,u in zoomL)).replace('/*SA*/',''.join(pill(t,u,'Buchstaben-Salat') for t,u in salat))
  .replace('/*BLE*/',rows2(data['Blitzbild · Lerneinheiten'])).replace('/*BAL*/',rows2(data['Blitzbild · Alltag'],byurl=True)).replace('/*BGR*/',rows2(data['Blitzbild · Grammatik'],merge=True)).replace('/*BEX*/',rows2(data['Blitzbild · Extra'],merge=True)))
 n=len(set(re.findall(r'href="((?:blitzbild|spiele)/[^"]+)"',page)))
-assert n==104,n
+assert n==105,n
 for u in re.findall(r'href="([^"#]+\.html)"',page): assert os.path.exists(R+u),u
 open(R+'index.html','w',encoding='utf-8').write(page); print('Seiten gebaut:',len(SP),'Spiele in der Auswahl,',n,'Links auf der Startseite')
