@@ -1,0 +1,116 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Smartboard-Spiele · Frau Rie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F1EFEB;--cell:#fff;--ink:#1A1A1A;--muted:#6B655C;--line:#DDD7CE;--orange:#D9690A;--gruen:#07A045;--hell:#CDEBD6;--rosa:#F2A7C3}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:150px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Andika,Verdana,sans-serif;font-size:18px;line-height:1.3}
+a{color:inherit;text-decoration:none}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:2px solid var(--line)}
+.in{max-width:1240px;margin:auto;padding:0 18px}
+.head{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding-top:14px}
+h1{margin:0;font-size:1.7rem;display:flex;align-items:center;gap:12px}h1:before{content:"";width:38px;height:6px;border-radius:3px;background:var(--ink)}
+h1 small{font-size:1rem;color:var(--muted);font-weight:400}
+#q{font:inherit;padding:9px 14px;border:2px solid var(--line);border-radius:99px;background:#fff;width:min(340px,100%)}#q:focus{outline:3px solid var(--orange);border-color:var(--orange)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0 12px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font:inherit;font-weight:700;border:2px solid var(--line);background:#fff;border-radius:99px;padding:8px 16px;cursor:pointer;color:var(--ink)}
+.chip i{font-style:normal;font-weight:400;color:var(--muted);margin-left:6px}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}.chip.on i{color:#ddd}
+main{padding-bottom:50px}
+section{margin-top:26px}
+h2{margin:0 0 4px;font-size:1.45rem;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2 span{font-size:1rem;font-weight:400;color:var(--muted)}
+h3{margin:18px 0 8px;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-top:12px}
+.tile{background:var(--cell);border-radius:16px;padding:16px 18px;border-left:10px solid var(--orange);box-shadow:0 1px 3px #0001;display:flex;flex-direction:column;gap:4px;min-height:96px}
+.tile.c1{border-left-color:var(--gruen)}.tile.c2{border-left-color:var(--rosa)}
+.tile b{font-size:1.3rem}.tile span{color:var(--muted);font-size:.98rem}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:8px 12px}
+.row{background:var(--cell);border-radius:12px;padding:8px 10px 8px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:56px;box-shadow:0 1px 2px #0001}
+.row .t small{display:block;color:var(--muted);font-size:.85rem}
+.lv{display:flex;gap:6px;flex:none}
+.lvl{min-width:52px;text-align:center;border-radius:10px;padding:9px 10px;font-size:.95rem;letter-spacing:2px;background:var(--hell);color:#0B5A2A;font-weight:700}
+.lvl.n2{background:var(--gruen);color:#fff}
+.go{color:var(--orange);font-size:1.2rem;padding-right:8px}
+.tile:hover,.tile:focus-visible,.row.link:hover,.row.link:focus-visible,.lvl:hover,.lvl:focus-visible{outline:3px solid var(--orange);outline-offset:1px}
+.hide{display:none!important}
+.hero{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-top:22px}
+.hbtn{border-radius:18px;padding:16px 20px;display:flex;flex-direction:column;gap:2px;color:#fff;box-shadow:0 3px 0 #0002}
+.hbtn b{font-size:1.35rem}.hbtn span{font-size:.98rem;opacity:.95}.hbtn.h1{background:var(--orange)}.hbtn.h2{background:var(--gruen)}
+.hbtn:hover,.hbtn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.row .t{flex:1;min-width:0}
+.pin{flex:none;border:0;background:none;font:inherit;font-size:1.5rem;line-height:1;color:#B9B2A6;cursor:pointer;padding:4px 6px;border-radius:8px}
+.pin.an{color:var(--orange)}.pin:hover{background:var(--bg)}
+.tile{position:relative;padding-right:46px}.tile .pin{position:absolute;right:8px;top:8px}
+.leer{font:inherit;font-size:.9rem;border:2px solid var(--line);background:#fff;border-radius:99px;padding:4px 12px;cursor:pointer;margin-left:auto}
+#leer{margin-top:30px;color:var(--muted);font-size:1.1rem}
+footer{text-align:center;color:var(--muted);font-size:.9rem;padding:10px 0 30px}
+@media (max-width:600px){.hero{grid-template-columns:1fr}body{font-size:16px}h1{font-size:1.35rem}html{scroll-padding-top:190px}.list{grid-template-columns:1fr}.tiles{grid-template-columns:1fr}.tile{min-height:0}}
+</style></head><body>
+<div class="top"><div class="in">
+<div class="head"><h1>Smartboard-Spiele <small>Frau Rie · AvM</small></h1><input id="q" type="search" placeholder="Suchen … z. B. Wetter" aria-label="Spiel suchen"></div>
+<nav class="chips" aria-label="Spielart wählen">
+<button class="chip on" data-f="">Alle</button><button class="chip" data-f="klassen">Klassenspiele<i>11</i></button><button class="chip" data-f="zoom">Zoom-Bild<i>12</i></button><button class="chip" data-f="salat">Buchstaben-Salat<i>6</i></button><button class="chip" data-f="blitz">Blitzbild<i>72</i></button>
+</nav></div></div>
+<main class="in">
+<div class="hero" id="hero"><a class="hbtn h1" href="spielstunde.html"><b>▶ Spielstunde am Stück</b><span>45 oder 90 Minuten – ein Spiel nach dem anderen, mit Zeit und Erklärung</span></a><a class="hbtn h2" href="handy.html"><b>📱 Für das Handy</b><span>Spiele zum Alleinspielen, mit QR-Code</span></a></div>
+<section id="sHeute" class="hide"><h2>Heute <span>mit ☆ merkt man sich Spiele für heute</span><button class="leer" id="bHeuteLeer">Liste leeren</button></h2><div class="list" id="lHeute" style="margin-top:12px"></div></section>
+<section id="sZuletzt" class="hide"><h2>Zuletzt gespielt</h2><div class="list" id="lZuletzt" style="margin-top:12px"></div></section>
+<section data-g="klassen"><h2>Klassenspiele <span>je ein Spiel – Inhalte wählt man im Spiel</span></h2>
+<div class="tiles">/*TILES*/</div></section>
+<section data-g="zoom"><h2>Zoom-Bild <span>Ein Bild ist ganz nah. Was ist das?</span></h2>
+<div class="sub"><h3>Alltag</h3><div class="list">/*ZA*/</div></div>
+<div class="sub"><h3>Lerneinheiten</h3><div class="list">/*ZL*/</div></div></section>
+<section data-g="salat"><h2>Buchstaben-Salat <span>Die Buchstaben liegen durcheinander. Welches Wort ist das?</span></h2>
+<div class="sub"><div class="list" style="margin-top:12px">/*SA*/</div></div></section>
+<section data-g="blitz"><h2>Blitzbild <span>Ein Bild blitzt kurz auf. Alle schreiben das Wort. &nbsp;● leichter · ●● mehr Wörter oder schwerer</span></h2>
+<div class="sub"><h3>Lerneinheiten</h3><div class="list">/*BLE*/</div></div></div>
+<div class="sub"><h3>Alltag</h3><div class="list">/*BAL*/</div></div></div>
+<div class="sub"><h3>Grammatik</h3><div class="list">/*BGR*/</div></div></div>
+<div class="sub"><h3>Extra</h3><div class="list">/*BEX*/</div></div></div></section>
+<p id="leer" class="hide">Nichts gefunden. Anderes Wort probieren oder oben „Alle“ antippen.</p>
+</main>
+<footer>Unterrichtsmaterial für den eigenen Unterricht.</footer>
+<script>
+(function(){
+var q=document.getElementById('q'),chips=[].slice.call(document.querySelectorAll('.chip')),f='';
+function zeig(){
+  var v=q.value.trim().toLowerCase(),n=0;
+  document.querySelectorAll('section[data-g]').forEach(function(s){
+    var passt=!f||s.dataset.g===f,da=0;
+    s.querySelectorAll('[data-s]').forEach(function(c){var ok=passt&&(!v||c.dataset.s.indexOf(v)>=0);c.classList.toggle('hide',!ok);if(ok)da++});
+    s.querySelectorAll('.sub').forEach(function(u){u.classList.toggle('hide',!u.querySelector('[data-s]:not(.hide)'))});
+    s.classList.toggle('hide',!da);n+=da;
+  });
+  document.getElementById('leer').classList.toggle('hide',n>0);
+  extra(!f&&!v);
+}
+function lies(k){try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return []}}
+function schreib(k,a){try{localStorage.setItem(k,JSON.stringify(a))}catch(e){}}
+var HK='rie_start_heute',ZK='rie_start_zuletzt';
+function kopie(id){var o=document.querySelector('main section[data-g] [data-id="'+id.replace(/"/g,'')+'"]');if(!o)return null;var c=o.cloneNode(true);c.classList.remove('hide');c.removeAttribute('data-s');
+  if(c.classList.contains('tile')){var a=document.createElement('a');a.className='row link';a.href=c.getAttribute('href');a.setAttribute('data-id',id);a.innerHTML='<span class="t"></span><span class="go" aria-hidden="true">▶</span>';a.firstChild.textContent=c.querySelector('b').textContent;var p=c.querySelector('.pin');if(p)a.insertBefore(p,a.lastChild);return a}
+  var n=c.getAttribute('data-n'),t=c.querySelector('.t');if(n&&t){var sm=t.querySelector('small');t.textContent=n;if(sm)t.appendChild(sm)}return c}
+function extra(zeigen){
+  var h=lies(HK),z=lies(ZK).filter(function(x){return h.indexOf(x)<0});
+  [['sHeute','lHeute',h],['sZuletzt','lZuletzt',z]].forEach(function(x){var box=document.getElementById(x[1]);box.innerHTML='';var n=0;
+    x[2].forEach(function(id){var k=kopie(id);if(k){box.appendChild(k);n++}});document.getElementById(x[0]).classList.toggle('hide',!zeigen||!n)});
+  document.getElementById('hero').classList.toggle('hide',!zeigen);
+  document.querySelectorAll('.pin').forEach(function(p){var an=h.indexOf(p.parentNode.getAttribute('data-id'))>=0;p.classList.toggle('an',an);p.textContent=an?'★':'☆';p.setAttribute('aria-label',an?'aus Heute entfernen':'für heute merken')});
+}
+document.querySelectorAll('main section[data-g] [data-id]').forEach(function(el){var p=document.createElement('button');p.type='button';p.className='pin';p.textContent='☆';
+  if(el.classList.contains('tile'))el.appendChild(p);else el.insertBefore(p,el.lastElementChild)});
+document.querySelector('main').addEventListener('click',function(e){
+  var p=e.target.closest('.pin');
+  if(p){e.preventDefault();e.stopPropagation();var id=p.parentNode.getAttribute('data-id'),h=lies(HK),i=h.indexOf(id);if(i>=0)h.splice(i,1);else h.push(id);schreib(HK,h);zeig();return}
+  var a=e.target.closest('a[href]'),it=e.target.closest('[data-id]');
+  if(a&&it){var id=it.getAttribute('data-id'),z=lies(ZK).filter(function(x){return x!==id});z.unshift(id);schreib(ZK,z.slice(0,6))}
+});
+document.getElementById('bHeuteLeer').addEventListener('click',function(){schreib(HK,[]);zeig()});
+chips.forEach(function(c){c.addEventListener('click',function(){f=c.dataset.f;chips.forEach(function(x){x.classList.toggle('on',x===c)});
+  try{localStorage.setItem('rie_start_filter',f)}catch(e){}zeig();window.scrollTo(0,0)})});
+q.addEventListener('input',zeig);
+try{var a=localStorage.getItem('rie_start_filter');if(a){var c=chips.filter(function(x){return x.dataset.f===a})[0];if(c){f=a;chips.forEach(function(x){x.classList.toggle('on',x===c)})}}}catch(e){}
+zeig();
+})();
+</script></body></html>

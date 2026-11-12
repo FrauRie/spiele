@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bingo-Rufer</title>
+<style>
+/*FONTS*/
+:root{--ink:#1A1A1A;--muted:#6B6B6B;--bg:#F1EFEB;--orange:#D9690A;--gruen:#059E42;--hell:#BFE6CB;--rosa:#F2A7C3;--line:#DDD7CE;--u:1vh;color-scheme:light}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:Andika,Verdana,"DejaVu Sans",sans-serif;font-size:2.4vh;user-select:none}
+button,select{font-family:inherit;font-size:inherit;cursor:pointer;touch-action:manipulation}
+button{border:0}
+[hidden]{display:none!important}
+.deko{position:fixed;border-radius:50%;z-index:0;pointer-events:none}
+.d1{width:44vh;height:44vh;background:var(--rosa);right:-12vh;top:-16vh}.d2{width:14vh;height:14vh;background:#4CBF7A;right:26vh;top:4vh}.d3{width:40vh;height:40vh;background:#DE7A1E;left:-20vh;bottom:-22vh}
+.wrap{position:relative;z-index:1;max-width:178vh;margin:0 auto;padding:3vh 3vh 9vh}
+.head{display:flex;align-items:center;gap:1.6vh;flex-wrap:wrap;margin-bottom:2vh;padding-right:21vh}
+.strich{width:4.6vh;height:.8vh;border-radius:.4vh;background:var(--ink)}
+h1{margin:0;font-size:4.2vh}.sub{color:var(--muted);font-weight:700}
+.sp{flex:1}
+.btn{background:#fff;color:var(--ink);font-weight:700;border-radius:99px;padding:1.5vh 3vh;box-shadow:0 .3vh 0 #0002;font-size:2.6vh}
+.btn.main{background:var(--orange);color:#fff}.btn.go{background:var(--gruen);color:#fff}.btn.kl{font-size:2vh;padding:1vh 2vh}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:#fff;border-radius:3vh;padding:3vh 3.6vh;box-shadow:0 .2vh .8vh #0001}
+.lead{font-size:2.5vh;margin:.4vh 0 2vh;max-width:120vh}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(42vh,1fr));gap:1.6vh 3vh;margin-bottom:2vh}
+.opt>span{display:block;font-weight:700;margin-bottom:.6vh;font-size:2.1vh;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:.8vh}
+.seg button{background:var(--bg);border-radius:99px;padding:1vh 2vh;font-size:2.2vh;font-weight:700;color:var(--ink)}
+.seg button.on{background:var(--ink);color:#fff}
+select{width:100%;padding:1.1vh 1.6vh;border-radius:1.6vh;border:.3vh solid var(--line);background:#fff;font-size:2.2vh}
+.info{background:var(--bg);border-radius:1.6vh;padding:1.4vh 2vh;font-size:2.1vh;margin-bottom:2vh}
+.info.warn{background:#FCE3D0}
+.row{display:flex;gap:1.6vh;flex-wrap:wrap;align-items:center}
+/* Wortübersicht */
+.grid{display:grid;grid-template-columns:repeat(var(--cols,5),1fr);gap:1.2vh}
+.cell{background:#fff;border-radius:1.6vh;padding:1vh;text-align:center;box-shadow:0 .2vh .5vh #0001;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0}
+.cell img{width:100%;height:var(--ih,13vh);object-fit:contain}
+.cell .w{font-weight:700;font-size:var(--fs,2.3vh);line-height:1.15;margin-top:.5vh;overflow-wrap:anywhere}
+body.nurbild .cell .w{visibility:hidden}
+.anl{display:flex;gap:1.6vh;flex-wrap:wrap;margin:0 0 1.6vh}
+.anl div{background:#fff;border-radius:1.6vh;padding:1.2vh 1.8vh;font-size:2.2vh;flex:1 1 30vh}
+.anl b{display:block}.pt{letter-spacing:.2vh;margin-right:.8vh}
+/* Ziehen */
+#zieh .main2{display:grid;grid-template-columns:1fr 46vh;gap:2.4vh;align-items:stretch}
+.stage{background:#fff;border-radius:3vh;height:62vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5vh;padding:2vh;box-shadow:0 .2vh .8vh #0001;position:relative}
+.stage img{height:40vh;max-width:90%;object-fit:contain}
+.stage .wort{font-size:8vh;font-weight:700;line-height:1.1;text-align:center}
+.stage .wort.lang{font-size:5.4vh}
+.stage .frage{font-size:16vh;color:var(--line);font-weight:700}
+.stage .hin{font-size:3vh;color:var(--muted);font-weight:700}
+.nr{position:absolute;left:2.4vh;top:2vh;font-weight:700;color:var(--muted);font-size:2.2vh}
+.seite{background:#fff;border-radius:3vh;padding:1.8vh;height:62vh;display:flex;flex-direction:column;box-shadow:0 .2vh .8vh #0001}
+.seite h2{margin:0 0 1vh;font-size:2.4vh}
+#gez{overflow:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:.8vh;align-content:start;flex:1}
+#gez .g{background:var(--bg);border-radius:1.2vh;padding:.6vh;text-align:center;font-size:1.7vh;font-weight:700;line-height:1.1;overflow-wrap:anywhere}
+#gez .g img{width:100%;height:7vh;object-fit:contain;display:block}
+#gez .g.neu{outline:.4vh solid var(--orange)}
+.ctrl{display:flex;gap:1.6vh;justify-content:center;flex-wrap:wrap;margin-top:2.2vh}
+.ctrl .btn{font-size:3vh;padding:1.8vh 4vh}
+.regel{text-align:center;color:var(--muted);font-weight:700;margin-top:1.4vh;font-size:2.1vh}
+#qrBox{display:flex;gap:2vh;align-items:center;background:var(--bg);border-radius:1.6vh;padding:1.4vh 2vh;margin-bottom:2vh;font-size:2.1vh}
+#qr svg{width:17vh;height:17vh;display:block;background:#fff;border-radius:1vh}
+/* Farben */
+.a-der{color:#5B8DB8}.a-die{color:#FA3A2F}.a-das{color:#269A31}.a-pl{color:#AF7F23}.t-v{color:#D9690A}.t-adj{color:#3A8C8C}
+/* Handy-Karte */
+#karte .k{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:560px;margin:0 auto;border:3px solid var(--ink);border-radius:14px;padding:8px;background:#fff}
+#karte .f{aspect-ratio:1;background:var(--bg);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;text-align:center;position:relative;overflow:hidden}
+#karte .f img{width:100%;flex:1;min-height:0;object-fit:contain}
+#karte .f .w{font-weight:700;font-size:clamp(11px,3.4vw,18px);line-height:1.1;overflow-wrap:anywhere}
+#karte .f.x{background:var(--hell)}
+#karte .f.x:after{content:"✕";position:absolute;inset:0;display:grid;place-items:center;font-size:min(22vw,120px);color:#059E42aa;font-weight:700}
+#karte.nb .f .w{display:none}
+#bingo{position:fixed;inset:0;z-index:20;background:#059E42ee;color:#fff;display:grid;place-items:center;text-align:center;font-weight:700}
+#bingo div{font-size:min(24vw,22vh)}#bingo p{font-size:min(6vw,4vh);margin:0 0 3vh}
+#bFull{position:fixed;right:1.6vh;top:1.6vh;z-index:9}
+@media (max-width:700px),(orientation:portrait){
+  body{font-size:16px}.wrap{padding:14px 12px 70px}h1{font-size:24px}.btn{font-size:17px;padding:11px 18px}.btn.kl{font-size:14px;padding:8px 12px}
+  .lead,.info,.anl div,.seg button,select,.opt>span,#qrBox{font-size:15px}.opts{grid-template-columns:1fr}
+  #zieh .main2{grid-template-columns:1fr}.stage{height:46vh}.seite{height:auto;max-height:36vh}.grid{--cols:3!important}
+  .deko,#bFull,#qrBox{display:none}.head{padding-right:0}.stage img{height:26vh}.card{padding:16px;border-radius:18px}
+}
+</style></head><body>
+<div class="deko d1"></div><div class="deko d2"></div><div class="deko d3"></div>
+<button class="btn kl" id="bFull">⛶ Vollbild</button>
+
+<div class="wrap" id="start">
+  <div class="head"><div class="strich"></div><h1>Bingo</h1><span class="sub">ohne Druck · Rufer für das Smartboard</span></div>
+  <div class="card">
+    <p class="lead">Alle zeichnen ein Feld mit 3 × 3 Kästchen auf das Mini-Whiteboard und schreiben 9 Wörter hinein. Dann zieht das Smartboard ein Wort nach dem anderen. Wer 3 in einer Reihe hat, ruft „Bingo!“.</p>
+    <div class="opts">
+      <div class="opt"><span>Welche Wörter?</span><div class="seg" data-k="art"><button data-v="le">eine Lerneinheit</button><button data-v="th">ein Thema</button><button data-v="bis">alles bis heute</button></div></div>
+      <div class="opt" id="oLe"><span>Lerneinheit</span><select id="sLe"></select></div>
+      <div class="opt" id="oTh"><span>Thema</span><select id="sTh"></select></div>
+      <div class="opt"><span>Punkte</span><div class="seg" data-k="pt"><button data-v="1">nur ●</button><button data-v="2">● und ●●</button></div></div>
+      <div class="opt"><span>Wörter im Spiel</span><div class="seg" data-k="n"><button data-v="12">12</button><button data-v="16">16</button><button data-v="20">20</button><button data-v="25">25</button></div></div>
+      <div class="opt"><span>Beim Ziehen sehen alle</span><div class="seg" data-k="zeig"><button data-v="bild">das Bild</button><button data-v="wort">das Wort</button><button data-v="zu">erst nichts (ich sage das Wort)</button></div></div>
+    </div>
+    <div class="info" id="info"></div>
+    <div class="row"><button class="btn main" id="bStart">Spiel starten</button><button class="btn" id="bKarte">📱 Meine Karte (Handy)</button></div>
+  </div>
+</div>
+
+<div class="wrap" id="wahl" hidden>
+  <div class="head"><div class="strich"></div><h1>Schreib 9 Wörter</h1><span class="sub" id="wSub"></span><span class="sp"></span>
+    <button class="btn kl" id="bNurBild">Wörter verstecken</button><button class="btn kl" id="bMenu1">Einstellungen</button></div>
+  <div class="anl">
+    <div><b><span class="pt">●</span>Schreib ab.</b>Such 9 Wörter aus und schreib sie in dein Feld.</div>
+    <div><b><span class="pt">●●</span>Schreib ohne Hilfe.</b>Die Wörter sind versteckt. Du siehst nur die Bilder.</div>
+    <div><b><span class="pt">●●●</span>Schreib genau.</b>Nomen mit der, die oder das.</div>
+  </div>
+  <div id="qrBox" hidden><div id="qr"></div><div><b>Mit dem Handy spielen?</b><br>Scann den Code. Du bekommst eine Karte mit 9 Bildern aus diesem Spiel.</div></div>
+  <div class="grid" id="alle"></div>
+  <div class="ctrl"><button class="btn go" id="bLos">▶ Alle fertig – los!</button></div>
+</div>
+
+<div class="wrap" id="zieh" hidden>
+  <div class="head"><div class="strich"></div><h1>Bingo</h1><span class="sub" id="zSub"></span><span class="sp"></span>
+    <button class="btn kl" id="bAlle">Alle Wörter ansehen</button><button class="btn kl" id="bMenu2">Einstellungen</button></div>
+  <div class="main2">
+    <div class="stage" id="stage"></div>
+    <div class="seite"><h2>Schon gezogen <span id="zN"></span></h2><div id="gez"></div></div>
+  </div>
+  <div class="ctrl"><button class="btn main" id="bNext">Erstes Wort ▶</button><button class="btn" id="bNeu">↺ Neue Runde</button></div>
+  <p class="regel">Runde 1: 3 in einer Reihe = Bingo! · Runde 2: das ganze Feld · Bei „Bingo!“: die Wörter vorlesen und rechts vergleichen.</p>
+</div>
+
+<div class="wrap" id="karte" hidden>
+  <div class="head"><div class="strich"></div><h1>Meine Karte</h1><span class="sub" id="kSub"></span></div>
+  <div class="row" style="justify-content:center;margin-bottom:12px"><div class="seg" data-k="kst"><button data-v="1">● Bild + Wort</button><button data-v="2">●● nur Bild</button></div></div>
+  <div class="k" id="kGrid"></div>
+  <p class="regel">Hör zu. Tipp auf das Bild. 3 in einer Reihe: Ruf „Bingo!“</p>
+  <div class="ctrl"><button class="btn" id="bKNeu">↺ Neue Karte</button><button class="btn" id="bKLeer">Kreuze löschen</button><button class="btn kl" id="bMenu3">Einstellungen</button></div>
+</div>
+<div id="bingo" hidden><div><div>Bingo!</div><p>Ruf laut „Bingo!“ und lies deine 3 Wörter vor.</p><button class="btn" id="bBingoZu">Weiter spielen</button></div></div>
+
+<script>/*QRLIB*/</script>
+<script>
+const W=/*DATA*/;
+const STAND="/*STAND*/";
+const $=id=>document.getElementById(id);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const S=Object.assign({art:"le",le:"",th:"",pt:"2",n:"16",zeig:"bild",kst:"1"},(()=>{try{return JSON.parse(store.get("rie_bingo"))||{}}catch(e){return {}}})());
+const st={liste:[],rest:[],gez:[],cur:null,offen:true,seed:0,karte:[],kx:[]};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function iso(d){const [t,m,j]=d.split(".");return "20"+j+"-"+m+"-"+t}
+const HEUTE=(()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")})();
+function wortHtml(w){
+  if(w.t==="n"&&w.a){const pl=w.a==="pl";return `<span class="a-${pl?"pl":w.a}">${pl?"die":w.a} ${esc(w.w)}</span>`}
+  if(w.t==="v")return `<span class="t-v">${esc(w.w)}</span>`;
+  if(w.t==="adj")return `<span class="t-adj">${esc(w.w)}</span>`;
+  return esc(w.w);
+}
+/* Zufall mit Startwert: Smartboard und Handys ziehen dieselben Wörter */
+function rng(seed){let a=seed>>>0;return ()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function misch(a,r){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+/* Auswahl */
+const LES=[],THS=[];
+(function(){const le={},th={};
+  W.forEach(w=>w.o.forEach(o=>{const d=iso(o[0]);if(!le[o[1]]||d<le[o[1]])le[o[1]]=d;if(!th[o[2]]||d<th[o[2]].d)th[o[2]]={d,le:o[1]}}));
+  Object.keys(le).sort((a,b)=>le[a]<le[b]?-1:1).forEach(k=>LES.push([k,le[k]]));
+  Object.keys(th).sort((a,b)=>th[a].d<th[b].d?-1:1).forEach(k=>THS.push([k,th[k].d,th[k].le]));
+})();
+function pool(){
+  const p=+S.pt;
+  return W.filter(w=>w.o.some(o=>o[3]<=p&&(S.art==="le"?o[1]===S.le:S.art==="th"?o[2]===S.th:iso(o[0])<=HEUTE)));
+}
+function titel(){return S.art==="le"?S.le:S.art==="th"?S.th:"alles bis heute"}
+function spare(){store.set("rie_bingo",JSON.stringify(S))}
+function mark(){document.querySelectorAll(".seg[data-k]").forEach(sg=>sg.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===String(S[sg.dataset.k]))));
+  $("oLe").hidden=S.art!=="le";$("oTh").hidden=S.art!=="th";$("sLe").value=S.le;$("sTh").value=S.th;
+  const n=pool().length,brauch=Math.min(+S.n,n);
+  const i=$("info");i.classList.toggle("warn",n<9);
+  i.innerHTML=n<9?`Hier gibt es nur <b>${n} Wörter</b> mit Bild. Für Bingo braucht man mindestens 9. Bitte eine andere Auswahl nehmen.`:
+    `<b>${n} Wörter</b> mit Bild in dieser Auswahl – im Spiel sind <b>${brauch}</b> davon (zufällig). <b>Ohne Ton</b>, Musik unten links zuschaltbar. Tasten: Leertaste oder → = nächstes Wort, F = Vollbild.`;
+  $("bStart").disabled=$("bKarte").disabled=n<9;
+}
+document.querySelectorAll(".seg[data-k]").forEach(sg=>sg.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S[sg.dataset.k]=b.dataset.v;spare();mark();if(sg.dataset.k==="kst")zeigKarte()}));
+function fuell(){
+  $("sLe").innerHTML=LES.map(l=>`<option value="${esc(l[0])}">${esc(l[0])}</option>`).join("");
+  $("sTh").innerHTML=THS.map(t=>`<option value="${esc(t[0])}">${esc(t[2])} · ${esc(t[0])}</option>`).join("");
+  if(!LES.some(l=>l[0]===S.le)){const bis=LES.filter(l=>l[1]<=HEUTE);S.le=(bis.length?bis[bis.length-1]:LES[0])[0]}
+  if(!THS.some(t=>t[0]===S.th)){const bis=THS.filter(t=>t[1]<=HEUTE);S.th=(bis.length?bis[bis.length-1]:THS[0])[0]}
+}
+$("sLe").onchange=e=>{S.le=e.target.value;spare();mark()};$("sTh").onchange=e=>{S.th=e.target.value;spare();mark()};
+/* Spielwörter festlegen */
+function zieheListe(seed){const p=pool().sort((a,b)=>a.i-b.i);st.seed=seed;st.liste=misch(p,rng(seed)).slice(0,Math.min(+S.n,p.length)).sort((a,b)=>a.w.localeCompare(b.w,"de"))}
+function seiten(ids){["start","wahl","zieh","karte"].forEach(x=>$(x).hidden=x!==ids)}
+function hashFuer(){return "#k="+encodeURIComponent([S.art,S.art==="le"?S.le:S.art==="th"?S.th:"",S.pt,S.n,st.seed].join("|"))}
+function zeigWahl(){
+  seiten("wahl");$("wSub").textContent=titel()+" · "+st.liste.length+" Wörter";
+  const n=st.liste.length,cols=n<=12?4:n<=16?6:n<=20?7:7,rows=Math.ceil(n/cols);
+  const g=$("alle");g.style.setProperty("--cols",cols);g.style.setProperty("--ih",(rows<=2?17:rows===3?12.5:9.5)+"vh");g.style.setProperty("--fs",(rows<=2?2.5:2.1)+"vh");
+  g.innerHTML=st.liste.map(w=>`<div class="cell"><img src="${w.b}" alt=""><div class="w">${wortHtml(w)}</div></div>`).join("");
+  const box=$("qrBox");
+  if(/^https?:/.test(location.protocol)&&typeof qrcode==="function"){try{const q=qrcode(0,"M");q.addData(location.origin+location.pathname+hashFuer()+"&karte=1");q.make();$("qr").innerHTML=q.createSvgTag({cellSize:4,margin:2,scalable:true});box.hidden=false}catch(e){box.hidden=true}}else box.hidden=true;
+}
+function start(){zieheListe(Math.floor(Math.random()*90000)+10000);document.body.classList.remove("nurbild");$("bNurBild").textContent="Wörter verstecken";zeigWahl()}
+$("bStart").onclick=start;
+$("bNurBild").onclick=()=>{const an=document.body.classList.toggle("nurbild");$("bNurBild").textContent=an?"Wörter zeigen":"Wörter verstecken"};
+/* Ziehen */
+function neueRunde(){st.rest=misch(st.liste,Math.random);st.gez=[];st.cur=null;st.offen=true;zeigZieh()}
+function zeigZieh(){
+  seiten("zieh");$("zSub").textContent=titel();
+  const s=$("stage"),w=st.cur;
+  if(!w)s.innerHTML=`<div class="hin">Alle bereit? Stift weg, Augen nach vorn.</div>`;
+  else{const lang=(w.w.length+(w.a?4:0))>14?" lang":"";
+    const bild=`<img src="${w.b}" alt="">`,wort=`<div class="wort${lang}">${wortHtml(w)}</div>`;
+    s.innerHTML=`<div class="nr">Wort ${st.gez.length} von ${st.liste.length}</div>`+(st.offen?bild+wort:S.zeig==="bild"?bild:S.zeig==="wort"?wort:`<div class="frage">?</div><div class="hin">Hör zu.</div>`)}
+  const fertig=st.offen?st.gez:st.gez.slice(0,-1);
+  $("zN").textContent=fertig.length?"("+fertig.length+")":"";
+  $("gez").innerHTML=fertig.slice().reverse().map((x,i)=>`<div class="g${i===0?" neu":""}"><img src="${x.b}" alt="">${wortHtml(x)}</div>`).join("");
+  knopf();
+}
+function knopf(){const b=$("bNext");
+  if(st.cur&&!st.offen){b.textContent="Auflösen ▶";b.disabled=false}
+  else if(!st.rest.length){b.textContent="Alle Wörter gezogen";b.disabled=true}
+  else{b.textContent=st.cur?"Nächstes Wort ▶":"Erstes Wort ▶";b.disabled=false}}
+function next(){
+  if($("zieh").hidden)return;
+  if(st.cur&&!st.offen){st.offen=true;zeigZieh();return}
+  if(!st.rest.length)return;
+  st.cur=st.rest.pop();st.gez.push(st.cur);st.offen=false;zeigZieh();
+}
+$("bLos").onclick=neueRunde;$("bNext").onclick=next;
+$("bNeu").onclick=neueRunde;$("bAlle").onclick=zeigWahl;
+["bMenu1","bMenu2","bMenu3"].forEach(b=>$(b).onclick=()=>{history.replaceState(null,"",location.pathname);seiten("start");mark()});
+/* Handy-Karte */
+function neueKarte(){st.karte=misch(st.liste,Math.random).slice(0,9);st.kx=Array(9).fill(false);zeigKarte()}
+function zeigKarte(){
+  if($("karte").hidden)return;mark();$("karte").classList.toggle("nb",S.kst==="2");$("kSub").textContent=titel();
+  $("kGrid").innerHTML=st.karte.map((w,i)=>`<div class="f${st.kx[i]?" x":""}" data-i="${i}"><img src="${w.b}" alt=""><div class="w">${wortHtml(w)}</div></div>`).join("");
+}
+$("kGrid").onclick=e=>{const f=e.target.closest(".f");if(!f)return;const i=+f.dataset.i;st.kx[i]=!st.kx[i];zeigKarte();
+  if(st.kx[i]&&[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(r=>r.includes(i)&&r.every(j=>st.kx[j])))$("bingo").hidden=false};
+$("bBingoZu").onclick=()=>$("bingo").hidden=true;
+$("bKNeu").onclick=neueKarte;$("bKLeer").onclick=()=>{st.kx=Array(9).fill(false);zeigKarte()};
+$("bKarte").onclick=()=>{zieheListe(Math.floor(Math.random()*90000)+10000);seiten("karte");neueKarte()};
+/* Vollbild + Tasten */
+function vollbild(){const d=document,el=d.documentElement;try{if(d.fullscreenElement||d.webkitFullscreenElement){const x=d.exitFullscreen||d.webkitExitFullscreen;const r=x&&x.call(d);if(r&&r.catch)r.catch(()=>{})}else{const q=el.requestFullscreen||el.webkitRequestFullscreen;const r=q&&q.call(el);if(r&&r.catch)r.catch(()=>{})}}catch(e){}}
+function fullTxt(){$("bFull").textContent=(document.fullscreenElement||document.webkitFullscreenElement)?"✕ Vollbild aus":"⛶ Vollbild"}
+$("bFull").onclick=e=>{vollbild();e.currentTarget.blur()};document.addEventListener("fullscreenchange",fullTxt);document.addEventListener("webkitfullscreenchange",fullTxt);
+document.addEventListener("keydown",e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;const t=e.target&&e.target.tagName;if(t==="SELECT"||t==="INPUT")return;
+  if(e.key==="f"||e.key==="F"){e.preventDefault();vollbild()}
+  else if((e.key===" "||e.key==="ArrowRight"||e.key==="Enter")&&!$("zieh").hidden){e.preventDefault();next()}});
+/* Start: Link vom QR-Code? */
+fuell();
+(function(){const m=location.hash.match(/k=([^&]+)/);
+  if(m){try{const p=decodeURIComponent(m[1]).split("|");S.art=p[0];if(p[0]==="le")S.le=p[1];if(p[0]==="th")S.th=p[1];S.pt=p[2];S.n=p[3];
+    if(pool().length>=9){zieheListe(+p[4]||1);if(/karte=1/.test(location.hash)){seiten("karte");neueKarte();return}zeigWahl();return}}catch(e){}}
+  mark();
+})();
+</script>
+</body></html>
