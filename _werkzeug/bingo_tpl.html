@@ -73,6 +73,7 @@ input{-webkit-user-select:text;user-select:text}
 #pruef{position:fixed;inset:0;z-index:19;background:#1A1A1Acc;display:grid;place-items:center;padding:16px}
 #pruef .box{background:#fff;border-radius:22px;padding:20px;max-width:440px;width:100%;text-align:center;font-size:17px}
 #pruef h2{margin:0 0 6px;font-size:26px}#pruef p{margin:0 0 12px}
+#azBar{height:1vh;background:var(--line);border-radius:99px;margin-top:1.6vh;overflow:hidden}#azBar i{display:block;height:100%;width:100%;background:var(--orange);transition:width .2s linear}
 /* Farben */
 .a-der{color:#5B8DB8}.a-die{color:#FA3A2F}.a-das{color:#269A31}.a-pl{color:#AF7F23}.t-v{color:#D9690A}.t-adj{color:#3A8C8C}
 /* Handy-Karte */
@@ -107,6 +108,7 @@ input{-webkit-user-select:text;user-select:text}
       <div class="opt"><span>Punkte</span><div class="seg" data-k="pt"><button data-v="1">nur ●</button><button data-v="2">● und ●●</button></div></div>
       <div class="opt"><span>Wörter im Spiel</span><div class="seg" data-k="n"><button data-v="12">12</button><button data-v="16">16</button><button data-v="20">20</button><button data-v="25">25</button></div></div>
       <div class="opt"><span>Beim Ziehen sehen alle</span><div class="seg" data-k="zeig"><button data-v="bild">das Bild</button><button data-v="wort">das Wort</button><button data-v="zu">erst nichts (ich sage das Wort)</button></div></div>
+      <div class="opt"><span>Automatik (⏱ unten links): auflösen nach</span><div class="seg" data-k="az"><button data-v="5">5 s</button><button data-v="8">8 s</button><button data-v="12">12 s</button></div></div>
     </div>
     <div class="info" id="info"></div>
     <div class="row"><button class="btn main" id="bStart">Spiel starten</button><button class="btn" id="bKarte">📱 Meine Karte (Handy)</button></div>
@@ -133,6 +135,7 @@ input{-webkit-user-select:text;user-select:text}
     <div class="stage" id="stage"></div>
     <div class="seite"><h2>Schon gezogen <span id="zN"></span></h2><div id="gez"></div></div>
   </div>
+  <div id="azBar" hidden><i></i></div>
   <div class="ctrl"><button class="btn main" id="bNext">Erstes Wort ▶</button><button class="btn" id="bNeu">↺ Neue Runde</button></div>
   <p class="regel">Runde 1: 3 in einer Reihe = Bingo! · Runde 2: das ganze Feld · Bei „Bingo!“: die Wörter vorlesen und rechts vergleichen. · Handy: die Zahl neben 📱 eintippen, das Handy prüft die Kreuze.</p>
 </div>
@@ -163,7 +166,7 @@ const W=/*DATA*/;
 const STAND="/*STAND*/";
 const $=id=>document.getElementById(id);
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
-const S=Object.assign({art:"le",le:"",th:"",pt:"2",n:"16",zeig:"bild",kst:"1"},(()=>{try{return JSON.parse(store.get("rie_bingo"))||{}}catch(e){return {}}})());
+const S=Object.assign({art:"le",le:"",th:"",pt:"2",n:"16",zeig:"bild",kst:"1",az:"8"},(()=>{try{return JSON.parse(store.get("rie_bingo"))||{}}catch(e){return {}}})());
 const st={liste:[],basis:[],rest:[],gez:[],cur:null,offen:true,seed:0,code:0,pz:[],runde:0,r:0,karte:[],kx:[],falsch:[],sperre:null};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function iso(d){const [t,m,j]=d.split(".");return "20"+j+"-"+m+"-"+t}

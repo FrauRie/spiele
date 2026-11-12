@@ -6,6 +6,7 @@ Die Skripte erwarten ihre Dateien unter `/tmp/work/` und das Repo unter `/home/c
 | Datei | Zweck |
 |---|---|
 | `musik.html` | Musik-Baustein (3 eigene Stücke, Knopf unten links, `localStorage rie_musik`). Steht in jedem Spiel direkt vor `</body>`. In neue Spiele genauso einsetzen. |
+| `auto.html` | Automatik-Baustein (Knopf „⏱ Auto“ unten links neben der Musik, `localStorage rie_auto`, Standard an, gilt für alle Spiele gemeinsam). Steht direkt vor dem Musik-Baustein. An: Bingo löst jedes Wort nach 5/8/12 s auf · Boss-Runde, Exit-Quiz, Fehler-Detektiv, Satz-Chaos: die Zeit startet 3 s nach jeder neuen Aufgabe von selbst, am Ende kommt die Lösung · Zoom-Bild: Zeit pro Schritt läuft von selbst, dann nächster Schritt, nach dem letzten die Auflösung · Wer bin ich?: nach der Zeit kommt der nächste Satz von selbst. Aus: alles wie bisher mit Knopf. Neues Spiel mit Zeit: im Baustein einen Eintrag ergänzen (ready/sig/lead/go). |
 | `fonts.css` | Andika, eingebettet (für neue Spiele) |
 | `bingo_tpl.html` + `build_bingo.py` | Bingo-Rufer; Wörter und Bilder kommen aus `spiele/vokabelcheck/vokabelcheck.html` (`dW`, `dIMG`); Handy-Karte kontrolliert sich selbst: 6-stelliger Spielcode (Startwert + Einstellungen, auch im QR-Link `#s=…&karte=1`) und 3-stellige Prüfzahl neben 📱 pro gezogenem Wort – daraus weiß das Handy, welche Wörter schon dran waren; falsche Kreuze werden gelöscht, erneut prüfen erst beim nächsten Wort |
 | `stunde_tpl.html`, `index_new_tpl.html`, `index_old.html` + `build_pages.py` | bauen `spielstunde.html`, `handy.html`, `index.html`; neue Spiele in `build_pages.py` eintragen (Liste `einzel`, `DESC`, `KIND`, `TXT`) |
@@ -19,6 +20,7 @@ QR-Code: `npm pack qrcode-generator@1.4.4`, entpackt nach `/tmp/work/package/`.
 ## Regeln für alle Spiele
 - Kein „Zeigen!“-Schritt: nach der Schreibzeit kommt direkt die Lösung.
 - Funktioniert ohne Ton; Musik nur über den Knopf (Standard aus).
+- Spiele mit Zeit lösen bei „⏱ Auto an“ von selbst auf; mit „Auto aus“ bleibt der Knopf wie bisher.
 - „Jeder für sich“ muss möglich sein; Teams heißen nach Plätzen (Tür, Fenster, Mitte …), 1 Punkt pro Team und Runde.
 - Schrift Andika, Hintergrund #F1EFEB, Orange #D9690A, Grün #059E42, Rosa #F2A7C3; Vollbild-Knopf, Taste F.
 - Artikelfarben: der #5B8DB8 · die #FA3A2F · das #269A31 · Plural #AF7F23 · Verben #D9690A · Adjektive #3A8C8C.

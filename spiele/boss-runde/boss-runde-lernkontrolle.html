@@ -573,6 +573,63 @@ let origArm=0;$("eOrig").onclick=()=>{const b=$("eOrig");if(Date.now()-origArm>3
 ["chefImg","lvImg","zwImg","endImg"].forEach(id=>$(id).src=CHEFIN);
 load();leButtons();HEUTE=heuteMitglieder();heuteInfo();teamHint();
 </script>
+<!-- rie-auto v1 (12.11.2026): Automatik – die Zeit startet von selbst, nach Zeitablauf kommt die Lösung. Abschaltbar (dann wie bisher mit Knopf). -->
+<style>
+#rieAuto{position:fixed;left:calc(2.2vh + max(5.6vh,34px));bottom:1.2vh;z-index:9999;height:5.6vh;min-height:34px;border-radius:99px;border:.3vh solid #C9C2B6;background:#fff;color:#8A8378;font-size:max(2vh,13px);font-weight:700;line-height:1;cursor:pointer;opacity:.6;padding:0 1.8vh;font-family:inherit;white-space:nowrap}
+#rieAuto:hover{opacity:1}
+#rieAuto.an{background:#059E42;border-color:#04793A;color:#fff;opacity:.95}
+@media print{#rieAuto{display:none}}
+</style>
+<button id="rieAuto" type="button" hidden title="Automatik: Die Zeit startet von selbst, danach kommt die Lösung. Aus = wie bisher mit Knopf." aria-label="Automatik umschalten">⏱ Auto</button>
+<script>
+(function(){
+  var KEY="rie_auto",btn=document.getElementById("rieAuto"),an=true,A=null,cur=null,t0=0,fired=null;
+  try{an=localStorage.getItem(KEY)!=="0"}catch(e){}
+  function $(id){return document.getElementById(id)}
+  function sicht(el){return !!el&&!el.hidden&&el.offsetParent!==null}
+  function frei(){return !document.querySelector(".ov:not([hidden])")}   /* kein Start-, Punkte- oder Ende-Fenster offen */
+  function txt(sek){btn.textContent=an?(sek?"⏱ "+sek:"⏱ Auto an"):"⏱ Auto aus";btn.classList.toggle("an",an)}
+  /* Welches Spiel? ready = Aufgabe wartet · sig = welche Aufgabe · lead = Sekunden bis zur Aktion · go = Aktion */
+  try{
+    if(typeof st!=="undefined"&&$("stage")&&$("zieh")&&"offen" in st){            /* Bingo: Wort nach x Sekunden auflösen */
+      A={ready:function(){return !$("zieh").hidden&&!!st.cur&&!st.offen},
+         sig:function(){return st.seed+"|"+st.runde+"|"+st.gez.length},
+         lead:function(){return +S.az||8},
+         prog:function(f){var b=$("azBar");if(b){b.hidden=f<0;b.firstChild.style.width=(Math.max(0,f)*100)+"%"}},
+         zeig:function(){return $("karte").hidden},   /* auf der Handy-Karte kein Automatik-Knopf */
+         go:function(){next()}};
+    }else if(typeof G!=="undefined"&&typeof aufloesen==="function"&&$("steps")&&$("bTimer")){ /* Zoom-Bild: Zeit pro Schritt, dann nächster Schritt, am Ende Auflösung */
+      window.zeigen=function(){stopTimer();if(an&&!G.show&&frei()){if(G.step<S.schritte-1)weiter();else aufloesen()}};
+      A={ready:function(){return frei()&&G.list.length>0&&!G.show&&!G.timer&&sicht($("bTimer"))},
+         sig:function(){return G.i+"|"+G.step},lead:function(){return G.step?1.5:3},
+         go:function(){$("bTimer").click()}};
+    }else if(typeof G!=="undefined"&&typeof reveal==="function"&&typeof timeUp==="function"){ /* Wer bin ich?: nach der Zeit kommt der nächste Satz von selbst */
+      var alt=timeUp;
+      window.timeUp=function(){var step=G.step,idx=G.i;alt();
+        if(an&&step>=1&&step<3)setTimeout(function(){if(an&&G.step===step&&G.i===idx&&!G.timer&&frei())reveal(step)},2600)};
+      A={ready:function(){return false},sig:function(){return ""},lead:function(){return 1},go:function(){}};
+    }else if(typeof st!=="undefined"&&typeof timer==="function"&&typeof loesung==="function"&&$("bTimer")&&$("bLoes")){ /* Boss-Runde, Exit-Quiz, Fehler-Detektiv, Satz-Chaos: Zeit startet von selbst */
+      A={ready:function(){var b=$("bTimer");return frei()&&sicht(b)&&b.textContent.indexOf("Los")>=0&&sicht($("bLoes"))&&!$("bLoes").disabled&&(st.phase===undefined||st.phase==="chaos")},
+         sig:function(){return st.nr!==undefined?"n"+st.nr:"i"+st.i},lead:function(){return 3},
+         go:function(){$("bTimer").click()}};
+    }
+  }catch(e){A=null}
+  if(!A)return;
+  btn.hidden=false;txt();
+  btn.onclick=function(){an=!an;try{localStorage.setItem(KEY,an?"1":"0")}catch(e){}cur=null;if(A.prog)A.prog(-1);txt();btn.blur()};
+  setInterval(function(){
+    if(A.zeig)btn.hidden=!A.zeig();
+    var s=$("start");if(sicht(s))fired=null;                                   /* neues Spiel: wieder scharf */
+    var ok=false,g=null;try{ok=an&&A.ready();if(ok)g=A.sig()}catch(e){ok=false}
+    if(!ok||g===fired){if(cur!==null){cur=null;if(A.prog)A.prog(-1);txt()}return}
+    if(cur!==g){cur=g;t0=Date.now()}
+    var lead=A.lead(),left=lead-(Date.now()-t0)/1000;
+    if(A.prog)A.prog(left/lead);
+    if(left<=0){fired=g;cur=null;if(A.prog)A.prog(-1);txt();try{A.go()}catch(e){}}
+    else txt(Math.ceil(left));
+  },200);
+})();
+</script>
 <!-- rie-musik v2 (12.11.2026): eigene Quizmusik, 3 Stücke, zuschaltbar, Standard aus -->
 <style>
 #rieMusik sub{font-size:.55em;margin-left:.1em;align-self:end;padding-bottom:.9em}
