@@ -79,6 +79,21 @@ URL='https://fraurie.github.io/spiele/handy.html'
 qr=subprocess.run(['node','-e',"const q=require('/tmp/work/package/qrcode.js')(0,'M');q.addData(process.argv[1]);q.make();console.log(q.createSvgTag({cellSize:4,margin:2,scalable:true}))",URL],capture_output=True,text=True).stdout.strip()
 assert qr.startswith('<svg')
 hl=[('Bingo · Meine Karte','Tipp den Spielcode von der Tafel ein. Du bekommst 9 Bilder. Hör zu und tipp auf das Bild.','spiele/bingo/bingo-rufer.html')]+[('Buchstaben-Salat · '+t,'Tipp die Buchstaben an und leg das Wort. Wähl am Start „Allein“.',u) for t,u in salat]+[('Suchsel','Such die Wörter im Gitter. Zieh mit dem Finger über das Wort.','spiele/suchsel/suchsel.html')]+[('Sortiertafel','Zieh die Karten in die richtige Spalte. Oder: Tipp die Karte an, dann die Spalte.','spiele/sortiertafel/sortiertafel.html'),('Vokabelcheck','Sieh das Bild, schreib das Wort, kontrollier selbst.','spiele/vokabelcheck/vokabelcheck.html')]
+# neu am 13.11.2026: Klassenspiele mit Handy-Layout (handy.html-Baustein) – am Handy „Jeder für sich“, Antwort auf Papier oder ins Heft
+U={x[0]:x[2] for x in einzel}
+hk=[('Boss-Runde','Spiel gegen die Chefin. Schreib die Antwort auf Papier. Dann tipp auf „Lösung“.'),
+ ('Exit-Quiz','Tipp auf A, B, C oder D. Du siehst sofort, ob es richtig ist.'),
+ ('Fehler-Detektiv','Im Satz ist ein Fehler. Schreib den Satz richtig auf Papier.'),
+ ('Satz-Chaos','Die Wörter sind durcheinander. Schreib den Satz richtig auf Papier.'),
+ ('Wer bin ich?','Lies die Sätze. Wer oder was ist das? Schreib deinen Tipp auf.'),
+ ('Was fehlt?','Eine Karte ist verdeckt. Welche Karte fehlt? Schreib sie auf.'),
+ ('Eis schmilzt','Schreib das Wort, bevor das Eis schmilzt.'),
+ ('Buchstaben-Pizza','Kategorie und Buchstabe: Schreib ein passendes Wort auf.')]
+hk=[(t,d,U[t]) for t,d in hk]
+chips=lambda L:''.join(f'<a class="chip" href="{u}">{e(t)}</a>' for t,u in L)
+hgr=[('Zoom-Bild','Ein Bild ist ganz nah. Was ist das? Schreib deinen Tipp auf.',zoomA+zoomL),
+ ('Blitz!','Zwei Karten haben ein gleiches Bild. Finde es und tipp es an.',bzB),
+ ('Wort-Blitz!','Zwei Karten haben ein gleiches Wort. Finde es und tipp es an.',bzW)]
 CSS_HEAD='''<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>%s</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">'''
@@ -90,14 +105,19 @@ p.l{{color:var(--muted);margin:0 0 16px}}.tiles{{display:grid;gap:12px}}
 .tile{{background:#fff;border-radius:16px;padding:16px 18px;border-left:10px solid var(--orange);box-shadow:0 1px 3px #0001;display:flex;flex-direction:column;gap:4px}}
 .tile:nth-child(3n+2){{border-left-color:var(--gruen)}}.tile:nth-child(3n){{border-left-color:var(--rosa)}}.tile b{{font-size:1.25rem}}.tile span{{color:var(--muted)}}
 .qr{{background:#fff;border-radius:16px;padding:18px;margin-top:22px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}}.qr svg{{width:210px;height:210px}}.qr b{{font-size:1.2rem}}
+.gr{{background:#fff;border-radius:16px;padding:16px 18px;border-left:10px solid var(--gruen);box-shadow:0 1px 3px #0001}}.gr b{{font-size:1.25rem}}.gr p{{margin:4px 0 10px;color:var(--muted)}}
+.chips{{display:flex;flex-wrap:wrap;gap:8px}}.chip{{background:var(--bg);border-radius:99px;padding:6px 12px;font-size:.95rem;font-weight:700}}
+h2{{font-size:1.3rem;margin:26px 0 4px}}
 .zur{{display:inline-block;margin-top:18px;font-weight:700;background:#fff;border-radius:99px;padding:8px 16px;border:2px solid var(--line)}}
 @media (max-width:600px){{.qr{{display:none}}}}
 </style></head><body><div class="in"><h1>Spiele für das Handy</h1><p class="l">Diese Spiele kannst du allein spielen.</p>
 <div class="tiles">{''.join(f'<a class="tile" href="{u}"><b>{e(t)}</b><span>{e(d)}</span></a>' for t,d,u in hl)}</div>
+<h2>Klassenspiele – auch am Handy</h2><p class="l">Am Handy ist „Jeder für sich“ schon gewählt. Du brauchst Papier oder dein Heft.</p>
+<div class="tiles">{''.join(f'<a class="tile" href="{u}"><b>{e(t)}</b><span>{e(d)}</span></a>' for t,d,u in hk)}{''.join(f'<div class="gr"><b>{e(t)}</b><p>{e(d)}</p><div class="chips">{chips(L)}</div></div>' for t,d,L in hgr)}</div>
 <div class="qr">{qr}<div><b>Mit dem Handy öffnen</b><br>Scann den Code mit der Kamera.<br><span style="color:var(--muted)">fraurie.github.io/spiele/handy.html</span></div></div>
 <a class="zur" href="index.html">← alle Spiele</a></div></body></html>
 '''
-for t,d,u in hl: assert os.path.exists(R+u)
+for t,d,u in hl+hk+[(t,'',u) for _,_,L in hgr for t,u in L]: assert os.path.exists(R+u),u
 open(R+'handy.html','w',encoding='utf-8').write(handy)
 # ---------- Startseite ----------
 def tile(i,x): return f'<a class="tile c{i%3}" href="{x[2]}" data-id="{x[2]}" data-s="{e((x[0]+" "+x[1]).lower())}"><b>{e(x[0])}</b><span>{e(x[1])}</span></a>'

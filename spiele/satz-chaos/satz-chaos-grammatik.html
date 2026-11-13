@@ -815,6 +815,78 @@ document.addEventListener("keydown",e=>{if(e.key!=="f"&&e.key!=="F")return;if(e.
   e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)fsToggle()},true);
 
 </script>
+<script>document.documentElement.setAttribute('data-rie-spiel','satz-chaos')</script>
+<!-- rie-handy v1 (13.11.2026): Handy-Layout für die Klassenspiele – greift nur am Handy im Hochformat (höher als breit, höchstens 900 px breit). Am Smartboard, Laptop und Tablet quer ändert sich nichts. Steht direkt vor dem Knopf-Baustein. -->
+<style>
+/* Die Klassenspiele sind in vh gebaut (Smartboard quer). Am Handy hochkant wird das Spielfeld verkleinert (zoom),
+   damit es in die Breite passt, und einspaltig: oben das Spiel bildschirmfüllend, darunter (scrollen) die Teams.
+   Unten bleibt ein Streifen (--rie-unten) frei für Einstellungen, Musik, Ton und Automatik. */
+html.rie-handy{--rie-unten:46px}
+
+/* --- Spiele mit .left / .right (Boss-Runde, Buchstaben-Pizza, Eis schmilzt, Fehler-Detektiv, Satz-Chaos, Was fehlt?, Wer bin ich?, Zoom-Bild, Blitzbild) --- */
+html.rie-handy:not([data-rie-spiel=exit-quiz]):not([data-rie-spiel=buchstaben-salat]) #game:has(>.left){display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;zoom:var(--rie-z);height:calc(var(--rie-h) / var(--rie-z))!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding-bottom:0!important}
+html.rie-handy:not([data-rie-spiel=exit-quiz]):not([data-rie-spiel=buchstaben-salat]) #game:has(>.left)>.left{flex:0 0 auto!important;height:calc((var(--rie-h) - var(--rie-unten)) / var(--rie-z) - 2.6vh)!important;width:100%!important;min-width:0}
+html.rie-handy:not([data-rie-spiel=exit-quiz]):not([data-rie-spiel=buchstaben-salat]) #game:has(>.left)>.right{flex:0 0 auto!important;height:auto!important;min-height:0!important;padding-top:0!important;margin-top:calc(var(--rie-unten) / var(--rie-z));padding-bottom:calc(var(--rie-unten) / var(--rie-z) + 2vh)!important;grid-template-rows:none!important;grid-auto-rows:max-content}
+html.rie-handy:not([data-rie-spiel=exit-quiz]):not([data-rie-spiel=buchstaben-salat]) #game:has(>.left)>.right *{min-height:auto}
+html.rie-handy:not([data-rie-spiel=exit-quiz]):not([data-rie-spiel=buchstaben-salat]) #game:has(>.left) .head{zoom:1.12;padding-right:0!important}
+
+/* --- Activity (#game mit .top / .gmain) --- */
+html.rie-handy #game:has(>.gmain){zoom:var(--rie-z);padding-bottom:calc(var(--rie-unten) / var(--rie-z))!important}
+html.rie-handy #game:has(>.gmain) .top{padding-right:0!important;flex-wrap:wrap;row-gap:.6vh;zoom:1.12}
+html.rie-handy #game:has(>.gmain) .gmain{display:flex!important;flex-direction:column;gap:2vh;overflow-y:auto}
+html.rie-handy #game:has(>.gmain) .stage{flex:1 0 auto;min-height:60vh}
+html.rie-handy #game:has(>.gmain) .side{flex:0 0 auto}
+html.rie-handy #game.draw .stage{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto minmax(0,1fr)}
+
+/* --- Blitz! (Dobble): Karten untereinander (Größe rechnet das Spiel selbst, siehe build_blitz.py) --- */
+html.rie-handy[data-rie-spiel=blitz] #tisch{grid-auto-flow:row!important;gap:1.4vh!important}
+/* Duell (3 Karten): Mitte oben, die beiden Spieler-Karten nebeneinander darunter */
+html.rie-handy[data-rie-spiel=blitz] #tisch:has(>:nth-child(3)){grid-template-columns:repeat(2,auto)}
+html.rie-handy[data-rie-spiel=blitz] #tisch:has(>:nth-child(3))>:nth-child(2){grid-column:1/-1;grid-row:1;justify-self:center}
+html.rie-handy[data-rie-spiel=blitz] .head{flex-wrap:wrap;row-gap:.4vh}
+html.rie-handy[data-rie-spiel=blitz] .head .sub{flex:1 1 30%;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html.rie-handy[data-rie-spiel=blitz] #game{padding-bottom:var(--rie-unten)!important;height:100dvh!important}
+html.rie-handy[data-rie-spiel=blitz] .head{padding-right:0!important}
+
+/* --- für alle --- */
+/* Links unten rechts (Einstellungen …) bekommen einen Hintergrund, falls darunter etwas vorbeiscrollt */
+html.rie-handy .mini{background:var(--bg,#F1EFEB)!important;padding:.3em .7em!important;border-radius:999px;font-size:13px!important}
+/* Vollbild gibt es am Handy (iPhone) nicht zuverlässig */
+html.rie-handy #fsBtn,html.rie-handy #bFull,html.rie-handy #bVoll{display:none!important}
+</style>
+<script>
+(function(){
+ if(window.rieHandy)return; window.rieHandy=1;
+ var de=document.documentElement;
+ function istHandy(){var w=innerWidth,h=innerHeight;return w<h&&w<=900}
+ function messen(){
+  var w=innerWidth,h=innerHeight;
+  de.classList.toggle('rie-handy',istHandy());
+  // Zoom so, dass das Spielfeld etwa 80 vh breit gedacht ist (am Smartboard sind es rund 180 vh)
+  de.style.setProperty('--rie-z',Math.min(1,w/(h*0.8)).toFixed(3));
+  de.style.setProperty('--rie-h',h+'px');
+ }
+ messen(); addEventListener('resize',messen); addEventListener('orientationchange',function(){setTimeout(messen,250)});
+ // Am Handy spielt man für sich: beim Öffnen „Jeder für sich“ vorwählen (Exit-Quiz: „allein“, Blitz!: „Für sich“)
+ function vorwaehlen(){
+  if(!istHandy())return;
+  var bs=[].slice.call(document.querySelectorAll('button'));
+  function t(b){return (b.textContent||'').replace(/\s+/g,' ').trim()}
+  var ziel=bs.filter(function(b){return /^allein\b/.test(t(b))})[0]
+         ||bs.filter(function(b){return /^(👤 )?Jeder für sich$/.test(t(b))})[0]
+         ||bs.filter(function(b){return /^Für sich\b/.test(t(b))})[0];
+  if(ziel)ziel.click();
+ }
+ // Blitz!: wenn sich der Platz für die Karten ändert (Kopfzeile, Hinweise), Kartengröße neu rechnen lassen
+ if(de.getAttribute('data-rie-spiel')==='blitz'&&window.ResizeObserver){
+  var letzte=0;
+  function beobachten(){var t=document.getElementById('tisch');if(!t)return;
+   new ResizeObserver(function(){var hh=t.clientHeight;if(istHandy()&&hh>100&&Math.abs(hh-letzte)>4){letzte=hh;setTimeout(function(){dispatchEvent(new Event('resize'))},60)}}).observe(t)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',beobachten);else beobachten();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(vorwaehlen,0)});else setTimeout(vorwaehlen,0);
+})();
+</script>
 <!-- rie-knoepfe v1 (12.11.2026): Knopf-Regeln für alle Spiele – gleich große Knöpfe je Gruppe, Schrift nie am Rand, nichts verdeckt die Knöpfe. Steht direkt vor dem Ton-/Automatik-/Musik-Baustein. -->
 <style>
 button{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
